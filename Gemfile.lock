@@ -1,5 +1,7 @@
 GEM
+  remote: https://rubygems.org/
   specs:
+    aasm (4.11.1)
     coderay (1.1.1)
     gosu (0.10.8-x86-mingw32)
     method_source (0.8.2)
@@ -13,6 +15,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  aasm
   gosu
   pry
 
