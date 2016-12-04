@@ -15,6 +15,7 @@ class GameWindow < Gosu::Window
     @skill_map = sample_skill_mapping
     @battle_texts = []
     @allowed_to_proceed = false
+    @accepting_input = true
     @font = Gosu::Font.new(20)
     self.caption = 'Future Weapon Game Xtreme'
   end
@@ -44,10 +45,13 @@ class GameWindow < Gosu::Window
     text_start = 'enter 3 from [q, w, e, d]'
     @text = case commands.size
             when 3
+              @accepting_input = false
               "executing commands: #{ commands }"
             when (1..2)
+              @accepting_input = true
               text_start + " | commands.size: #{ commands.size } & commands: #{ commands }"
             else
+              @accepting_input = true
               text_start
             end
   end
@@ -83,15 +87,15 @@ class GameWindow < Gosu::Window
     when Gosu::KbEscape
       close
     when Gosu::KbQ
-      commands << :q
+      commands << :q if @accepting_input
     when Gosu::KbW
-      commands << :w
+      commands << :w if @accepting_input
     when Gosu::KbE
-      commands << :e
+      commands << :e if @accepting_input
     when Gosu::KbD
-      commands << :d
+      commands << :d if @accepting_input
     when Gosu::KbReturn
-      @allowed_to_proceed = true
+      @allowed_to_proceed = true unless @accepting_input
     end
   end
 
