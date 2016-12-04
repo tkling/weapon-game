@@ -71,6 +71,7 @@ class GameWindow < Gosu::Window
   def draw_screen
     case aasm.current_state
     when :collect_battle_commands
+      @accepting_input = true
       draw_battle_prompt
     when :resolve_battle_commands
       draw_command_resolution
