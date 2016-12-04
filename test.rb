@@ -22,11 +22,7 @@ class GameWindow < Gosu::Window
   def update
     set_prompt_text
     resolve_battle_commands if in_battle? && commands.size == 3
-    if @allowed_to_proceed
-      @state[:commands] = []
-      @allowed_to_proceed = false
-
-    end
+    proceed
   rescue Exception, StandardError => err
     @state[:error] = err
     require 'pry'; binding.pry
@@ -58,6 +54,13 @@ class GameWindow < Gosu::Window
 
   def in_battle?
     true
+  end
+
+  def proceed
+    if @allowed_to_proceed
+      @state[:commands] = []
+      @allowed_to_proceed = false
+    end
   end
 
   def resolve_battle_commands
