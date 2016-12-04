@@ -85,10 +85,8 @@ class GameWindow < Gosu::Window
     text_start = 'enter 3 from [q, w, e, d]'
     @text = case commands.size
             when (1..2)
-              @accepting_input = true
-              text_start + " | commands.size: #{ commands.size } & commands: #{ commands }"
+              text_start + " | commands.size: #{ commands.size } | commands: #{ commands }"
             else
-              @accepting_input = true
               text_start
             end
     @font.draw(@text, 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
