@@ -1,0 +1,12 @@
+GEM
+  specs:
+    gosu (0.10.8-x86-mingw32)
+
+PLATFORMS
+  x86-mingw32
+
+DEPENDENCIES
+  gosu
+
+BUNDLED WITH
+   1.13.6
