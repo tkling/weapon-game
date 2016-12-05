@@ -1,6 +1,7 @@
 class Character
-  attr_reader :name, :job, :weapon, :armor, :type, :items
-  def initialize(name, job, weapon, armor, type, items, base_stats = Hash.new(1))
+  attr_reader :name, :job, :weapon, :armor, :type, :items, :base_stats
+  attr_accessor :target_key
+  def initialize(name, job, weapon, armor, type, items, base_stats = Hash.new(1), target_key = nil)
     @name = name
     @job = job
     @weapon = weapon
@@ -8,6 +9,7 @@ class Character
     @type = type
     @items = items
     @base_stats = base_stats
+    @target_key = target_key
   end
 end
 

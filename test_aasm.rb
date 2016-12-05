@@ -5,13 +5,19 @@ require './constants'
 require './character'
 
 class GameWindow < Gosu::Window
-  include AASM
+  include AASM, SpawningMethods
 
   aasm whiny_transitions: false do
-    state :collect_battle_commands, initial: true
+    state :show_parties, initial: true
+    state :collect_battle_commands
     state :resolve_battle_commands
     state :end_battle
     state :next_battle
+
+    event :begin_battle do
+      transitions from: :show_parties,
+                  to: :collect_battle_commands
+    end
 
     event :collecting_commands do
       transitions from: [:collect_battle_commands, :resolve_battle_commands],
@@ -25,6 +31,13 @@ class GameWindow < Gosu::Window
                   guard: -> { commands.size == 3},
                   after: -> { construct_battle_texts }
     end
+
+    event :ending_battle do
+      transitions from: :resolve_battle_commands,
+                  to: :end_battle,
+                  guard: -> { enemies.map { |ene| ene.base_stats[:hp] > 0 }.size == 0 },
+                  after: -> { grant_rewards }
+    end
   end
 
   def initialize
@@ -33,7 +46,11 @@ class GameWindow < Gosu::Window
     @skill_map = sample_skill_mapping
     @battle_texts = []
     @accepting_input = true
-    @font = Gosu::Font.new(20)
+    @party = spawn_characters(3)
+    @enemies = spawn_enemies(2)
+    @target_map = setup_target_map
+    @large_font = Gosu::Font.new(30)
+    @normal_font = Gosu::Font.new(20)
     @small_font = Gosu::Font.new(15)
     self.caption = 'Future Weapon Game Xtreme'
   end
@@ -42,6 +59,8 @@ class GameWindow < Gosu::Window
     if in_battle?
       self.collecting_commands if commands.size < 3
       self.resolving_commands  if commands.size == 3
+      assign_battle_damage
+      self.ending_battle if @enemies.map { |ene| ene.base_stats[:hp] > 0 }.size == 0
     end
   rescue Exception, StandardError => err
     open_repl err
@@ -54,6 +73,17 @@ class GameWindow < Gosu::Window
     open_repl(err)
   end
 
+  def setup_target_map
+    map = {}
+    target_keys = %i(q w e d)
+    @enemies.each_with_index { |ene, idx| map[ene.name] = target_keys[idx] }
+    map
+  end
+
+  def assign_battle_damage
+
+  end
+
   def draw_state_info
     state_info = "current state: #{ aasm.current_state }"
     @small_font.draw(state_info, 10, 560, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
@@ -64,15 +94,41 @@ class GameWindow < Gosu::Window
 
   def draw_screen
     case aasm.current_state
+    when :show_parties
+      draw_continue 10
+      draw_party_info 10
+      draw_enemy_info 10
     when :collect_battle_commands
       @accepting_input = true
       draw_battle_prompt
     when :resolve_battle_commands
       draw_command_resolution
     when :end_battle
-      draw_battle_end
+      draw_rewards_screen
     else
       open_repl RuntimeError.new 'weird state'
+    end
+  end
+
+  def draw_continue(y_start)
+    @large_font.draw('Press [return] to continue', 10, y_start, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+  end
+
+  def draw_party_info(y_start)
+    y_start += 5
+    x = 10
+    @party.each do |char|
+      info = "#{ char.name }\tHP:#{ char.base_stats[:hp] }"
+      @normal_font.draw(info, x, y_start += 25, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+    end
+  end
+
+  def draw_enemy_info(y_start)
+    y_start += 5
+    x = 400
+    @enemies.each do |char|
+      info = "#{ char.name }\tHP:#{ char.base_stats[:hp] }"
+      @normal_font.draw(info, x, y_start += 25, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
     end
   end
 
@@ -84,22 +140,22 @@ class GameWindow < Gosu::Window
             else
               text_start
             end
-    @font.draw(@text, 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+    @normal_font.draw(@text, 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
   end
 
   def draw_command_resolution
     @accepting_input = false
-    @font.draw("executing commands: #{ commands }", 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+    @normal_font.draw("executing commands: #{ commands }", 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
 
     start_y = 10
     @battle_texts.each do |text|
-      @font.draw(text, 10, start_y += 25, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+      @normal_font.draw(text, 10, start_y += 25, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
     end
-    @font.draw('Press [return] to continue', 10, start_y += 25, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+    @normal_font.draw('Press [return] to continue', 10, start_y += 25, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
   end
 
   def draw_battle_end
-    @font.draw('The battle is over!', 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+    @normal_font.draw('The battle is over!', 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
   end
 
   def construct_battle_texts
@@ -117,7 +173,7 @@ class GameWindow < Gosu::Window
     }
   end
 
-  def open_repl(error)
+  def open_repl(err)
     require 'pry'; binding.pry
   end
 
@@ -133,8 +189,13 @@ class GameWindow < Gosu::Window
     end
   end
 
+  def proceed_prebattle
+    @state[:commands] = []
+    self.begin_battle
+  end
+
   def in_battle?
-    true
+    ![:show_parties, :end_battle].include?(aasm.current_state)
   end
 
   def button_down(id)
@@ -152,7 +213,7 @@ class GameWindow < Gosu::Window
     when Gosu::KbD
       commands << :d if @accepting_input
     when Gosu::KbReturn
-      proceed_battle
+      in_battle? ? proceed_battle : proceed_prebattle
     end
   end
 end
