@@ -1,14 +1,8 @@
 require 'gosu'
 require 'aasm'
 
-
-module ZOrder
-  UI = 1
-end
-
-module Color
-  YELLOW = 0xff_ffff00
-end
+require './constants'
+require './character'
 
 class GameWindow < Gosu::Window
   include AASM
@@ -64,7 +58,7 @@ class GameWindow < Gosu::Window
     state_info = "current state: #{ aasm.current_state }"
     @small_font.draw(state_info, 10, 560, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
 
-    transition_info = "changing from #{aasm.from_state} to #{aasm.to_state} (event: #{aasm.current_event})"
+    transition_info = "from #{ aasm.from_state } to #{ aasm.to_state } (event: #{ aasm.current_event })"
     @small_font.draw(transition_info, 10, 580, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
   end
 
