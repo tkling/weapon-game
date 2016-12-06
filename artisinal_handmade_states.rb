@@ -1,6 +1,4 @@
 require 'gosu'
-require 'aasm'
-
 require './states'
 
 class GameWindow < Gosu::Window
