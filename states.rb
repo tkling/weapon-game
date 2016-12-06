@@ -13,6 +13,14 @@ class GameState
 end
 
 class WelcomeScreen < GameState
+  def initialize(window)
+    super window
+    @vertical_range_array = (20..510).to_a
+    @message_y = @vertical_range_array.sample
+    @y_set = Time.now
+    @message = 'THIS IS WEAPON GAME'
+  end
+
   def update
     if Time.now - @window.start_time > 3.5
       @window.ready_to_advance_state!
@@ -20,12 +28,16 @@ class WelcomeScreen < GameState
   end
 
   def draw
-    message = 'THIS IS WEAPON GAME'
-    @window.huge_font.draw(message, 10, 10, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+    if Time.now - @y_set > 0.25
+      @message_y = @vertical_range_array.sample
+      @y_set = Time.now
+    end
+
+    @window.huge_font.draw(@message, 182, @message_y, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
   end
 
   def key_pressed(id)
-    if id == Gosu::KbEnter || id == Gosu::KbEscape
+    if id == Gosu::KbEnter || id == Gosu::KbEscape || id == Gosu::KbSpace
       @window.ready_to_advance_state!
     end
   end
@@ -58,12 +70,12 @@ class MainMenu < GameState
 
   def draw
     header = 'WEAPON GAME MAIN MENU'
-    @window.huge_font_draw(10, 10, 0, Color::YELLOW, header)
+    @window.huge_font_draw(45, 20, 0, Color::YELLOW, header)
 
     new_game = 'q - new game'
     continue = 'w - continue'
     options = 'e - options'
     close = 'd - exit'
-    @window.large_font_draw(10, 100, 30, Color::YELLOW, new_game, continue, options, close)
+    @window.large_font_draw(320, 200, 40, Color::YELLOW, new_game, continue, options, close)
   end
 end
