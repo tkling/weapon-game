@@ -1,0 +1,58 @@
+states/screens
+
+main menu
+	new game
+	continue
+	saves (management?)
+	options
+	close
+
+new game
+	create save file
+	set starting state
+	start game
+
+continue
+	load saved game state
+	start game
+
+saves
+	show list of saves
+	c to copy save
+	x to delete save
+
+start game (dungeon select)
+	show journey status/map
+	select dungeon
+	m opens menu
+
+in-game menu
+	character status
+	equip
+	weapon stuff
+	save
+
+main gameplay aka journeying
+ 	select dungeon
+ 	dungeon loop
+ 		choose path
+ 		move on path
+ 		enemy wave battle
+ 		random loot drop?
+
+# include AASM
+#
+# aasm do
+#   state :welcome_screen, initial: true
+#   state :main_menu
+#   state :new_game_creation
+#   state :continue_saved_game
+#   state :manage_saves
+#   state :start_game_dungeon_select
+#   state :journey_loop
+#   state :in_game_menu
+#
+#   event :main_menu_open do
+#     transitions from: :welcome_screen, to: :main_menu
+#   end
+# end
