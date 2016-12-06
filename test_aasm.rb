@@ -59,7 +59,7 @@ class GameWindow < Gosu::Window
     if in_battle?
       self.collecting_commands if commands.size < 3
       self.resolving_commands  if commands.size == 3
-      assign_battle_damage
+      assign_battle_damage # ????
       self.ending_battle if @enemies.map { |ene| ene.base_stats[:hp] > 0 }.size == 0
     end
   rescue Exception, StandardError => err
