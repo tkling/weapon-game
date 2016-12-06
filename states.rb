@@ -10,6 +10,10 @@ class GameState
   def draw; end
   def key_pressed(id); end
   def next; end
+
+  def notify_ready
+    @window.ready_to_advance_state!
+  end
 end
 
 class WelcomeScreen < GameState
@@ -23,7 +27,7 @@ class WelcomeScreen < GameState
 
   def update
     if Time.now - @window.start_time > 3.5
-      @window.ready_to_advance_state!
+      notify_ready
     end
   end
 
@@ -33,12 +37,12 @@ class WelcomeScreen < GameState
       @y_set = Time.now
     end
 
-    @window.huge_font.draw(@message, 182, @message_y, ZOrder::UI, 1.0, 1.0, Color::YELLOW)
+    @window.huge_font_draw(182, @message_y, 0, Color::YELLOW, @message)
   end
 
   def key_pressed(id)
     if id == Gosu::KbEnter || id == Gosu::KbEscape || id == Gosu::KbSpace
-      @window.ready_to_advance_state!
+      notify_ready
     end
   end
 
@@ -53,14 +57,11 @@ class MainMenu < GameState
     when Gosu::KbEscape, Gosu::KbD
       @window.close
     when Gosu::KbQ
-      @next = NewGame
-      @window.ready_to_advance_state!
+      notify_ready; @next = NewGame
     when Gosu::KbW
-      @next = Continue
-      @window.ready_to_advance_state!
+      notify_ready; @next = Continue
     when Gosu::KbE
-      @next = Options
-      @window.ready_to_advance_state!
+      notify_ready; @next = Options
     end
   end
 
