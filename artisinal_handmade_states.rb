@@ -2,22 +2,23 @@ require 'gosu'
 require './states'
 
 class GameWindow < Gosu::Window
-  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font
+  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font, :project_root
 
   def initialize
-    @state = WelcomeScreen.new self
-    load_globals
+    set_instance_vars
     super 800, 600
     self.caption = 'Xtreme Weapon Grindfest'
   end
 
-  def load_globals
+  def set_instance_vars
+    @state = WelcomeScreen.new self
     @start_time = Time.now
     @ready_to_advance = false
     @huge_font = Gosu::Font.new(60)
     @large_font = Gosu::Font.new(30)
     @normal_font = Gosu::Font.new(20)
     @small_font = Gosu::Font.new(15)
+    @project_root = Dir.pwd
   end
 
   def update

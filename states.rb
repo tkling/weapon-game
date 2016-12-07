@@ -11,6 +11,10 @@ class GameState
   def key_pressed(id); end
   def next; end
 
+  def set_next_and_ready(state_class)
+    @next = state_class; notify_ready
+  end
+
   def notify_ready
     @window.ready_to_advance_state!
   end
@@ -57,11 +61,11 @@ class MainMenu < GameState
     when Gosu::KbEscape, Gosu::KbD
       @window.close
     when Gosu::KbQ
-      notify_ready; @next = NewGame
+      set_next_and_ready NewGame
     when Gosu::KbW
-      notify_ready; @next = Continue
+      set_next_and_ready Continue
     when Gosu::KbE
-      notify_ready; @next = Options
+      set_next_and_ready Options
     end
   end
 
@@ -79,4 +83,75 @@ class MainMenu < GameState
     close = 'd - exit'
     @window.large_font_draw(320, 200, 40, Color::YELLOW, new_game, continue, options, close)
   end
+end
+
+class NewGame < GameState
+  def initialize(window)
+    super window
+    @window = window
+    @save_dir = File.join(window.project_root, 'saves')
+    @save_name = "game#{ Dir[File.join(@save_dir, '*')].size + 1 }.save"
+    @path = File.join(@save_dir, @save_name)
+    @file_created = false
+  end
+
+  def key_pressed(id)
+    case id
+    when Gosu::KbQ
+      @file_created ? set_next_and_ready(StartJourney) : make_new_game
+    when Gosu::KbE
+      set_next_and_ready(MainMenu)
+    when Gosu::KbEscape, Gosu::KbSpace
+      @window.close
+    end
+  end
+
+  def make_new_game
+    unless File.directory? @save_dir
+      Dir.mkdir @save_dir
+    end
+
+    unless File.exists? @path
+      File.write(@path, "#{ @save_name } wuz here")
+      @file_created = true
+    end
+  end
+
+  def update
+    if @file_created && !@start_journey_set
+      @confirmation = 'q to start journey'
+      @start_journey_set = true
+    end
+  end
+
+  def next
+    @next
+  end
+
+  def draw
+    @header ||=  'N E W G A M E'
+    @save_explanation ||= "Your save will be called #{ @save_name }"
+    @question ||= 'Sound good to you?'
+    @confirmation ||= 'q to continue, e to cancel'
+    @success ||= 'S U C C E S S'
+
+    @window.huge_font_draw(   10, 10,  0, Color::YELLOW, @header)
+    @window.normal_font_draw(240, 240, 0, Color::YELLOW, @save_explanation)
+    @window.normal_font_draw(500, 280, 0, Color::YELLOW, @question)
+    @window.normal_font_draw(370, 320, 0, Color::YELLOW, @confirmation)
+
+    if @file_created
+      @window.huge_font_draw(420, 520, 0, Color::YELLOW, @success)
+    end
+  end
+end
+
+class Continue < GameState
+  # show game list
+  # load selected save
+  # if game parts are good then start journey
+end
+
+class StartJourney < GameState
+
 end
