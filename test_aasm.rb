@@ -2,7 +2,7 @@ require 'gosu'
 require 'aasm'
 
 require './constants'
-require './character'
+require './models'
 
 class GameWindow < Gosu::Window
   include AASM, SpawningMethods
