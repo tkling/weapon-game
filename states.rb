@@ -134,11 +134,11 @@ class NewGame < GameState
   end
 
   def draw
-    @header ||=  'N E W G A M E'
+    @header           ||= 'N E W G A M E'
     @save_explanation ||= "Your save will be called #{ @save_name }"
-    @question ||= 'Sound good to you?'
-    @confirmation ||= 'q to continue, e to cancel'
-    @success ||= 'S U C C E S S'
+    @question         ||= 'Sound good to you?'
+    @confirmation     ||= 'q to continue, e to cancel'
+    @success          ||= 'S U C C E S S'
 
     @window.huge_font_draw(   10, 10,  0, Color::YELLOW, @header)
     @window.normal_font_draw(240, 240, 0, Color::YELLOW, @save_explanation)
