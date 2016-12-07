@@ -1,3 +1,5 @@
+require 'json'
+
 class Character
   attr_reader :name, :job, :weapon, :armor, :type, :items, :base_stats
   attr_accessor :target_key
@@ -11,6 +13,18 @@ class Character
     @base_stats = base_stats
     @target_key = target_key
   end
+
+  def to_json
+    {
+      name: name,
+      job: job,
+      weapon: weapon.to_json,
+      armor: armor.to_json,
+      type: type,
+      items: items.map { |i| i.to_json },
+      base_stats: base_stats.to_json
+    }.to_json
+  end
 end
 
 class Weapon
@@ -21,6 +35,15 @@ class Weapon
     @skills = skills
     @base_stats = base_stats
   end
+
+  def to_json
+    {
+      name: name,
+      type: type,
+      skills: skills.map { |s| s.to_json },
+      base_stats: base_stats.to_json
+    }.to_json
+  end
 end
 
 class Armor
@@ -28,6 +51,13 @@ class Armor
   def initialize(name, damage_resist)
     @name = name
     @damage_resist = damage_resist
+  end
+
+  def to_json
+    {
+      name: name,
+      damage_resist: damage_resist
+    }.to_json
   end
 end
 
@@ -37,6 +67,14 @@ class Skill
     @name = name
     @element = element
     @base_stats = base_stats
+  end
+
+  def to_json
+    {
+      name: name,
+      element: element,
+      base_stats: base_stats.to_json
+    }.to_json
   end
 end
 

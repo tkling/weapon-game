@@ -1,8 +1,9 @@
-require './models'
+require 'models'
+require 'json'
 
 module SpawningMethods
   def job_types
-    @job_types ||= %i(fencer rogue mage)
+    @job_types ||= %i(fencer rogue mage cleric)
   end
 
   def weapon_types
@@ -15,7 +16,8 @@ module SpawningMethods
     name = "#{ @adjectives.sample } #{ @nouns.sample }"
     low_damage = random_from_range(1..10)
     high_damage = random_from_range(8..25)
-    Weapon.new(name, weapon_types.sample, [:strike], damage_range: (low_damage..high_damage))
+    skill = Skill.new('Strike', 'Neutral', str: 13)
+    Weapon.new(name, weapon_types.sample, [skill], damage_range: (low_damage..high_damage))
   end
 
   def random_armor
@@ -36,6 +38,13 @@ module SpawningMethods
                     random_weapon, random_armor, :enemy, [],
                     hp: random_from_range(10..27))
     end
+  end
+
+  def spawn_starting_hero(job)
+    @names ||= %w(Sherryl Marle Taylor Rihanna Kevin Eric Seb Devon Einstein Bastion Clarence Hannah Mertle Xena)
+    items = [:potion, :potion, :grenade, :cheese_wheel]
+    Character.new(@names.sample, job, random_weapon, random_armor,
+                  :partymember, items, hp: random_from_range(14..30))
   end
 
   def random_from_range(range)

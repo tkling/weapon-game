@@ -1,8 +1,12 @@
+$:.unshift File.dirname(__FILE__)
+
 require 'gosu'
-require './states'
+require 'states'
+
+Globals = Struct.new(:party)
 
 class GameWindow < Gosu::Window
-  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font, :project_root
+  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font, :project_root, :globals
 
   def initialize
     set_instance_vars
@@ -19,16 +23,21 @@ class GameWindow < Gosu::Window
     @normal_font = Gosu::Font.new(20)
     @small_font = Gosu::Font.new(15)
     @project_root = Dir.pwd
+    @globals = Globals.new
   end
 
   def update
     advance_state
     @state.update
+  rescue Exception, StandardError => err
+    require 'pry'; binding.pry
   end
 
   def draw
-    @state.draw
     draw_state_info
+    @state.draw
+  rescue Exception, StandardError => err
+    require 'pry'; binding.pry
   end
 
   def draw_state_info
@@ -39,6 +48,7 @@ class GameWindow < Gosu::Window
 
   def button_down(id)
     @last_keypress = id
+    close if id == Gosu::KbEscape
     @state.key_pressed id
   end
 

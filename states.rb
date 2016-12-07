@@ -1,15 +1,16 @@
 # a state has: a name, non-default controls, draw method
-require './constants'
+require 'constants'
+require 'spawning_methods'
 
 class GameState
   def initialize(window)
     @window = window
   end
 
-  def update; end
-  def draw; end
+  def update;          end
+  def draw;            end
   def key_pressed(id); end
-  def next; end
+  def next;            end
 
   def set_next_and_ready(state_class)
     @next = state_class; notify_ready
@@ -86,9 +87,12 @@ class MainMenu < GameState
 end
 
 class NewGame < GameState
+  include SpawningMethods
+
+  require 'json'
+
   def initialize(window)
     super window
-    @window = window
     @save_dir = File.join(window.project_root, 'saves')
     @save_name = "game#{ Dir[File.join(@save_dir, '*')].size + 1 }.save"
     @path = File.join(@save_dir, @save_name)
@@ -112,7 +116,8 @@ class NewGame < GameState
     end
 
     unless File.exists? @path
-      File.write(@path, "#{ @save_name } wuz here")
+      @window.globals.party = starting_party
+      File.write(@path, save_json)
       @file_created = true
     end
   end
@@ -142,6 +147,19 @@ class NewGame < GameState
 
     if @file_created
       @window.huge_font_draw(420, 520, 0, Color::YELLOW, @success)
+    end
+  end
+
+  def save_json
+    {
+      players: @window.globals.party.map { |char| char.to_json },
+      time_played: 10
+    }.to_json
+  end
+
+  def starting_party
+    %i(fencer rogue mage).map do |job|
+      spawn_starting_hero job
     end
   end
 end
