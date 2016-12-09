@@ -27,7 +27,7 @@ Decisions can have subdecisions that reset the timer. Examples:
 - battle menu -> skill menu -> skill and target selected
 
 ## motivation
-Craetor of Stardew Valley, ConcernedApe. Think of what he did - he put in hard work for 4 or 5 
+Creator of Stardew Valley, ConcernedApe. Think of what he did - he put in hard work for 4 or 5 
 years of his life, and now he has created an incredibly well done game which he loves. He's his
 own boss, creates his own schedule, works wherever and however he wants to, and with whoever he
 wants to. 
