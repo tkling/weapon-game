@@ -12,7 +12,7 @@ class Continue < GameState
 
     if @save_list.size > 0
       starting_key = 0
-      subbed = @save_list[0..9].map do |filename|
+      subbed = @save_list[0..8].map do |filename|
         starting_key += 1
         "#{ starting_key } - #{ filename.sub(File.join(@window.project_root, 'saves/').to_s, '') }"
       end

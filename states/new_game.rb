@@ -21,6 +21,12 @@ class NewGame < GameState
   end
 
   def make_new_game
+    if Dir[File.join(@save_dir, '*.save')].size >= 9
+      @save_count_reached = true
+      @time_detected = Time.now
+      return
+    end
+
     unless File.directory? @save_dir
       Dir.mkdir @save_dir
     end
@@ -36,6 +42,14 @@ class NewGame < GameState
     if @file_created && !@start_journey_set
       @confirmation = 'q to start journey'
       @start_journey_set = true
+    end
+
+    if @save_count_reached
+      if Time.now - @time_detected < 2
+        @confirmation = 'Only 9 saves allowed, returning to main menu.'
+      else
+        set_next_and_ready MainMenu
+      end
     end
   end
 
