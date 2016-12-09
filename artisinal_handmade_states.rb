@@ -16,7 +16,8 @@ end
 Globals = Struct.new(:party)
 
 class GameWindow < Gosu::Window
-  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font, :project_root, :globals
+  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font,
+              :project_root, :globals
 
   def initialize
     set_instance_vars
@@ -40,14 +41,14 @@ class GameWindow < Gosu::Window
     @state.update
     advance_state
   rescue Exception, StandardError => err
-    require 'pry'; binding.pry
+    binding.pry
   end
 
   def draw
     draw_state_info
     @state.draw
   rescue Exception, StandardError => err
-    require 'pry'; binding.pry
+    binding.pry
   end
 
   def draw_state_info
@@ -61,7 +62,7 @@ class GameWindow < Gosu::Window
     close if id == Gosu::KbEscape
     @state.key_pressed id
   rescue Exception, StandardError => err
-    require 'pry'; binding.pry
+    binding.pry
   end
 
   def advance_state

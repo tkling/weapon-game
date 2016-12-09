@@ -14,7 +14,7 @@ class NewGame < GameState
     when Gosu::KbQ
       @file_created ? set_next_and_ready(StartJourney) : make_new_game
     when Gosu::KbE
-      set_next_and_ready(MainMenu)
+      set_next_and_ready MainMenu
     when Gosu::KbEscape, Gosu::KbSpace
       @window.close
     end
