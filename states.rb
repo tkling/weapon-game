@@ -151,10 +151,10 @@ class NewGame < GameState
   end
 
   def save_json
-    {
-      players: @window.globals.party.map { |char| char.to_json },
+    JSON.pretty_generate({
+      players: @window.globals.party.map { |char| char.to_h },
       time_played: 10
-    }.to_json
+    })
   end
 
   def starting_party

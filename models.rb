@@ -14,16 +14,16 @@ class Character
     @target_key = target_key
   end
 
-  def to_json
+  def to_h
     {
       name: name,
       job: job,
-      weapon: weapon.to_json,
-      armor: armor.to_json,
+      weapon: weapon.to_h,
+      armor: armor.to_h,
       type: type,
-      items: items.map { |i| i.to_json },
-      base_stats: base_stats.to_json
-    }.to_json
+      items: items,
+      base_stats: base_stats
+    }
   end
 end
 
@@ -36,13 +36,13 @@ class Weapon
     @base_stats = base_stats
   end
 
-  def to_json
+  def to_h
     {
       name: name,
       type: type,
-      skills: skills.map { |s| s.to_json },
-      base_stats: base_stats.to_json
-    }.to_json
+      skills: skills.map { |s| s.to_h },
+      base_stats: base_stats
+    }
   end
 end
 
@@ -53,11 +53,11 @@ class Armor
     @damage_resist = damage_resist
   end
 
-  def to_json
+  def to_h
     {
       name: name,
       damage_resist: damage_resist
-    }.to_json
+    }
   end
 end
 
@@ -69,12 +69,12 @@ class Skill
     @base_stats = base_stats
   end
 
-  def to_json
+  def to_h
     {
       name: name,
       element: element,
-      base_stats: base_stats.to_json
-    }.to_json
+      base_stats: base_stats
+    }
   end
 end
 
