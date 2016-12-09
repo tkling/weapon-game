@@ -1,9 +1,8 @@
 require 'json'
 
 class Character
-  attr_reader :name, :job, :weapon, :armor, :type, :items, :base_stats
-  attr_accessor :target_key
-  def initialize(name, job, weapon, armor, type, items, base_stats = Hash.new(1), target_key = nil)
+  attr_accessor :name, :job, :weapon, :armor, :type, :items, :base_stats, :target_key
+  def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1), target_key: nil)
     @name = name
     @job = job
     @weapon = weapon
@@ -28,8 +27,8 @@ class Character
 end
 
 class Weapon
-  attr_reader :name, :type, :skills, :base_stats
-  def initialize(name, type, skills, base_stats = Hash.new(1))
+  attr_accessor :name, :type, :skills, :base_stats
+  def initialize(name:, type:, skills:, base_stats: Hash.new(1))
     @name = name
     @type = type
     @skills = skills
@@ -47,8 +46,8 @@ class Weapon
 end
 
 class Armor
-  attr_reader :name, :damage_resist
-  def initialize(name, damage_resist)
+  attr_accessor :name, :damage_resist
+  def initialize(name:, damage_resist:)
     @name = name
     @damage_resist = damage_resist
   end
@@ -62,8 +61,8 @@ class Armor
 end
 
 class Skill
-  attr_reader :name, :element, :base_stats
-  def initialize(name, element, base_stats = Hash.new(1))
+  attr_accessor :name, :element, :base_stats
+  def initialize(name:, element:, base_stats: Hash.new(1))
     @name = name
     @element = element
     @base_stats = base_stats
@@ -79,7 +78,7 @@ class Skill
 end
 
 class SkillResolution
-  attr_reader :skill, :target, :total_damage, :updated, :owner
+  attr_accessor :skill, :target, :total_damage, :updated, :owner
   def initialize(skill, owner, target)
     @skill = skill
     @owner = owner
