@@ -27,8 +27,8 @@ class GameWindow < Gosu::Window
   end
 
   def update
-    advance_state
     @state.update
+    advance_state
   rescue Exception, StandardError => err
     require 'pry'; binding.pry
   end
@@ -50,6 +50,8 @@ class GameWindow < Gosu::Window
     @last_keypress = id
     close if id == Gosu::KbEscape
     @state.key_pressed id
+  rescue Exception, StandardError => err
+    require 'pry'; binding.pry
   end
 
   def advance_state
