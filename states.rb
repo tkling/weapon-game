@@ -1,6 +1,8 @@
 # a state has: a name, non-default controls, draw method
 require 'constants'
 require 'spawning_methods'
+require 'json'
+require 'pry'
 
 class GameState
   def initialize(window)
@@ -10,7 +12,10 @@ class GameState
   def update;          end
   def draw;            end
   def key_pressed(id); end
-  def next;            end
+
+  def next
+    @next
+  end
 
   def set_next_and_ready(state_class)
     @next = state_class; notify_ready
@@ -70,10 +75,6 @@ class MainMenu < GameState
     end
   end
 
-  def next
-    @next
-  end
-
   def draw
     header = 'WEAPON GAME MAIN MENU'
     @window.huge_font_draw(45, 20, 0, Color::YELLOW, header)
@@ -88,8 +89,6 @@ end
 
 class NewGame < GameState
   include SpawningMethods
-
-  require 'json'
 
   def initialize(window)
     super window
@@ -129,10 +128,6 @@ class NewGame < GameState
     end
   end
 
-  def next
-    @next
-  end
-
   def draw
     @header           ||= 'N E W G A M E'
     @save_explanation ||= "Your save will be called #{ @save_name }"
@@ -165,9 +160,79 @@ class NewGame < GameState
 end
 
 class Continue < GameState
-  # show game list
-  # load selected save
-  # if game parts are good then start journey
+  def initialize(window)
+    super window
+    @save_list = Dir[File.join(window.project_root, 'saves', '*')]
+    @save_map = save_map
+    @draw_time = Time.now
+    @drawn = false
+  end
+
+  def draw
+    @window.huge_font_draw(25, 10, 0, Color::YELLOW, 'CHOOSE A SAVE')
+
+    if @save_list.size > 0
+      starting_key = 0
+      subbed = @save_list[0..9].map do |filename|
+        starting_key += 1
+        "#{ starting_key } - #{ filename.sub(File.join(@window.project_root, 'saves/').to_s, '') }"
+      end
+      @window.normal_font_draw(15, 100, 40, Color::YELLOW, *subbed)
+    else
+      @window.large_font_draw(15, 100, 0, Color::YELLOW, 'NO SAVES YET')
+      @window.normal_font_draw(15, 140, 0, Color::YELLOW, 'Continuing to new game now...')
+      @no_saves = true
+    end
+  end
+
+  def update
+    if @no_saves && Time.now - @draw_time > 1
+      set_next_and_ready NewGame
+    end
+  end
+
+  def key_pressed id
+    @selectables ||= (1..9).map { |i| Module.const_get("Gosu::Kb#{ i }") }
+
+    if @selectables.include? id
+      filename = @save_map[id]
+      if filename && File.exists?(filename)
+        set_party_from_file filename
+      else
+        raise 'Something failed!'
+      end
+    end
+  end
+
+  def set_party_from_file filename
+    hash = JSON.parse File.read(filename), symbolize_names: true
+    players = hash[:players].map do |player_hash|
+      require 'pry'; binding.pry
+      player_hash[:weapon] = Weapon.new(player_hash[:weapon])
+      skills = player_hash[:weapon].skills.map { |s| Skill.new s }
+      player_hash[:weapon].skills = skills
+      player_hash[:armor] = Armor.new(player_hash[:armor])
+      # validation here someday?
+      Character.new player_hash
+    end
+
+    if players.size > 0
+      @window.globals.party = players
+    else
+      raise 'something failed while reading, size 0'
+    end
+  end
+
+  def save_map
+    map = Hash.new
+    key = 1
+    @save_list.each do |filename|
+      break if key == 9
+      map[Module.const_get("Gosu::Kb#{ key }")] = filename
+      key += 1
+    end
+    map
+  end
 end
 
 class StartJourney < GameState
