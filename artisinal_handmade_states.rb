@@ -1,7 +1,14 @@
 $:.unshift File.dirname(__FILE__)
+$:.unshift File.dirname(File.join(__FILE__, 'states'))
 
 require 'gosu'
-require 'states'
+require 'constants'
+require 'spawning_methods'
+require 'game_state'
+require 'json'
+require 'pry'
+
+Dir[File.join(File.dirname(__FILE__), 'states', '*')].each { |file| require file }
 
 Globals = Struct.new(:party)
 

@@ -1,0 +1,3 @@
+class StartJourney < GameState
+
+end
