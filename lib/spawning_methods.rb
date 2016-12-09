@@ -1,6 +1,3 @@
-require 'models'
-require 'json'
-
 module SpawningMethods
   def job_types
     @job_types ||= %i(fencer rogue mage cleric)

@@ -37,8 +37,9 @@ class Continue < GameState
       filename = @save_map[id]
       if filename && File.exists?(filename)
         set_party_from_file filename
+        set_next_and_ready StartJourney
       else
-        raise 'Something failed!'
+        binding.pry
       end
     end
   end
@@ -64,7 +65,7 @@ class Continue < GameState
     map = Hash.new
     key = 1
     @save_list.each do |filename|
-      break if key == 9
+      break if key == 10
       map[Module.const_get("Gosu::Kb#{ key }")] = filename
       key += 1
     end

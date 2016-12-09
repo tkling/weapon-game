@@ -1,5 +1,3 @@
-require 'json'
-
 class Character
   attr_accessor :name, :job, :weapon, :armor, :type, :items, :base_stats, :target_key
   def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1), target_key: nil)
