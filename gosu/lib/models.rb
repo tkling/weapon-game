@@ -1,5 +1,6 @@
 class Character
   attr_accessor :name, :job, :weapon, :armor, :type, :items, :base_stats, :target_key
+
   def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1), target_key: nil)
     @name = name
     @job = job
@@ -26,6 +27,7 @@ end
 
 class Weapon
   attr_accessor :name, :type, :skills, :base_stats
+
   def initialize(name:, type:, skills:, base_stats: Hash.new(1))
     @name = name
     @type = type
@@ -45,6 +47,7 @@ end
 
 class Armor
   attr_accessor :name, :damage_resist
+
   def initialize(name:, damage_resist:)
     @name = name
     @damage_resist = damage_resist
@@ -60,6 +63,7 @@ end
 
 class Skill
   attr_accessor :name, :element, :base_stats
+
   def initialize(name:, element:, base_stats: Hash.new(1))
     @name = name
     @element = element
@@ -77,6 +81,7 @@ end
 
 class SkillResolution
   attr_accessor :skill, :target, :total_damage, :updated, :owner
+
   def initialize(skill, owner, target)
     @skill = skill
     @owner = owner
