@@ -10,6 +10,20 @@ class Character
     @items = items
     @base_stats = base_stats
     @target_key = target_key
+    @damage = []
+  end
+
+  def max_hp
+    base_stats[:hp] # + armor.hp_bonus ??
+  end
+
+  def current_hp
+    max_hp - (@damage.map { |dmg| dmg.hit_amount }.reduce(:+) || 0)
+  end
+
+  def total_atk
+    # ugh
+    10
   end
 
   def to_h
