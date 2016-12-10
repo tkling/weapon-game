@@ -90,10 +90,30 @@ main gameplay aka journeying
   - enemy wave battle
   - random loot drop?
   
+## achievement ideas
+- train a partymember to level 25
+- train a partymember to level 50
+- train a partymember to level 75
+- train a partymember to level 100
+- train entire party to level 100
+- train a weapon skill to 25
+- train a weapon skill to 50
+- train an item proficiency to 10
+- train an item proficiency to 20
+- grind a weapon to level 25
+- grind a weapon to level 50
+- grind an armor to level 25
+- grind an armor to level 50
+- achievement for each class hitting level 99 
+  
 ## example as-a-state-machine code
 ```ruby
+require 'gosu'
+require 'aasm'
+
 class Gamewindow < Gosu::Window
   include AASM
+  
   aasm do
     state :welcome_screen, initial: true
     state :main_menu
