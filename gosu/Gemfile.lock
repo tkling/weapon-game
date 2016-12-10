@@ -3,6 +3,7 @@ GEM
   specs:
     aasm (4.11.1)
     coderay (1.1.1)
+    gosu (0.10.8-x64-mingw32)
     gosu (0.10.8-x86-mingw32)
     method_source (0.8.2)
     pry (0.10.4)
@@ -12,6 +13,7 @@ GEM
     slop (3.6.0)
 
 PLATFORMS
+  x64-mingw32
   x86-mingw32
 
 DEPENDENCIES
