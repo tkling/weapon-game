@@ -19,8 +19,8 @@ Each decision has a base of 1 second. Decide within `x` seconds to:
 
 x (sec) | effect
 --------|-------
-.25     | + 10% crit chance, + 25% exp if enemy dies
-.5      | + 5% crit change, + 10% exp if enemy dies
+.25 (best)    | + 10% crit chance, + 25% exp if enemy dies
+.5 (great)    | + 5% crit change, + 10% exp if enemy dies
 
 Decisions can have subdecisions that reset the timer. Examples: 
 - battle menu -> item menu -> item and target selected
