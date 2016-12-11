@@ -36,7 +36,9 @@ class Continue < GameState
     if @selectables.include? id
       filename = @save_map[id]
       if filename && File.exists?(filename)
-        set_party_from_file filename
+        save_hash = JSON.parse File.read(filename), symbolize_names: true
+        set_party_from_hash save_hash
+        set_map_from_hash save_hash
         set_next_and_ready StartJourney
       else
         binding.pry
@@ -44,8 +46,7 @@ class Continue < GameState
     end
   end
 
-  def set_party_from_file filename
-    hash = JSON.parse File.read(filename), symbolize_names: true
+  def set_party_from_hash hash
     players = hash[:players].map do |player_hash|
       player_hash[:weapon] = Weapon.new(player_hash[:weapon])
       player_hash[:weapon].skills = player_hash[:weapon].skills.map { |s| Skill.new s }
@@ -59,6 +60,14 @@ class Continue < GameState
     else
       raise 'something failed while reading, size 0'
     end
+  end
+
+  def set_map_from_hash hash
+    map = Map.new hash[:map]
+    @window.globals.map = map
+  rescue Exception, StandardError => err
+    # something bad when loading map
+    binding.pry
   end
 
   def save_map
