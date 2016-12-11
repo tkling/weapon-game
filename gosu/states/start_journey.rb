@@ -8,14 +8,18 @@ class StartJourney < GameState
 
   def key_pressed(id)
     if id == Gosu::KbQ
-      set_next_and_ready DungeonStart
+      set_next_and_ready DungeonCrawling
+    end
+
+    if id == Gosu::KbE
+      set_next_and_ready MainMenu
     end
   end
 
   def draw
     # draw party info
-    @x_padding ||= 40
-    @x_starts ||= [0, @window.width/3, @window.width * 0.66667].map { |i| i + @x_padding }
+    @x_padding ||= 35
+    @x_starts ||= [0, @window.width/3-20, @window.width*0.6667-10].map { |i| i + @x_padding }
     @x_starts.each_with_index do |x, idx|
       partymember = @window.globals.party[idx]
       weapon_name = "Weapon: #{ partymember.weapon.name }"
@@ -30,14 +34,28 @@ class StartJourney < GameState
 
     # show current map + dungeon
     @map_name ||= "Map: #{ map.name }"
+    @total_dungeons ||= "Dungeon count: #{ map.dungeons.size }"
     @current_dungeon ||= "Current dungeon: #{ dungeon.name }"
-    @encounters_completed ||= "Encounters completed dungeon: #{ dungeon.encounter_index }/#{ dungeon.encounter_count}"
+    @encounters_completed ||= "Dungeon encounters completed: #{ dungeon.encounter_index }/#{ dungeon.encounter_count}"
+    @dungeon_names ||= map.dungeons.map(&:name)
+    @middle_y_start ||= @window.height - 350
 
-    @window.large_font_draw(@x_padding, @window.height - 300, 0, Color::YELLOW, @map_name)
-    @window.normal_font_draw(@x_padding, @window.height - 250, 20, Color::YELLOW, @current_dungeon, @encounters_completed)
+    @window.large_font_draw(@x_padding, @middle_y_start, 0, Color::YELLOW, @map_name)
+    @window.normal_font_draw(@x_padding, @middle_y_start + 40, 25, Color::YELLOW, @total_dungeons, @current_dungeon, @encounters_completed)
+
+    #draw dungeons
+    @from_left ||= @window.width - @x_padding - 360
+    @dungeon_list_y ||= @middle_y_start + 40
+    @dungeon_list_1 ||= map.dungeons[0..map.dungeons.size/2].map { |d| d.name }
+    @dungeon_list_2 ||= map.dungeons[(map.dungeons.size/2)+1..map.dungeons.size-1].map { |d| d.name }
+
+    @window.large_font_draw(@from_left, @middle_y_start, 0 , Color::YELLOW, 'Dungeons:')
+    @window.normal_font_draw(@from_left, @dungeon_list_y, 25, Color::YELLOW, *@dungeon_list_1)
+    @window.normal_font_draw(@from_left + 185, @dungeon_list_y, 25, Color::YELLOW, *@dungeon_list_2)
 
     # show confirmation
-    @continue_msg ||= 'press q to continue with this party'
-    @window.large_font_draw(170, @window.height - 130, 0, Color::YELLOW, @continue_msg)
+    @continue_msg ||= 'q to continue with this party'
+    @main_menu_msg ||= 'e to return to main menu'
+    @window.large_font_draw(@window.width/2-175, @window.height - 145, 35, Color::YELLOW, @continue_msg, @main_menu_msg)
   end
 end
