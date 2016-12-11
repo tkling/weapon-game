@@ -7,9 +7,8 @@ require 'game_state'
 
 require_relative 'lib/constants'
 require_relative 'lib/spawning_methods'
-require_relative 'lib/models'
 
-%w(states).each do |dir|
+%w(states models).each do |dir|
   Dir[File.join(File.dirname(__FILE__), dir, '*')].each { |file| require file }
 end
 
