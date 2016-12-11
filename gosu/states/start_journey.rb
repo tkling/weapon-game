@@ -40,7 +40,8 @@ class StartJourney < GameState
     @middle_y_start ||= @window.height - 350
 
     @window.large_font_draw(@x_padding, @middle_y_start, 0, Color::YELLOW, @map_name)
-    @window.normal_font_draw(@x_padding, @middle_y_start + 40, 25, Color::YELLOW, @total_dungeons, @current_dungeon, @encounters_completed)
+    @window.normal_font_draw(@x_padding, @middle_y_start + 40, 25, Color::YELLOW,
+                             @total_dungeons, @current_dungeon, @encounters_completed)
 
     # dungeons
     @from_left ||= @window.width - @x_padding - 360
