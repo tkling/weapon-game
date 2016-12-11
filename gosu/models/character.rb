@@ -15,19 +15,11 @@ class Character
   end
 
   def make_armor(armor)
-    if armor.class == Hash
-      Armor.new armor
-    else
-      armor
-    end
+    armor.class == Armor ? armor : Armor.new(armor)
   end
 
   def make_weapon(weapon)
-    if weapon.class == Hash
-      Weapon.new weapon
-    else
-      weapon
-    end
+    weapon.class == Weapon ? weapon : Weapon.new(weapon)
   end
 
   def max_hp

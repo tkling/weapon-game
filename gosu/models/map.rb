@@ -8,11 +8,7 @@ class Map
   end
 
   def make_dungeons(dungeons)
-    if dungeons.first.class == Hash
-      dungeons.map { |d| Dungeon.new d }
-    else
-      dungeons
-    end
+    dungeons.first.class == Dungeon ? dungeons : dungeons.map { |d| Dungeon.new d }
   end
 
   def completed?
