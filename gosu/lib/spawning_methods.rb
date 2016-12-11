@@ -66,7 +66,7 @@ module SpawningMethods
       noun = @dungeon_nouns.sample
       @dungeon_adjectives.delete adj
       @dungeon_nouns.delete noun
-      Dungeon.new(name: "#{ adj} #{ noun }", encounter_count: @encounter_range.sample)
+      Dungeon.new(name: "#{ adj } #{ noun }", encounter_count: @encounter_range.sample)
     end
   end
 end
