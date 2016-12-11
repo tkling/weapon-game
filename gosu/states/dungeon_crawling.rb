@@ -1,0 +1,3 @@
+class DungeonCrawling < GameState
+
+end
