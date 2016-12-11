@@ -48,9 +48,9 @@ class Continue < GameState
 
   def set_party_from_hash hash
     players = hash[:players].map do |player_hash|
-      player_hash[:weapon] = Weapon.new(player_hash[:weapon])
+      player_hash[:weapon]        = Weapon.new player_hash[:weapon]
       player_hash[:weapon].skills = player_hash[:weapon].skills.map { |s| Skill.new s }
-      player_hash[:armor] = Armor.new(player_hash[:armor])
+      player_hash[:armor]         = Armor.new player_hash[:armor]
       # validation here someday?
       Character.new player_hash
     end
