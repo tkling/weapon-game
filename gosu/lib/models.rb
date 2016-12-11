@@ -1,14 +1,26 @@
 class Map
-  attr_accessor :name, :dungeons
+  attr_accessor :name, :dungeons, :dungeon_index
 
   def initialize(name:, dungeons:, dungeon_index: 0)
     @name = name
-    @dungeons = dungeons
     @dungeon_index = dungeon_index
+    @dungeons = make_dungeons dungeons
+  end
+
+  def make_dungeons(dungeons)
+    if dungeons.first.class == Hash
+      dungeons.map { |d| Dungeon.new d }
+    else
+      dungeons
+    end
   end
 
   def completed?
     @dungeon_index == @dungeons.size - 1
+  end
+
+  def dungeon
+    dungeons[dungeon_index]
   end
 
   def to_h
@@ -48,13 +60,30 @@ class Character
   def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1), target_key: nil)
     @name = name
     @job = job
-    @weapon = weapon
     @armor = armor
     @type = type
     @items = items
     @base_stats = base_stats
     @target_key = target_key
     @damage = []
+    @weapon = make_weapon weapon
+    @armor = make_armor armor
+  end
+
+  def make_armor(armor)
+    if armor.class == Hash
+      Armor.new armor
+    else
+      armor
+    end
+  end
+
+  def make_weapon(weapon)
+    if weapon.class == Hash
+      Weapon.new weapon
+    else
+      weapon
+    end
   end
 
   def max_hp
