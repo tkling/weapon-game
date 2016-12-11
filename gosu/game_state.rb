@@ -18,4 +18,12 @@ class GameState
   def notify_ready
     @window.ready_to_advance_state!
   end
+
+  def map
+    @window.globals.map
+  end
+
+  def dungeon
+    @window.globals.map.dungeon
+  end
 end
