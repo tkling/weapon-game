@@ -47,8 +47,8 @@ class StartJourney < GameState
     @dungeon_list_y ||= @middle_y_start + 40
 
     if map.dungeons.size == 1
-      @dungeon_list_1 = map.dungeons.first.name
-      @dungeon_list_2 = []
+      @dungeon_list_1 ||= map.dungeons.first.name
+      @dungeon_list_2 ||= []
     else
       if map.dungeons.size % 2 == 0
         @dungeon_list_1 ||= map.dungeons[0..map.dungeons.size/2-1].map { |d| d.name }
