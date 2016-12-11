@@ -1,3 +1,47 @@
+class Map
+  attr_accessor :name, :dungeons
+
+  def initialize(name:, dungeons:, dungeon_index: 0)
+    @name = name
+    @dungeons = dungeons
+    @dungeon_index = dungeon_index
+  end
+
+  def completed?
+    @dungeon_index == @dungeons.size - 1
+  end
+
+  def to_h
+    {
+      name: name,
+      dungeons: dungeons.map { |d| d.to_h },
+      dungeon_index: @dungeon_index
+    }
+  end
+end
+
+class Dungeon
+  attr_accessor :name, :encounter_count, :encounter_index
+
+  def initialize(name:, encounter_count:, encounter_index: 0)
+    @name = name
+    @encounter_count = encounter_count
+    @encounter_index = encounter_index
+  end
+
+  def complete?
+    encounter_index == encounter_count - 1
+  end
+
+  def to_h
+    {
+      name: name,
+      encounter_count: encounter_count,
+      encounter_index: encounter_index
+    }
+  end
+end
+
 class Character
   attr_accessor :name, :job, :weapon, :armor, :type, :items, :base_stats, :target_key
 

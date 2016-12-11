@@ -13,7 +13,7 @@ require_relative 'lib/models'
   Dir[File.join(File.dirname(__FILE__), dir, '*')].each { |file| require file }
 end
 
-Globals = Struct.new(:party)
+Globals = Struct.new(:party, :map)
 
 class GameWindow < Gosu::Window
   attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font,

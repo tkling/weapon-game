@@ -33,6 +33,7 @@ class NewGame < GameState
 
     unless File.exists? @path
       @window.globals.party = starting_party
+      @window.globals.map = starting_map
       File.write(@path, save_json)
       @file_created = true
     end
@@ -73,6 +74,7 @@ class NewGame < GameState
   def save_json
     JSON.pretty_generate({
                            players: @window.globals.party.map { |char| char.to_h },
+                           map: @window.globals.map.to_h,
                            time_played: 10
                          })
   end
@@ -81,5 +83,10 @@ class NewGame < GameState
     %i(fencer rogue mage).map do |job|
       spawn_starting_hero job
     end
+  end
+
+  def starting_map
+    @dungeon_counts ||= (2..9).to_a
+    Map.new name: 'Journey to the Exit', dungeons: generate_dungeons(@dungeon_counts.sample)
   end
 end

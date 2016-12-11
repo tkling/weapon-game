@@ -48,4 +48,15 @@ module SpawningMethods
   def random_from_range(range)
     range.to_a.sample
   end
+
+  def generate_dungeons(amount)
+    @dungeon_adjectives ||= %w(Forbidden Forboding Foggy Froggy Questionable Sketchy Nefarious
+                               Disgusting Dank Soggy Unstable )
+    @dungeon_nouns ||= %w(Tarn Steppe Tunnel Escape Path Bog Swamp Dunes Village)
+    @encounter_range ||= (2..10).to_a
+    amount.times.map do
+      Dungeon.new(name: "#{ @dungeon_adjectives.sample} #{ @dungeon_nouns.sample }",
+                  encounter_count: @encounter_range.sample)
+    end
+  end
 end
