@@ -10,7 +10,14 @@ module SpawningMethods
   def random_weapon
     @adjectives ||= %w(Brave Humiliating Embarassing All-Encompassing Shy Tasty Distasteful)
     @nouns ||= %w(Whipper-Snapper Slicer Maul Axe Bomba Chopsticks)
-    name = "#{ @adjectives.sample } #{ @nouns.sample }"
+
+    adj = @adjectives.sample
+    @adjectives.delete adj
+
+    noun = @nouns.sample
+    @nouns.delete noun
+
+    name = "#{ adj } #{ noun }"
     low_damage = random_from_range(1..10)
     high_damage = random_from_range(8..25)
     skill = Skill.new(name: 'Strike', element: 'Neutral', base_stats: { str: 13 })
@@ -50,13 +57,16 @@ module SpawningMethods
   end
 
   def generate_dungeons(amount)
-    @dungeon_adjectives ||= %w(Forbidden Forboding Foggy Froggy Questionable Sketchy Nefarious
+    @dungeon_adjectives = %w(Forbidden Forboding Foggy Froggy Questionable Sketchy Nefarious
                                Disgusting Dank Soggy Unstable )
-    @dungeon_nouns ||= %w(Tarn Steppe Tunnel Escape Path Bog Swamp Dunes Village)
+    @dungeon_nouns = %w(Tarn Steppe Tunnel Escape Path Bog Swamp Dunes Village)
     @encounter_range ||= (2..10).to_a
     amount.times.map do
-      Dungeon.new(name: "#{ @dungeon_adjectives.sample} #{ @dungeon_nouns.sample }",
-                  encounter_count: @encounter_range.sample)
+      adj = @dungeon_adjectives.sample
+      noun = @dungeon_nouns.sample
+      @dungeon_adjectives.delete adj
+      @dungeon_nouns.delete noun
+      Dungeon.new(name: "#{ adj} #{ noun }", encounter_count: @encounter_range.sample)
     end
   end
 end
