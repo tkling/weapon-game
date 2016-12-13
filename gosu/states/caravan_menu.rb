@@ -1,7 +1,7 @@
 class CaravanMenu < GameState
   def draw
     x_start = 25
-    banner = 'C A R A V A N M E N U'
+    banner = 'C A R A V A N_M E N U'
     @window.huge_font_draw(x_start, 15, 0, Color::YELLOW, banner)
 
     map_str = "Map: #{ map.name }"
@@ -13,8 +13,8 @@ class CaravanMenu < GameState
     inventory = 'e - Inventory'
     config = 'e - Config'
     save = 'r - Save'
-    exit = 'q - Exit'
-    @window.large_font_draw(@window.width-150, 80, 40, Color::YELLOW, status, inventory, config, save, exit)
+    exit = 'x - Exit'
+    @window.large_font_draw(@window.width-200, 150, 40, Color::YELLOW, status, inventory, config, save, exit)
   end
 
   def key_pressed(id)
