@@ -23,7 +23,15 @@ class GameState
     @window.globals.map
   end
 
+  def party
+    @window.globals.party
+  end
+
   def dungeon
-    @window.globals.map.dungeon
+    map.dungeon
+  end
+
+  def current_enemies
+    dungeon.encounters[dungeon.encounter_index]
   end
 end
