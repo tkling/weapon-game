@@ -86,7 +86,7 @@ class NewGame < GameState
   end
 
   def starting_map
-    @dungeon_counts ||= (2..9).to_a
+    @dungeon_counts ||= (3..9).to_a
     Map.new name: 'Journey to the Exit', dungeons: generate_dungeons(@dungeon_counts.sample)
   end
 end
