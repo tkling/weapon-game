@@ -59,6 +59,7 @@ class GameWindow < Gosu::Window
   def button_down(id)
     @last_keypress = id
     close if id == Gosu::KbEscape
+    binding.pry if id == Gosu::KbF5
     @state.key_pressed id
   rescue Exception, StandardError => err
     binding.pry
