@@ -8,7 +8,7 @@ class StartJourney < GameState
 
   def key_pressed(id)
     if id == Gosu::KbQ
-      set_next_and_ready DungeonCrawling
+      set_next_and_ready CaravanMenu
     end
 
     if id == Gosu::KbE
