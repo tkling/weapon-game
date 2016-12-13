@@ -14,7 +14,7 @@ class Battling < GameState
     target_keys = [Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR]
     mapping = Hash.new
     current_enemies.each_with_index do |enemy, idx|
-      mapping[target_keys[idx]] = enemy
+      mapping[enemy] = target_keys[idx]
     end
     mapping
   end
@@ -59,9 +59,26 @@ class Battling < GameState
       @window.large_font_draw(25, 100, 0, Color::YELLOW, enter_command)
 
       # player list
+      x_left = 25
+      party_y_start = 200
+      party.each do |partymember|
+        line1 = "#{ partymember.name } - #{ partymember.job }"
+        line2 = "HP: #{ partymember.current_hp}"
+        @window.normal_font_draw(x_left, party_y_start, 20, Color::YELLOW, line1, line2)
+        party_y_start += 80
+      end
 
       # enemy list
+      enemy_y_start = 200
+      target_keys = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }
+      current_enemies.each do |enemy|
+        line1 = "#{ target_keys[@target_map[enemy]] } - #{ enemy.name } - #{ enemy.job }"
+        line2 = "HP: #{ enemy.current_hp}"
+        @window.normal_font_draw(@window.width-200, enemy_y_start, 20, Color::YELLOW, line1, line2)
+        enemy_y_start += 80
+      end
 
+      # skill select
     end
   end
 
