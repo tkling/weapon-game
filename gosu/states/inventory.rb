@@ -1,0 +1,3 @@
+class Inventory < GameState
+
+end

@@ -1,0 +1,3 @@
+class Save < GameState
+
+end
