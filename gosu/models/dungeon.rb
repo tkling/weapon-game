@@ -1,21 +1,22 @@
 class Dungeon
-  attr_accessor :name, :encounter_count, :encounter_index
+  attr_accessor :name, :encounters, :encounter_index
 
-  def initialize(name:, encounter_count:, encounter_index: 0)
+  def initialize(name:, encounters:, encounter_index: 0)
     @name = name
-    @encounter_count = encounter_count
+    @encounters = encounters
     @encounter_index = encounter_index
   end
 
   def complete?
-    encounter_index == encounter_count - 1
+    encounter_index == encounters.size - 1
   end
 
   def to_h
     {
       name: name,
-      encounter_count: encounter_count,
+      encounters: encounters.map { |enc| enc.map(&:to_h) },
       encounter_index: encounter_index
     }
   end
+
 end

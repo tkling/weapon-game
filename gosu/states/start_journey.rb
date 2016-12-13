@@ -35,7 +35,7 @@ class StartJourney < GameState
     @map_name ||= "Map: #{ map.name }"
     @total_dungeons ||= "Dungeon count: #{ map.dungeons.size }"
     @current_dungeon ||= "Current dungeon: #{ dungeon.name }"
-    @encounters_completed ||= "Dungeon encounters completed: #{ dungeon.encounter_index }/#{ dungeon.encounter_count}"
+    @encounters_completed ||= "Dungeon encounters completed: #{ dungeon.encounter_index }/#{ dungeon.encounters.size }"
     @dungeon_names ||= map.dungeons.map(&:name)
     @middle_y_start ||= @window.height - 350
 

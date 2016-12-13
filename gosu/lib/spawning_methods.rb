@@ -37,6 +37,12 @@ module SpawningMethods
     end
   end
 
+  def make_encounters(count)
+    count.times.map do |_|
+      spawn_enemies random_from_range(1..3)
+    end
+  end
+
   def spawn_enemies(count)
     count.times.map do |idx|
       Character.new(name: "Enemy#{ idx }", job: job_types[idx],
@@ -66,7 +72,7 @@ module SpawningMethods
       noun = @dungeon_nouns.sample
       @dungeon_adjectives.delete adj
       @dungeon_nouns.delete noun
-      Dungeon.new(name: "#{ adj } #{ noun }", encounter_count: @encounter_range.sample)
+      Dungeon.new(name: "#{ adj } #{ noun }", encounters: make_encounters(random_from_range(2..12)))
     end
   end
 end
