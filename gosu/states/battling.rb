@@ -63,7 +63,7 @@ class Battling < GameState
       party_y_start = 200
       party.each do |partymember|
         line1 = "#{ partymember.name } - #{ partymember.job }"
-        line2 = "HP: #{ partymember.current_hp}"
+        line2 = "HP: #{ partymember.current_hp}/#{ partymember.max_hp }"
         @window.normal_font_draw(x_left, party_y_start, 20, Color::YELLOW, line1, line2)
         party_y_start += 80
       end
@@ -73,12 +73,12 @@ class Battling < GameState
       target_keys = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }
       current_enemies.each do |enemy|
         line1 = "#{ target_keys[@target_map[enemy]] } - #{ enemy.name } - #{ enemy.job }"
-        line2 = "HP: #{ enemy.current_hp}"
+        line2 = "HP: #{ enemy.current_hp}/#{ enemy.max_hp }"
         @window.normal_font_draw(@window.width-200, enemy_y_start, 20, Color::YELLOW, line1, line2)
         enemy_y_start += 80
       end
 
-      # skill select
+      # skill/target select OR damage resolution
     end
   end
 
