@@ -3,7 +3,11 @@ class Dungeon
 
   def initialize(name:, encounters:, encounter_index: 0)
     @name = name
-    @encounters = encounters
+    @encounters = if encounters.first.first.class == Hash
+                    encounters.map { |enemies| enemies.map { |e| Character.new(e) } }
+                  else
+                      encounters
+                  end
     @encounter_index = encounter_index
   end
 
