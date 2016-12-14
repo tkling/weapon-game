@@ -83,7 +83,7 @@ class Battling < GameState
       enemy_y_start += 80
     end
 
-    binding.pry if @commands.size == 3 && @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
+    # binding.pry if @commands.size == 3 && @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
     enter_command = if @commands.dig(current_partymember, :skill) #@commands[current_partymember][:skill]
                       "Select target for #{ current_partymember.name }'s #{ @commands[current_partymember][:skill].name }"
                     else
