@@ -1,16 +1,15 @@
 class Character
-  attr_accessor :name, :job, :weapon, :armor, :type, :damage, :items, :base_stats, :target_key
+  attr_accessor :name, :job, :weapon, :armor, :type, :damage, :items, :base_stats, :skill_mappings
 
   POSSIBLE_KEY_MAPPINGS = [Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR]
 
-  def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1), target_key: nil)
+  def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1))
     @name = name
     @job = job
     @armor = armor
     @type = type
     @items = items
     @base_stats = base_stats
-    @target_key = target_key
     @damage = []
     @weapon = make_weapon weapon
     @armor = make_armor armor

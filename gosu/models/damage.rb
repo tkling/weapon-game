@@ -7,4 +7,11 @@ class Damage
     @source = source
     @hit_amount = compute_hit_amount
   end
+
+  def compute_hit_amount
+    #   base weapon damage
+    # + skill base damage*skill damage multiplier
+    # - to.armor.damage_resist
+    10
+  end
 end
