@@ -1,9 +1,8 @@
 class Battling < GameState
   # TODO
-  # 1. disable non-useable keys during battle
-  # 2. only show enemies as targets when their HP > 0
-  # 3. add battle timers (per-decision, global for battle also?)
-  # 4. think about loot/xp (model xp growth also somehow?)
+  # * only show enemies as targets when their HP > 0
+  # * add battle timers (per-decision, global for battle also?)
+  # * think about loot/xp (model xp growth also somehow?)
 
   INTERNAL_STATES = %i(collecting_party_commands selecting_target)
   TARGET_KEYS = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }.freeze
@@ -129,8 +128,10 @@ class Battling < GameState
       case id
       when Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR
         if @commands[current_partymember] == nil
+          return unless @skill_map[current_partymember].keys.include? id
           @commands[current_partymember] = { skill: @skill_map[current_partymember][id] }
         else
+          return unless @target_map.values.include? id
           @commands[current_partymember][:target] = @target_map.key id
           @current_partymember_idx += 1
         end
