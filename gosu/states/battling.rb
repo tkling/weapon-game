@@ -1,5 +1,6 @@
 class Battling < GameState
   INTERNAL_STATES = %i(collecting_party_commands selecting_target)
+  TARGET_KEYS = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }.freeze
 
   def initialize(window)
     super window
@@ -14,9 +15,7 @@ class Battling < GameState
   def make_target_map
     target_keys = [Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR]
     mapping = Hash.new
-    current_enemies.each_with_index do |enemy, idx|
-      mapping[enemy] = target_keys[idx]
-    end
+    current_enemies.each_with_index { |enemy, idx| mapping[enemy] = target_keys[idx] }
     mapping
   end
 
@@ -24,9 +23,7 @@ class Battling < GameState
     mapping = Hash.new
     party.each do |partymember|
       character_skill_map = Hash.new
-      partymember.skill_mappings.each do |keypress, skill|
-        character_skill_map[keypress] = skill
-      end
+      partymember.skill_mappings.each { |keypress, skill| character_skill_map[keypress] = skill }
       mapping[partymember] = character_skill_map
     end
     mapping
@@ -75,9 +72,8 @@ class Battling < GameState
 
     # enemy list
     enemy_y_start = 200
-    target_keys = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }
     current_enemies.each do |enemy|
-      line1 = "#{ target_keys[@target_map[enemy]] } - #{ enemy.name } - #{ enemy.job }"
+      line1 = "#{ TARGET_KEYS[@target_map[enemy]] } - #{ enemy.name } - #{ enemy.job }"
       line2 = "HP: #{ enemy.current_hp}/#{ enemy.max_hp }"
       @window.normal_font_draw(@window.width-200, enemy_y_start, 20, Color::YELLOW, line1, line2)
       enemy_y_start += 80
@@ -110,13 +106,13 @@ class Battling < GameState
 
   def target_mapping_strings
     @target_map.map do |enemy, keypress|
-      "#{ target_keys[keypress] } - #{ enemy.name }"
+      "#{ TARGET_KEYS[keypress] } - #{ enemy.name }"
     end
   end
 
   def current_partymember_skill_mappings
     current_partymember.skill_mappings.map do |keypress, skill|
-      "#{ target_keys[keypress] } - #{ skill.name }"
+      "#{ TARGET_KEYS[keypress] } - #{ skill.name }"
     end
   end
 
