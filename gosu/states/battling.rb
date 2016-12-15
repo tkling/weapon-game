@@ -1,4 +1,10 @@
 class Battling < GameState
+  # TODO
+  # 1. disable non-useable keys during battle
+  # 2. only show enemies as targets when their HP > 0
+  # 3. add battle timers (per-decision, global for battle also?)
+  # 4. think about loot/xp (model xp growth also somehow?)
+
   INTERNAL_STATES = %i(collecting_party_commands selecting_target)
   TARGET_KEYS = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }.freeze
 
@@ -50,7 +56,7 @@ class Battling < GameState
         @commands = {}
       end
 
-      if current_enemies.map { |ene| ene.current_hp }.reduce(:+) == 0
+      if current_enemies.map { |ene| ene.current_hp }.reduce(:+) <= 0
         set_next_and_ready Victory.new(@window, ['good_loot'])
       end
     end
@@ -81,8 +87,10 @@ class Battling < GameState
 
     # skill/target select OR damage resolution
     if @showing_damage_resolution
+      @window.large_font_draw(230, 175, 0, Color::YELLOW, 'Damage dealt:')
+      @window.normal_font_draw(230, 225, 35, Color::YELLOW, *@damages.map(&:message))
+      @window.normal_font_draw(250, @window.height-200, 0, Color::YELLOW, 'Press [space] to continue')
     else
-      # binding.pry if @commands.size == 3 && @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
       enter_command = if skill_for_current_command? #@commands[current_partymember][:skill]
                         "Select target for #{ current_partymember.name }'s #{ @commands[current_partymember][:skill].name }"
                       else
@@ -91,7 +99,7 @@ class Battling < GameState
       @window.large_font_draw(25, 120, 0, Color::YELLOW, enter_command)
 
       # show skill or target list
-      texts = skill_for_current_command? ? target_mapping_strings : current_partymember_skill_mappings
+      texts = skill_for_current_command? ? target_mapping_strings : current_hero_skill_mappings
       @window.huge_font_draw(230, 175, 75, Color::YELLOW, *texts)
     end
 
@@ -110,7 +118,7 @@ class Battling < GameState
     end
   end
 
-  def current_partymember_skill_mappings
+  def current_hero_skill_mappings
     current_partymember.skill_mappings.map do |keypress, skill|
       "#{ TARGET_KEYS[keypress] } - #{ skill.name }"
     end

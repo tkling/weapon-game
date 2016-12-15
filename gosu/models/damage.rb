@@ -1,5 +1,5 @@
 class Damage
-  attr_reader :from, :to, :hit_amount
+  attr_reader :from, :to, :source, :hit_amount
 
   def initialize(from:, to:, source:)
     @from = from
@@ -13,5 +13,9 @@ class Damage
     # + skill base damage*skill damage multiplier
     # - to.armor.damage_resist
     10
+  end
+
+  def message
+    "#{ from.name }->#{ to.name }: #{ hit_amount} (#{ source.name })"
   end
 end
