@@ -87,7 +87,7 @@ class Battling < GameState
     if @showing_damage_resolution
     else
       # binding.pry if @commands.size == 3 && @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
-      enter_command = if @commands.dig(current_partymember, :skill) #@commands[current_partymember][:skill]
+      enter_command = if skill_for_current_command? #@commands[current_partymember][:skill]
                         "Select target for #{ current_partymember.name }'s #{ @commands[current_partymember][:skill].name }"
                       else
                         "Select skill for #{ current_partymember.name }"
@@ -95,21 +95,29 @@ class Battling < GameState
       @window.large_font_draw(25, 120, 0, Color::YELLOW, enter_command)
 
       # show skill or target list
-      texts = if @commands.dig(current_partymember, :skill)
-                @target_map.map do |enemy, keypress|
-                  "#{ target_keys[keypress] } - #{ enemy.name }"
-                end
-              else
-                current_partymember.skill_mappings.map do |keypress, skill|
-                   "#{ target_keys[keypress] } - #{ skill.name }"
-                end
-              end
+      texts = skill_for_current_command? ? target_mapping_strings : current_partymember_skill_mappings
       @window.huge_font_draw(230, 175, 75, Color::YELLOW, *texts)
     end
 
     # show skill choices and target
     skill_choices = "commands: #{ @commands.map { |char, s_info| { char.name => s_info[:skill]&.name } } }"
     @window.small_font_draw(@window.width-500, @window.height-20, 0, Color::YELLOW, skill_choices)
+  end
+
+  def skill_for_current_command?
+    !!@commands.dig(current_partymember, :skill)
+  end
+
+  def target_mapping_strings
+    @target_map.map do |enemy, keypress|
+      "#{ target_keys[keypress] } - #{ enemy.name }"
+    end
+  end
+
+  def current_partymember_skill_mappings
+    current_partymember.skill_mappings.map do |keypress, skill|
+      "#{ target_keys[keypress] } - #{ skill.name }"
+    end
   end
 
   def key_pressed(id)
