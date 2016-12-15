@@ -4,7 +4,6 @@ class Battling < GameState
   # * add battle timers (per-decision, global for battle also?)
   # * think about loot/xp (model xp growth also somehow?)
 
-  INTERNAL_STATES = %i(collecting_party_commands selecting_target)
   TARGET_KEYS = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }.freeze
 
   def initialize(window)
@@ -14,7 +13,6 @@ class Battling < GameState
     @target_map = make_target_map
     @skill_map = make_skill_map
     @damages = []
-    @internal_state = :collecting_party_commands
   end
 
   def make_target_map
@@ -41,7 +39,6 @@ class Battling < GameState
   def update
     if @commands.count == 3
       if @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
-        # we have full party input, resolve damage
         @commands.each do |partymember, skill_info|
           to = skill_info[:target]
           damage = Damage.new(from: partymember, to: to, source: skill_info[:skill])
@@ -90,7 +87,7 @@ class Battling < GameState
       @window.normal_font_draw(230, 225, 35, Color::YELLOW, *@damages.map(&:message))
       @window.normal_font_draw(250, @window.height-200, 0, Color::YELLOW, 'Press [space] to continue')
     else
-      enter_command = if skill_for_current_command? #@commands[current_partymember][:skill]
+      enter_command = if skill_for_current_command?
                         "Select target for #{ current_partymember.name }'s #{ @commands[current_partymember][:skill].name }"
                       else
                         "Select skill for #{ current_partymember.name }"
