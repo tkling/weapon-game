@@ -52,7 +52,7 @@ class Battling < GameState
         @commands = {}
       end
 
-      if current_enemies.map { |ene| ene.current_hp }.reduce(:+) <= 0
+      if current_enemies.map { |ene| ene.current_hp < 0 ? 0 : ene.current_hp }.reduce(:+) <= 0
         set_next_and_ready Victory.new(@window, ['good_loot'])
       end
     end
@@ -74,7 +74,7 @@ class Battling < GameState
 
     # enemy list
     enemy_y_start = 200
-    current_enemies.each do |enemy|
+    current_enemies.select { |ene| ene.current_hp > 0 }.each do |enemy|
       line1 = "#{ TARGET_KEYS[@target_map[enemy]] } - #{ enemy.name } - #{ enemy.job }"
       line2 = "HP: #{ enemy.current_hp}/#{ enemy.max_hp }"
       @window.normal_font_draw(@window.width-200, enemy_y_start, 20, Color::YELLOW, line1, line2)
@@ -109,7 +109,7 @@ class Battling < GameState
   end
 
   def target_mapping_strings
-    @target_map.map do |enemy, keypress|
+    @target_map.select { |enemy, _| enemy.current_hp > 0 }.map do |enemy, keypress|
       "#{ TARGET_KEYS[keypress] } - #{ enemy.name }"
     end
   end
