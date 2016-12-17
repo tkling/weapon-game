@@ -37,6 +37,10 @@ class Battling < GameState
   end
 
   def update
+    if @commands.count == 0 && !@awaiting_confirmation
+      @damages = []
+    end
+
     if @commands.count == 3
       if @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
         @commands.each do |partymember, skill_info|
