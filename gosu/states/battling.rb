@@ -67,7 +67,7 @@ class Battling < GameState
     party_y_start = 200
     party.each do |partymember|
       line1 = "#{ partymember.name } - #{ partymember.job }"
-      line2 = "HP: #{ partymember.current_hp}/#{ partymember.max_hp }"
+      line2 = "HP: #{ partymember.current_hp }/#{ partymember.max_hp }"
       @window.normal_font_draw(x_left, party_y_start, 20, Color::YELLOW, line1, line2)
       party_y_start += 80
     end
