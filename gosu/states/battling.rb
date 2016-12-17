@@ -128,7 +128,7 @@ class Battling < GameState
           return unless @skill_map[current_partymember].keys.include? id
           @commands[current_partymember] = { skill: @skill_map[current_partymember][id] }
         else
-          return unless @target_map.values.include? id
+          return unless @target_map.values.include?(id) && @target_map.key(id).current_hp > 0
           @commands[current_partymember][:target] = @target_map.key id
           @current_partymember_idx += 1
         end
