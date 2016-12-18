@@ -1,6 +1,5 @@
 class Battling < GameState
   # TODO
-  # * only show enemies as targets when their HP > 0
   # * add battle timers (per-decision, global for battle also?)
   # * think about loot/xp (model xp growth also somehow?)
 
