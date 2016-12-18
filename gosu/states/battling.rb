@@ -1,6 +1,9 @@
 class Battling < GameState
   # TODO
   # * add battle timers (per-decision, global for battle also?)
+  # * make enemies do actions
+  # * change to after each selection resolve?
+  #     battle flow: order determined by spd, skill->target->cool animation->resolution
   # * think about loot/xp (model xp growth also somehow?)
 
   TARGET_KEYS = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }.freeze
