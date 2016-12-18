@@ -6,7 +6,7 @@ class Dungeon
     @encounters = if encounters.first.first.class == Hash
                     encounters.map { |enemies| enemies.map { |e| Character.new(e) } }
                   else
-                      encounters
+                    encounters
                   end
     @encounter_index = encounter_index
   end
@@ -22,5 +22,4 @@ class Dungeon
       encounter_index: encounter_index
     }
   end
-
 end
