@@ -1,4 +1,4 @@
-# Ideas for jobs, stats, weapons, and skills
+# Ideas for jobs, stats, weapons, bosses, and skills
 
 ## Jobs
 Do these first, figure out balance
@@ -67,3 +67,10 @@ Each class unlocked unlocks that classes weapon? Only 1 copy of each weapon?
 * Lasso
 * Bow
 * Crossbow
+
+## Bosses
+
+* Kraken
+* Giant Scorpion
+* Mutated Totem
+* Use random word combos here too?

@@ -131,7 +131,6 @@ class Battling < GameState
     end
   end
 
-
   def decision_timer_messages
     bar_count = if @decision_start.nil?
                   25
