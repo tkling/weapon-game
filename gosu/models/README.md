@@ -1,4 +1,4 @@
-# Ideas for jobs, stats, and skills
+# Ideas for jobs, stats, weapons, and skills
 
 ## Jobs
 Do these first, figure out balance
@@ -40,8 +40,30 @@ Maybe for enemies this is the thing that determines XP payout by level?
 
 ## Skills
 
+Since skills are attributes of weapons it is probably helpful to think of skills in the context
+of the weapon that it goes with.
+
 Dump of potential skill names:
 * Strike
 * Unholy Stink
 * Guffaw
 * Territorial Protection
+
+## Weapons
+
+Each class unlocked unlocks that classes weapon? Only 1 copy of each weapon?
+
+* Sword (single hand)
+* Sword (2 hand)
+* Scimitar
+* Staff
+* Mace
+* Axe
+* Spear
+* Trident
+* Knuckles
+* Daggers
+* Rapier
+* Lasso
+* Bow
+* Crossbow
