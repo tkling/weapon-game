@@ -9,7 +9,7 @@ require_relative 'lib/constants'
 require_relative 'lib/spawning_methods'
 
 %w(states models).each do |dir|
-  Dir[File.join(File.dirname(__FILE__), dir, '*')].each { |file| require file }
+  Dir[File.join(File.dirname(__FILE__), dir, '*.rb')].each { |file| require file }
 end
 
 Globals = Struct.new(:party, :map)
