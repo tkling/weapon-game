@@ -41,6 +41,7 @@ class Battling < GameState
   def update
     if @commands.count == 0 && !@awaiting_confirmation
       @damages = []
+      @decision_start ||= Time.now
     end
 
     if @commands.count == 3
@@ -56,6 +57,7 @@ class Battling < GameState
         @awaiting_confirmation = true
         @current_partymember_idx = 0
         @commands = {}
+        @decision_start = nil
       end
 
       if current_enemies.map { |ene| ene.current_hp < 0 ? 0 : ene.current_hp }.reduce(:+) <= 0
@@ -67,6 +69,9 @@ class Battling < GameState
   def draw
     banner = 'B A T T L E'
     @window.huge_font_draw(25, 15, 0, Color::YELLOW, banner)
+
+    # decision timer
+    @window.normal_font_draw(@window.width-420, 30, 20, Color::YELLOW, *decision_timer_messages)
 
     # player list
     x_left = 25
@@ -126,6 +131,19 @@ class Battling < GameState
     end
   end
 
+
+  def decision_timer_messages
+    bar_count = if @decision_start.nil?
+                  25
+                else
+                  computed = ((100-((Time.now-@decision_start)*100))/4.0).ceil
+                  computed > 0 ? computed : 0
+                end
+    timer = "Decision Timer: |#{ '=' * bar_count }|"
+    bonus = "Bonus: #{ bar_count/2.5 }"
+    [timer, bonus]
+  end
+
   def key_pressed(id)
     if @commands.size <= 3 && !@awaiting_confirmation
       case id
@@ -133,10 +151,12 @@ class Battling < GameState
         if @commands[current_partymember] == nil
           return unless @skill_map[current_partymember].keys.include? id
           @commands[current_partymember] = { skill: @skill_map[current_partymember][id] }
+          @decision_start = Time.now
         else
           return unless @target_map.values.include?(id) && @target_map.key(id).current_hp > 0
           @commands[current_partymember][:target] = @target_map.key id
           @current_partymember_idx += 1
+          @decision_start = Time.now
         end
       end
     end
