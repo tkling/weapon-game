@@ -136,6 +136,9 @@ class Battling < GameState
     bar_count = if @decision_start.nil?
                   25
                 else
+                  # Gives a range between 0 - 25 when difference in time is less than 1 second.
+                  # 25 represents almost no time difference. Outside of 1 second the
+                  # computed value will be negative.
                   computed = ((100-((Time.now-@decision_start)*100))/4.0).ceil
                   computed > 0 ? computed : 0
                 end
