@@ -29,6 +29,17 @@ Random dump list
   * Angler -  mediocre on all things, bonus to in-game fishing
   * Adventurer - jack of all trades
   
+## Enemy Actions
+| when | do |
+|------|----|
+| normal state | offensive skill |
+| hp < 50% | use heal spell or heal item |
+| ally hp < 20% | use heal spell or heal item on them |
+| status effect && hp < 60% | use status heal |
+
+Maybe it would be interesting to have skills be picked at random. The skills in the array
+being sampled come from the above criteria.
+
 ## Stats
 
 Each instance of a job (charcter) has preset base stats based on the job. These stats can be 
