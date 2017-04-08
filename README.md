@@ -27,12 +27,12 @@ Decisions can have subdecisions that reset the timer. Examples:
 - battle menu -> skill menu -> skill and target selected
 
 ## motivation
-Creator of Stardew Valley, ConcernedApe. Think of what he did - he put in hard work for 4 or 5 
-years of his life, and now he has created an incredibly well done game which he loves. He's his
+Creator of Stardew Valley, ConcernedApe. Think of what he did; he put in hard work for 4 or 5 
+years of his life, and now he has created an incredibly well done game which a lot of people love. He's his
 own boss, creates his own schedule, works wherever and however he wants to, and with whoever he
 wants to. 
 
-That is what I am going to do.
+That is too cool.
 
 ## how
 ### Gosu with Ruby
@@ -43,11 +43,11 @@ screen, and by doing this I can test how long leveling takes in different encoun
 and with different preset levels for any level-able feature.
 
 ### Yoyo Games Gamemaker: Studio
-Moving foward, for easy sprite and animation
-support, I am going to try using Gamemaker Studio by Yoyo Games. `v1.4` is free for Window-only
+Looking foward, for easy sprite and animation
+support, I am going to try using Gamemaker Studio by Yoyo Games. `v1.4` is free for Windows-only
 exporting, $150 to also export to OSX and Linux. `v2.0` (still beta?) is $99 for Windows, OSX, 
 and Linux exporting. The updated UI looks nice, and there is a free trial version that limits
-your resouce count and only allows exporting to Windows.
+your resource count and only allows exporting to Windows.
 
 ## state ideas
 main menu
