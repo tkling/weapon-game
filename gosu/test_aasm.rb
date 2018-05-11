@@ -1,8 +1,15 @@
+$:.unshift File.dirname(__FILE__)
+
 require 'gosu'
 require 'aasm'
+require 'game_state'
 
-require './constants'
-require './models'
+require_relative 'lib/constants'
+require_relative 'lib/spawning_methods'
+
+%w(states models).each do |dir|
+    Dir[File.join(File.dirname(__FILE__), dir, '*.rb')].each { |file| require file }
+end
 
 class GameWindow < Gosu::Window
   include AASM, SpawningMethods
