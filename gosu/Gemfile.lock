@@ -3,6 +3,7 @@ GEM
   specs:
     aasm (4.11.1)
     coderay (1.1.1)
+    gosu (0.10.8)
     gosu (0.10.8-x64-mingw32)
     gosu (0.10.8-x86-mingw32)
     method_source (0.8.2)
@@ -13,6 +14,7 @@ GEM
     slop (3.6.0)
 
 PLATFORMS
+  ruby
   x64-mingw32
   x86-mingw32
 
@@ -22,4 +24,4 @@ DEPENDENCIES
   pry
 
 BUNDLED WITH
-   1.13.6
+   1.14.3
