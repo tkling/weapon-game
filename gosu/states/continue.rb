@@ -31,7 +31,7 @@ class Continue < GameState
   end
 
   def key_pressed id
-    @selectables ||= (1..9).map { |i| Module.const_get("Keys::#{ i }") }
+    @selectables ||= (1..9).map { |i| Module.const_get("Keys::Row#{ i }") }
 
     if @selectables.include? id
       filename = @save_map[id]
@@ -73,7 +73,7 @@ class Continue < GameState
   def save_map
     @save_list.each_with_index.with_object(Hash.new) do |(filename, idx), map|
       break if idx == 9
-      map[Module.const_get("Keys::#{ idx + 1 }")] = filename
+      map[Module.const_get("Keys::Row#{ idx + 1 }")] = filename
     end
   end
 end
