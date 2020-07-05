@@ -9,7 +9,9 @@ require_relative 'lib/constants'
 require_relative 'lib/spawning_methods'
 
 %w(states models).each do |dir|
-  Dir[File.join(File.dirname(__FILE__), dir, '*.rb')].each { |file| require file }
+  Dir[File.join(File.dirname(__FILE__), dir, '*.rb')].each do |file|
+    require file
+  end
 end
 
 Globals = Struct.new(:party, :map)
@@ -86,7 +88,7 @@ class GameWindow < Gosu::Window
   %i(small_font normal_font large_font huge_font).each do |font|
     define_method "#{ font }_draw" do |x, y_start, padding, color, *messages|
       messages.each do |msg|
-        send(font).draw(msg, x, y_start, ZOrder::UI, 1.0, 1.0, color)
+        send(font).draw_text(msg, x, y_start, ZOrder::UI, 1.0, 1.0, color)
         y_start += padding
       end
     end
