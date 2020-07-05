@@ -47,18 +47,16 @@ class StartJourney < GameState
     @from_left ||= @window.width - @x_padding - 360
     @dungeon_list_y ||= @middle_y_start + 40
 
-    if map.dungeons.size == 1
-      @dungeon_list_1 ||= map.dungeons.first.name
-      @dungeon_list_2 ||= []
-    else
-      if map.dungeons.size % 2 == 0
-        @dungeon_list_1 ||= map.dungeons[0..map.dungeons.size/2-1].map { |d| d.name }
-        @dungeon_list_2 ||= map.dungeons[map.dungeons.size/2..map.dungeons.size-1].map { |d| d.name }
+    @dungeon_list_1, @dungeon_list_2 =
+      if map.dungeons.size == 1
+        [map.dungeons.first.name, []]
+      elsif map.dungeons.size % 2 == 0
+        [map.dungeons[0..map.dungeons.size/2-1].map(&:name),
+         map.dungeons[map.dungeons.size/2..map.dungeons.size-1].map(&:name)]
       else
-        @dungeon_list_1 ||= map.dungeons[0..map.dungeons.size/2].map { |d| d.name }
-        @dungeon_list_2 ||= map.dungeons[map.dungeons.size/2+1..map.dungeons.size-1].map { |d| d.name }
+        [map.dungeons[0..map.dungeons.size/2].map(&:name),
+         map.dungeons[map.dungeons.size/2+1..map.dungeons.size-1].map(&:name)]
       end
-    end
 
     @window.large_font_draw(@from_left, @middle_y_start, 0 , Color::YELLOW, 'Dungeons:')
     @window.normal_font_draw(@from_left, @dungeon_list_y, 25, Color::YELLOW, *@dungeon_list_1)

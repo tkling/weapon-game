@@ -25,13 +25,11 @@ class Battling < GameState
   end
 
   def make_skill_map
-    mapping = Hash.new
-    party.each do |partymember|
-      character_skill_map = Hash.new
-      partymember.skill_mappings.each { |keypress, skill| character_skill_map[keypress] = skill }
-      mapping[partymember] = character_skill_map
+    party.each_with_object({}) do |partymember, mapping|
+      mapping[partymember] = partymember.skill_mappings.each_with_object({}) do |keypress_skill_pair, char_skill_map|
+        char_skill_map[keypress_skill_pair[0]] = keypress_skill_pair[1]
+      end
     end
-    mapping
   end
 
   def current_partymember
@@ -39,12 +37,14 @@ class Battling < GameState
   end
 
   def update
+    # battle round is beginning, set defaults
     if @commands.count == 0 && !@awaiting_confirmation
       @damages = []
       @decision_start ||= Time.now
     end
 
-    if @commands.count == 3
+    # all partymembers have chosen their moves, tally damange and begin next round
+    if @commands.count == party.size
       if @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
         @commands.each do |partymember, skill_info|
           to = skill_info[:target]
@@ -147,19 +147,11 @@ class Battling < GameState
   end
 
   def key_pressed(id)
-    if @commands.size <= 3 && !@awaiting_confirmation
-      case id
-      when Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR
-        if @commands[current_partymember] == nil
-          return unless @skill_map[current_partymember].keys.include? id
-          @commands[current_partymember] = { skill: @skill_map[current_partymember][id] }
-          @decision_start = Time.now
-        else
-          return unless @target_map.values.include?(id) && @target_map.key(id).current_hp > 0
-          @commands[current_partymember][:target] = @target_map.key id
-          @current_partymember_idx += 1
-          @decision_start = Time.now
-        end
+    if @commands.size <= party.size && !@awaiting_confirmation
+      if [Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR].include? id
+        handle_battle_command id
+      else
+        # draw "invalid input" message
       end
     end
 
@@ -168,6 +160,18 @@ class Battling < GameState
         @showing_damage_resolution = false if @showing_damage_resolution
         @awaiting_confirmation = false
       end
+    end
+  end
+
+  def handle_battle_command(key_id)
+    @decision_start = Time.now
+    if @commands[current_partymember] == nil
+      return unless @skill_map[current_partymember].keys.include? key_id
+      @commands[current_partymember] = { skill: @skill_map[current_partymember][key_id] }
+    else
+      return unless @target_map.values.include?(key_id) && @target_map.key(key_id).current_hp > 0
+      @commands[current_partymember][:target] = @target_map.key key_id
+      @current_partymember_idx += 1
     end
   end
 end
