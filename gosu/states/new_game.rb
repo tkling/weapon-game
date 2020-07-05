@@ -73,7 +73,7 @@ class NewGame < GameState
 
   def save_json
     JSON.pretty_generate({
-                           players: @window.globals.party.map { |char| char.to_h },
+                           players: @window.globals.party.map(&:to_h),
                            map: @window.globals.map.to_h,
                            time_played: 10
                          })

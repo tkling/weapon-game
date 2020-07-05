@@ -12,7 +12,7 @@ class Weapon
     {
       name: name,
       type: type,
-      skills: skills.map { |s| s.to_h },
+      skills: skills.map(&:to_h),
       base_stats: base_stats
     }
   end

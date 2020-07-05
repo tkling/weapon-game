@@ -22,7 +22,7 @@ class Map
   def to_h
     {
       name: name,
-      dungeons: dungeons.map { |d| d.to_h },
+      dungeons: dungeons.map(&:to_h),
       dungeon_index: @dungeon_index
     }
   end
