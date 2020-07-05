@@ -13,7 +13,7 @@ class CaravanMenu < GameState
 
     start_battle = '[space] - Battle'
     status = 'q - Status'
-    inventory = 'e - Inventory'
+    inventory = 'w - Inventory'
     config = 'e - Config'
     save = 'r - Save'
     exit = 'x - Exit'
