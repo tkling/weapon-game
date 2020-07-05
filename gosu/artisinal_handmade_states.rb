@@ -61,9 +61,9 @@ class GameWindow < Gosu::Window
   def button_down(id)
     @last_keypress = id
     case id
-    when Gosu::KbEscape
+    when Keys::Escape
       self.close
-    when Gosu::KbF5
+    when Keys::F5
       binding.pry
     else
       @state.key_pressed id

@@ -23,7 +23,7 @@ class WelcomeScreen < GameState
   end
 
   def key_pressed(id)
-    if id == Gosu::KbEnter || id == Gosu::KbEscape || id == Gosu::KbSpace
+    if id == Keys::Enter || id == Keys::Escape || id == Keys::Space
       notify_ready
     end
   end

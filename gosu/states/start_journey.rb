@@ -7,11 +7,11 @@ class StartJourney < GameState
   end
 
   def key_pressed(id)
-    if id == Gosu::KbQ
+    if id == Keys::Q
       set_next_and_ready CaravanMenu
     end
 
-    if id == Gosu::KbE
+    if id == Keys::E
       set_next_and_ready MainMenu
     end
   end

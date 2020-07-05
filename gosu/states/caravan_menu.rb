@@ -22,17 +22,17 @@ class CaravanMenu < GameState
 
   def key_pressed(id)
     case id
-    when Gosu::KbSpace, Gosu::KbEnter
+    when Keys::Space, Keys::Enter
       set_next_and_ready Battling
-    when Gosu::KbQ
+    when Keys::Q
       set_next_and_ready Status
-    when Gosu::KbW
+    when Keys::W
       set_next_and_ready Inventory
-    when Gosu::KbE
+    when Keys::E
       set_next_and_ready Config
-    when Gosu::KbR
+    when Keys::R
       set_next_and_ready Save
-    when Gosu::KbX
+    when Keys::X
       @window.close
     end
   end

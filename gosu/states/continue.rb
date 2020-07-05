@@ -31,7 +31,7 @@ class Continue < GameState
   end
 
   def key_pressed id
-    @selectables ||= (1..9).map { |i| Module.const_get("Gosu::Kb#{ i }") }
+    @selectables ||= (1..9).map { |i| Module.const_get("Keys::#{ i }") }
 
     if @selectables.include? id
       filename = @save_map[id]
@@ -71,13 +71,9 @@ class Continue < GameState
   end
 
   def save_map
-    map = Hash.new
-    key = 1
-    @save_list.each do |filename|
-      break if key == 10
-      map[Module.const_get("Gosu::Kb#{ key }")] = filename
-      key += 1
+    @save_list.each_with_index.with_object(Hash.new) do |(filename, idx), map|
+      break if idx == 9
+      map[Module.const_get("Keys::#{ idx + 1 }")] = filename
     end
-    map
   end
 end

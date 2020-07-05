@@ -1,7 +1,7 @@
 class Character
   attr_accessor :name, :job, :weapon, :armor, :type, :damage, :items, :base_stats, :skill_mappings
 
-  POSSIBLE_KEY_MAPPINGS = [Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR]
+  POSSIBLE_KEY_MAPPINGS = [Keys::Q, Keys::W, Keys::E, Keys::R]
 
   def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1))
     @name = name

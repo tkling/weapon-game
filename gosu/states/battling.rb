@@ -6,7 +6,7 @@ class Battling < GameState
   #     battle flow: order determined by DEX, skill->target->cool animation->resolution
   # * think about loot/xp (model xp growth also somehow?)
 
-  TARGET_KEYS = { Gosu::KbQ => 'q', Gosu::KbW => 'w', Gosu::KbE => 'e', Gosu::KbR => 'r' }.freeze
+  TARGET_KEYS = { Keys::Q => 'q', Keys::W => 'w', Keys::E => 'e', Keys::R => 'r' }.freeze
 
   def initialize(window)
     super window
@@ -18,10 +18,10 @@ class Battling < GameState
   end
 
   def make_target_map
-    target_keys = [Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR]
-    mapping = Hash.new
-    current_enemies.each_with_index { |enemy, idx| mapping[enemy] = target_keys[idx] }
-    mapping
+    target_keys = [Keys::Q, Keys::W, Keys::E, Keys::R]
+    current_enemies.each_with_index.with_object(Hash.new) do |(enemy, idx), mapping|
+      mapping[enemy] = target_keys[idx]
+    end
   end
 
   def make_skill_map
@@ -148,7 +148,7 @@ class Battling < GameState
 
   def key_pressed(id)
     if @commands.size <= party.size && !@awaiting_confirmation
-      if [Gosu::KbQ, Gosu::KbW, Gosu::KbE, Gosu::KbR].include? id
+      if [Keys::Q, Keys::W, Keys::E, Keys::R].include? id
         handle_battle_command id
       else
         # draw "invalid input" message
@@ -156,7 +156,7 @@ class Battling < GameState
     end
 
     if @awaiting_confirmation
-      if id == Gosu::KbSpace
+      if id == Keys::Space
         @showing_damage_resolution = false if @showing_damage_resolution
         @awaiting_confirmation = false
       end

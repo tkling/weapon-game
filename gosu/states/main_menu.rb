@@ -1,13 +1,13 @@
 class MainMenu < GameState
   def key_pressed(id)
     case id
-    when Gosu::KbEscape, Gosu::KbD
+    when Keys::Escape, Keys::D
       @window.close
-    when Gosu::KbQ
+    when Keys::Q
       set_next_and_ready NewGame
-    when Gosu::KbW
+    when Keys::W
       set_next_and_ready Continue
-    when Gosu::KbE
+    when Keys::E
       set_next_and_ready Options
     end
   end

@@ -11,11 +11,11 @@ class NewGame < GameState
 
   def key_pressed(id)
     case id
-    when Gosu::KbQ
+    when Keys::Q
       @file_created ? set_next_and_ready(StartJourney) : make_new_game
-    when Gosu::KbE
+    when Keys::E
       set_next_and_ready MainMenu
-    when Gosu::KbEscape, Gosu::KbSpace
+    when Keys::Escape, Keys::Space
       @window.close
     end
   end
