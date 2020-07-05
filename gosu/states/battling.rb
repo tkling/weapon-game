@@ -26,8 +26,8 @@ class Battling < GameState
 
   def make_skill_map
     party.each_with_object({}) do |partymember, mapping|
-      mapping[partymember] = partymember.skill_mappings.each_with_object({}) do |keypress_skill_pair, char_skill_map|
-        char_skill_map[keypress_skill_pair[0]] = keypress_skill_pair[1]
+      mapping[partymember] = partymember.skill_mappings.each_with_object({}) do |(keypress, skill), char_skill_map|
+        char_skill_map[keypress] = skill
       end
     end
   end
