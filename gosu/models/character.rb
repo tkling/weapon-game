@@ -25,11 +25,9 @@ class Character
   end
 
   def make_skill_mappings
-    mappings = Hash.new
-    weapon.skills.each_with_index do |skill, idx|
+    weapon.skills.each_with_index.with_object(Hash.new) do |(skill, idx), mappings|
       mappings[POSSIBLE_KEY_MAPPINGS[idx]] = skill
     end
-    mappings
   end
 
   def max_hp
