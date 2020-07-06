@@ -8,18 +8,18 @@ class Continue < GameState
   end
 
   def draw
-    @window.huge_font_draw(25, 10, 0, Color::YELLOW, 'CHOOSE A SAVE')
+    window.huge_font_draw(25, 10, 0, Color::YELLOW, 'CHOOSE A SAVE')
 
     if @save_list.size > 0
       starting_key = 0
       subbed = @save_list[0..8].map do |filename|
         starting_key += 1
-        "#{ starting_key } - #{ filename.sub(File.join(@window.project_root, 'saves/').to_s, '') }"
+        "#{ starting_key } - #{ filename.sub(File.join(window.project_root, 'saves/').to_s, '') }"
       end
-      @window.normal_font_draw(15, 100, 40, Color::YELLOW, *subbed)
+      window.normal_font_draw(15, 100, 40, Color::YELLOW, *subbed)
     else
-      @window.large_font_draw(15, 100, 0, Color::YELLOW, 'NO SAVES YET')
-      @window.normal_font_draw(15, 140, 0, Color::YELLOW, 'Continuing to new game now...')
+      window.large_font_draw(15, 100, 0, Color::YELLOW, 'NO SAVES YET')
+      window.normal_font_draw(15, 140, 0, Color::YELLOW, 'Continuing to new game now...')
       @no_saves = true
     end
   end
@@ -56,15 +56,14 @@ class Continue < GameState
     end
 
     if players.size > 0
-      @window.globals.party = players
+      window.globals.party = players
     else
       raise 'something failed while reading, size 0'
     end
   end
 
-  def set_map_from_hash hash
-    map = Map.new hash[:map]
-    @window.globals.map = map
+  def set_map_from_hash(hash)
+    window.globals.map = Map.new hash[:map]
   rescue Exception, StandardError => err
     # something bad when loading map
     binding.pry

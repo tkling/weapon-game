@@ -8,7 +8,7 @@ class WelcomeScreen < GameState
   end
 
   def update
-    if Time.now - @window.start_time > 3.5
+    if Time.now - window.start_time > 3.5
       notify_ready
     end
   end
@@ -19,7 +19,7 @@ class WelcomeScreen < GameState
       @y_set = Time.now
     end
 
-    @window.huge_font_draw(182, @message_y, 0, Color::YELLOW, @message)
+    window.huge_font_draw(182, @message_y, 0, Color::YELLOW, @message)
   end
 
   def key_pressed(id)

@@ -16,7 +16,7 @@ class NewGame < GameState
     when Keys::E
       set_next_and_ready MainMenu
     when Keys::Escape, Keys::Space
-      @window.close
+      window.close
     end
   end
 
@@ -32,8 +32,8 @@ class NewGame < GameState
     end
 
     unless File.exists? @path
-      @window.globals.party = starting_party
-      @window.globals.map = starting_map
+      window.globals.party = starting_party
+      window.globals.map = starting_map
       File.write(@path, save_json)
       @file_created = true
     end
@@ -61,20 +61,20 @@ class NewGame < GameState
     @confirmation     ||= 'q to continue, e to cancel'
     @success          ||= 'S U C C E S S'
 
-    @window.huge_font_draw(   10, 10,  0, Color::YELLOW, @header)
-    @window.normal_font_draw(240, 240, 0, Color::YELLOW, @save_explanation)
-    @window.normal_font_draw(500, 280, 0, Color::YELLOW, @question)
-    @window.normal_font_draw(370, 320, 0, Color::YELLOW, @confirmation)
+    window.huge_font_draw(   10, 10,  0, Color::YELLOW, @header)
+    window.normal_font_draw(240, 240, 0, Color::YELLOW, @save_explanation)
+    window.normal_font_draw(500, 280, 0, Color::YELLOW, @question)
+    window.normal_font_draw(370, 320, 0, Color::YELLOW, @confirmation)
 
     if @file_created
-      @window.huge_font_draw(420, 520, 0, Color::YELLOW, @success)
+      window.huge_font_draw(420, 520, 0, Color::YELLOW, @success)
     end
   end
 
   def save_json
     JSON.pretty_generate({
-                           players: @window.globals.party.map(&:to_h),
-                           map: @window.globals.map.to_h,
+                           players: window.globals.party.map(&:to_h),
+                           map: window.globals.map.to_h,
                            time_played: 10
                          })
   end

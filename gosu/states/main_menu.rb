@@ -2,7 +2,7 @@ class MainMenu < GameState
   def key_pressed(id)
     case id
     when Keys::Escape, Keys::D
-      @window.close
+      window.close
     when Keys::Q
       set_next_and_ready NewGame
     when Keys::W
@@ -14,12 +14,12 @@ class MainMenu < GameState
 
   def draw
     header = 'WEAPON GAME MAIN MENU'
-    @window.huge_font_draw(45, 20, 0, Color::YELLOW, header)
+    window.huge_font_draw(45, 20, 0, Color::YELLOW, header)
 
     new_game = 'q - new game'
     continue = 'w - continue'
     options = 'e - options'
     close = 'd - exit'
-    @window.large_font_draw(320, 200, 40, Color::YELLOW, new_game, continue, options, close)
+    window.large_font_draw(320, 200, 40, Color::YELLOW, new_game, continue, options, close)
   end
 end

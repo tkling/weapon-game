@@ -1,4 +1,6 @@
 class GameState
+  attr_reader :window
+
   def initialize(window)
     @window = window
   end
@@ -12,19 +14,20 @@ class GameState
   end
 
   def set_next_and_ready(state_class)
-    @next = state_class; notify_ready
+    @next = state_class
+    notify_ready
   end
 
   def notify_ready
-    @window.ready_to_advance_state!
+    window.ready_to_advance_state!
   end
 
   def map
-    @window.globals.map
+    window.globals.map
   end
 
   def party
-    @window.globals.party
+    window.globals.party
   end
 
   def dungeon
