@@ -46,13 +46,9 @@ class Continue < GameState
     end
   end
 
-  def set_party_from_hash hash
-    players = hash[:players].map do |player_hash|
-      player_hash[:weapon]        = Weapon.new player_hash[:weapon]
-      player_hash[:weapon].skills = player_hash[:weapon].skills.map { |s| Skill.new s }
-      player_hash[:armor]         = Armor.new player_hash[:armor]
-      # validation here someday?
-      Character.new player_hash
+  def set_party_from_hash(hash)
+    players = hash[:players].map do |character_info|
+      Character.new character_info
     end
 
     if players.size > 0
@@ -65,7 +61,7 @@ class Continue < GameState
   def set_map_from_hash(hash)
     window.globals.map = Map.new hash[:map]
   rescue Exception, StandardError => err
-    # something bad when loading map
+    bt = err.backtrace # something bad when loading map
     binding.pry
   end
 
