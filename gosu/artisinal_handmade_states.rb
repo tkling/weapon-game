@@ -3,10 +3,10 @@ $:.unshift File.dirname(__FILE__)
 require 'json'
 require 'pry'
 require 'gosu'
-require 'game_state'
 
-require_relative 'lib/constants'
-require_relative 'lib/spawning_methods'
+require 'states/game_state'
+require 'lib/constants'
+require 'lib/spawning_methods'
 
 %w(states models).each do |dir|
   Dir[File.join(File.dirname(__FILE__), dir, '*.rb')].each do |file|
