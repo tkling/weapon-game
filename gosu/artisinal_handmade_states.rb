@@ -66,6 +66,7 @@ class GameWindow < Gosu::Window
     when Keys::F5
       binding.pry
     else
+      @state.handle_global_keypresses id
       @state.key_pressed id
     end
   rescue Exception, StandardError => err

@@ -9,6 +9,12 @@ class GameState
   def draw;            end
   def key_pressed(id); end
 
+  def handle_global_keypresses(id)
+    if id == Keys::F1
+      set_next_and_ready MainMenu
+    end
+  end
+
   def next
     @next
   end

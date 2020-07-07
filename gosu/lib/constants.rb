@@ -14,6 +14,7 @@ module Keys
   T = Gosu::KbT
   D = Gosu::KbD
   X = Gosu::KbX
+  F1 = Gosu::KbF1
   F5 = Gosu::KbF5
   Space = Gosu::KbSpace
   Enter = Gosu::KbEnter
