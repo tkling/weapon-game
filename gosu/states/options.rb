@@ -1,0 +1,3 @@
+class Options < GameState
+
+end
