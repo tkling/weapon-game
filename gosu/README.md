@@ -30,3 +30,7 @@ ruby ./artisinal_handmade_states.rb
 #### works on windows
 Install Git for Windows as well as the RubyInstaller packaged version of ruby.
 Even `pry` works in `powershell`!
+
+#### works on linux
+Gosu has system dependencies that will need to be installed so that it can install and build: 
+https://github.com/gosu/gosu/wiki/Getting-Started-on-Linux#dependencies
