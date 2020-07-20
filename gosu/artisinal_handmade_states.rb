@@ -1,4 +1,4 @@
-$:.unshift File.dirname(__FILE__)
+$LOAD_PATH.unshift File.dirname(__FILE__)
 
 require 'json'
 require 'pry'
@@ -41,14 +41,14 @@ class GameWindow < Gosu::Window
   def update
     @state.update
     advance_state
-  rescue Exception, StandardError => err
+  rescue StandardError => err
     binding.pry
   end
 
   def draw
     draw_state_info
     @state.draw
-  rescue Exception, StandardError => err
+  rescue StandardError => err
     binding.pry
   end
 
@@ -69,7 +69,7 @@ class GameWindow < Gosu::Window
       @state.handle_global_keypresses id
       @state.key_pressed id
     end
-  rescue Exception, StandardError => err
+  rescue StandardError => err
     bt = err.backtrace
     binding.pry
   end
@@ -86,7 +86,7 @@ class GameWindow < Gosu::Window
     @ready_to_advance = true
   end
 
-  %i(small_font normal_font large_font huge_font).each do |font|
+  %i[small_font normal_font large_font huge_font].each do |font|
     define_method "#{ font }_draw" do |x, y_start, padding, color, *messages|
       messages.each do |msg|
         send(font).draw_text(msg, x, y_start, ZOrder::UI, 1.0, 1.0, color)

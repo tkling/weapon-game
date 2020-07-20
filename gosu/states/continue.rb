@@ -13,8 +13,7 @@ class Continue < GameState
     if @save_list.size > 0
       starting_key = 0
       subbed = @save_list[0..8].map do |filename|
-        starting_key += 1
-        "#{ starting_key } - #{ filename.sub(File.join(window.project_root, 'saves/').to_s, '') }"
+        "#{starting_key += 1} - #{filename.sub(File.join(window.project_root, 'saves/').to_s, '')}"
       end
       window.normal_font_draw(15, 100, 40, Color::YELLOW, *subbed)
     else
@@ -31,7 +30,7 @@ class Continue < GameState
   end
 
   def key_pressed id
-    @selectables ||= (1..9).map { |i| Module.const_get("Keys::Row#{ i }") }
+    @selectables ||= (1..9).map { |i| Module.const_get("Keys::Row#{i}") }
 
     if @selectables.include? id
       filename = @save_map[id]
@@ -60,15 +59,15 @@ class Continue < GameState
 
   def set_map_from_hash(hash)
     window.globals.map = Map.new hash[:map]
-  rescue Exception, StandardError => err
-    bt = err.backtrace # something bad when loading map
+  rescue StandardError => e
+    bt = e.backtrace # something bad when loading map
     binding.pry
   end
 
   def save_map
     @save_list.each_with_index.with_object(Hash.new) do |(filename, idx), map|
       break if idx == 9
-      map[Module.const_get("Keys::Row#{ idx + 1 }")] = filename
+      map[Module.const_get("Keys::Row#{idx + 1}")] = filename
     end
   end
 end
