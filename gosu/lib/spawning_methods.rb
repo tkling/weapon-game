@@ -64,7 +64,7 @@ module SpawningMethods
 
   def generate_dungeons(amount)
     @dungeon_adjectives = %w(Forbidden Forboding Foggy Froggy Questionable Sketchy Nefarious
-                               Disgusting Dank Soggy Unstable )
+                               Disgusting Dank Soggy Unstable)
     @dungeon_nouns = %w(Tarn Steppe Tunnel Escape Path Bog Swamp Dunes Village)
     @encounter_range ||= (2..10).to_a
     amount.times.map do
