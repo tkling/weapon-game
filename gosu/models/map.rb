@@ -8,7 +8,7 @@ class Map
   end
 
   def make_dungeons(dungeons)
-    dungeons.first.class == Dungeon ? dungeons : dungeons.map { |d| Dungeon.new d }
+    dungeons.first.class == Dungeon ? dungeons : dungeons.map { |d| Dungeon.new **d }
   end
 
   def completed?

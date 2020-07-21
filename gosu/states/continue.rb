@@ -47,7 +47,7 @@ class Continue < GameState
 
   def set_party_from_hash(hash)
     players = hash[:players].map do |character_info|
-      Character.new character_info
+      Character.new **character_info
     end
 
     if players.size > 0
@@ -58,7 +58,7 @@ class Continue < GameState
   end
 
   def set_map_from_hash(hash)
-    window.globals.map = Map.new hash[:map]
+    window.globals.map = Map.new **hash[:map]
   rescue StandardError => e
     bt = e.backtrace # something bad when loading map
     binding.pry

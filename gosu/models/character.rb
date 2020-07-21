@@ -17,11 +17,11 @@ class Character
   end
 
   def make_armor(armor)
-    armor.class == Armor ? armor : Armor.new(armor)
+    armor.class == Armor ? armor : Armor.new(**armor)
   end
 
   def make_weapon(weapon)
-    weapon.class == Weapon ? weapon : Weapon.new(weapon)
+    weapon.class == Weapon ? weapon : Weapon.new(**weapon)
   end
 
   def make_skill_mappings

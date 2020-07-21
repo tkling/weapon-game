@@ -14,7 +14,7 @@ class Weapon
     if skills.first.is_a?(Skill)
       skills
     elsif skills.first.is_a?(Hash)
-      skills.map { |s| Skill.new(s) }
+      skills.map { |s| Skill.new(**s) }
     else
       raise CannotSetWeaponSkills, "skill type is #{skills.first.class}, expected Skill or Hash"
     end

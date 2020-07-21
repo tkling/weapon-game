@@ -4,7 +4,7 @@ class Dungeon
   def initialize(name:, encounters:, encounter_index: 0)
     @name = name
     @encounters = if encounters.first.first.class == Hash
-                    encounters.map { |enemies| enemies.map { |e| Character.new(e) } }
+                    encounters.map { |enemies| enemies.map { |e| Character.new(**e) } }
                   else
                     encounters
                   end
