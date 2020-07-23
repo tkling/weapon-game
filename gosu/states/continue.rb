@@ -35,6 +35,7 @@ class Continue < GameState
     if @selectables.include? id
       filename = @save_map[id]
       if filename && File.exists?(filename)
+        window.globals.save_data.filename = filename.split('/').last
         save_hash = JSON.parse File.read(filename), symbolize_names: true
         set_party_from_hash save_hash
         set_map_from_hash save_hash

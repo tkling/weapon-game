@@ -35,6 +35,8 @@ class NewGame < GameState
       window.globals.party = starting_party
       window.globals.map = starting_map
       File.write(@path, save_json)
+      window.globals.save_data.updated_on = Time.now
+      window.globals.save_data.filename = @save_name
       @file_created = true
     end
   end

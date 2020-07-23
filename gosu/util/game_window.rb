@@ -18,6 +18,7 @@ class GameWindow < Gosu::Window
     @small_font = Gosu::Font.new(15)
     @project_root = Dir.pwd
     @globals = Globals.new
+    @globals.save_data = SaveData.new
   end
 
   def update
