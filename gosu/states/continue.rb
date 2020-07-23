@@ -1,7 +1,8 @@
 class Continue < GameState
+  include SaveMethods
+
   def initialize(window)
     super window
-    @save_list = Dir[File.join(window.project_root, 'saves', '*')]
     @save_map = save_map
     @draw_time = Time.now
     @drawn = false
@@ -10,10 +11,10 @@ class Continue < GameState
   def draw
     window.huge_font_draw(25, 10, 0, Color::YELLOW, 'CHOOSE A SAVE')
 
-    if @save_list.size > 0
+    if savefile_paths.size > 0
       starting_key = 0
-      subbed = @save_list[0..8].map do |filename|
-        "#{starting_key += 1} - #{filename.sub(File.join(window.project_root, 'saves/').to_s, '')}"
+      subbed = savefile_paths[0..8].map do |filename|
+        "#{starting_key += 1} - #{filename.split('/').last}"
       end
       window.normal_font_draw(15, 100, 40, Color::YELLOW, *subbed)
     else
@@ -36,7 +37,7 @@ class Continue < GameState
       filename = @save_map[id]
       if filename && File.exists?(filename)
         window.globals.save_data.filename = filename.split('/').last
-        save_hash = JSON.parse File.read(filename), symbolize_names: true
+        save_hash = JSON.parse(File.read(filename), symbolize_names: true)
         set_party_from_hash save_hash
         set_map_from_hash save_hash
         set_next_and_ready StartJourney
@@ -66,7 +67,7 @@ class Continue < GameState
   end
 
   def save_map
-    @save_list.each_with_index.with_object(Hash.new) do |(filename, idx), map|
+    savefile_paths.each_with_index.with_object(Hash.new) do |(filename, idx), map|
       break if idx == 9
       map[Module.const_get("Keys::Row#{idx + 1}")] = filename
     end

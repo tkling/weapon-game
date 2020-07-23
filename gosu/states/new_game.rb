@@ -1,18 +1,11 @@
 class NewGame < GameState
   include SpawningMethods
-
-  def initialize(window)
-    super window
-    @save_dir = File.join(window.project_root, 'saves')
-    @save_name = "game#{ Dir[File.join(@save_dir, '*')].size + 1 }.save"
-    @path = File.join(@save_dir, @save_name)
-    @file_created = false
-  end
+  include SaveMethods
 
   def key_pressed(id)
     case id
     when Keys::Q
-      @file_created ? set_next_and_ready(StartJourney) : make_new_game
+      file_saved? ? set_next_and_ready(StartJourney) : make_new_game
     when Keys::E
       set_next_and_ready MainMenu
     when Keys::Escape, Keys::Space
@@ -21,28 +14,23 @@ class NewGame < GameState
   end
 
   def make_new_game
-    if Dir[File.join(@save_dir, '*.save')].size >= 9
+    if savefile_paths.size >= 9
       @save_count_reached = true
       @time_detected = Time.now
       return
     end
 
-    unless File.directory? @save_dir
-      Dir.mkdir @save_dir
-    end
+    window.globals.party = starting_party
+    window.globals.map = starting_map
+    save save_name
+  end
 
-    unless File.exists? @path
-      window.globals.party = starting_party
-      window.globals.map = starting_map
-      File.write(@path, save_json)
-      window.globals.save_data.updated_on = Time.now
-      window.globals.save_data.filename = @save_name
-      @file_created = true
-    end
+  def save_name
+    "game#{ savefile_paths.size + 1 }.save"
   end
 
   def update
-    if @file_created && !@start_journey_set
+    if file_saved? && !@start_journey_set
       @confirmation = 'q to start journey'
       @start_journey_set = true
     end
@@ -58,7 +46,7 @@ class NewGame < GameState
 
   def draw
     @header           ||= 'N E W G A M E'
-    @save_explanation ||= "Your save will be called #{ @save_name }"
+    @save_explanation ||= "Your save will be called #{ save_name }"
     @question         ||= 'Sound good to you?'
     @confirmation     ||= 'q to continue, e to cancel'
     @success          ||= 'S U C C E S S'
@@ -68,17 +56,9 @@ class NewGame < GameState
     window.normal_font_draw(500, 280, 0, Color::YELLOW, @question)
     window.normal_font_draw(370, 320, 0, Color::YELLOW, @confirmation)
 
-    if @file_created
+    if file_saved?
       window.huge_font_draw(420, 520, 0, Color::YELLOW, @success)
     end
-  end
-
-  def save_json
-    JSON.pretty_generate({
-                           players: window.globals.party.map(&:to_h),
-                           map: window.globals.map.to_h,
-                           time_played: 10
-                         })
   end
 
   def starting_party
@@ -88,7 +68,7 @@ class NewGame < GameState
   end
 
   def starting_map
-    @dungeon_counts ||= (3..9).to_a
-    Map.new name: 'Journey to the Exit', dungeons: generate_dungeons(@dungeon_counts.sample)
+    dungeon_counts = (3..9).to_a
+    Map.new(name: 'Journey to the Exit', dungeons: generate_dungeons(dungeon_counts.sample))
   end
 end

@@ -6,6 +6,7 @@ require 'gosu'
 
 require 'lib/constants'
 require 'lib/spawning_methods'
+require 'lib/save_methods'
 require 'states/game_state'
 require 'util/game_window'
 
