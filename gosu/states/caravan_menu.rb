@@ -29,7 +29,7 @@ class CaravanMenu < GameState
     when Keys::W
       set_next_and_ready Inventory
     when Keys::E
-      set_next_and_ready Config
+      set_next_and_ready PartyConfig
     when Keys::R
       set_next_and_ready Save
     when Keys::X
