@@ -30,3 +30,13 @@ module Keys
   Row9 = Gosu::Kb9
   Row0 = Gosu::Kb0
 end
+
+module Experience
+  LevelMap ||= begin
+    path = File.join(File.dirname(__FILE__), '../..', 'xp_model', 'path_xp.txt')
+    File.new(path).each.with_object(Hash.new) do |line, map|
+      level, required_xp = line.split(/\s+/)
+      map[level.to_i] = required_xp.tr(',', '').to_i
+    end.freeze
+  end
+end
