@@ -22,6 +22,7 @@ class NewGame < GameState
 
     window.globals.party = starting_party
     window.globals.map = starting_map
+    window.globals.inventory = []
     save save_name
   end
 

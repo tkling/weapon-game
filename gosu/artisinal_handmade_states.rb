@@ -17,7 +17,7 @@ require 'util/game_window'
 end
 
 SaveData = Struct.new(:filename, :updated_on)
-Globals = Struct.new(:party, :map, :save_data)
+Globals = Struct.new(:party, :map, :save_data, :inventory)
 
 game = GameWindow.new
 game.show

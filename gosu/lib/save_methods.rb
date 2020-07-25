@@ -22,6 +22,7 @@ module SaveMethods
     JSON.pretty_generate({
       players: window.globals.party.map(&:to_h),
       map: window.globals.map.to_h,
+      inventory: window.globals.inventory,
       time_played: 10,
    })
   end

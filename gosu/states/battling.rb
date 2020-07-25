@@ -61,7 +61,9 @@ class Battling < GameState
       end
 
       if current_enemies.map { |ene| ene.current_hp < 0 ? 0 : ene.current_hp }.reduce(:+) <= 0
-        set_next_and_ready Victory.new(window, %w[potion])
+        loot = %w[potion]
+        window.globals.inventory += loot
+        set_next_and_ready Victory.new(window, loot)
       end
     end
   end

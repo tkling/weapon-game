@@ -40,6 +40,7 @@ class Continue < GameState
         save_hash = JSON.parse(File.read(filename), symbolize_names: true)
         set_party_from_hash save_hash
         set_map_from_hash save_hash
+        set_inventory_from_hash save_hash
         set_next_and_ready StartJourney
       else
         binding.pry
@@ -64,6 +65,10 @@ class Continue < GameState
   rescue StandardError => e
     bt = e.backtrace # something bad when loading map
     binding.pry
+  end
+
+  def set_inventory_from_hash(hash)
+    window.globals.inventory = hash[:inventory] || []
   end
 
   def save_map
