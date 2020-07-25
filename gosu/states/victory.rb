@@ -9,7 +9,7 @@ class Victory < GameState
 
   def key_pressed(id)
     if id == Keys::Space
-      set_next_and_ready CaravanMenu
+      set_next_and_ready XpRewards.new(window, 250)
     end
   end
 

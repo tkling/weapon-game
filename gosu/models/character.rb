@@ -1,15 +1,16 @@
 class Character
-  attr_accessor :name, :job, :weapon, :armor, :type, :damage, :items, :base_stats, :skill_mappings
+  attr_accessor :name, :job, :weapon, :armor, :type, :damage, :items, :base_stats, :skill_mappings, :xp
 
   POSSIBLE_KEY_MAPPINGS = [Keys::Q, Keys::W, Keys::E, Keys::R]
 
-  def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1))
+  def initialize(name:, job:, weapon:, armor:, type:, items:, base_stats: Hash.new(1), xp: 0)
     @name = name
     @job = job
     @armor = armor
     @type = type
     @items = items
     @base_stats = base_stats
+    @xp = xp
     @damage = []
     @weapon = make_weapon weapon
     @armor = make_armor armor
@@ -38,9 +39,24 @@ class Character
     max_hp - (damage.map(&:hit_amount).reduce(:+) || 0)
   end
 
+  def level
+    Experience::LevelMap.each_cons(2) do |(lvl, xp_amount), (_, next_xp_amount)|
+      return lvl if xp_amount <= xp  && xp < next_xp_amount
+    end
+  end
+
   def total_atk
     # ugh
     10
+  end
+
+  def xp_progression_info(xp_amount)
+    {
+      starting_xp: xp.dup,
+      starting_level: level.dup,
+      xp_after_reward: @xp += xp_amount,
+      level_after_reward: level
+    }
   end
 
   def to_h
@@ -51,7 +67,8 @@ class Character
       armor: armor.to_h,
       type: type,
       items: items,
-      base_stats: base_stats
+      base_stats: base_stats,
+      xp: xp
     }
   end
 end
