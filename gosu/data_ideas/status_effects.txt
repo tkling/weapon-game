@@ -1,0 +1,10 @@
+STATUS EFFECTS
+
+- poison
+- burning
+- freezing
+- confused -> maybe not, I always hate this
+- delay/slow
+- distracted - skip a turn
+- scared
+- hungry/thirsty => would involve adding food/drink to consumable items

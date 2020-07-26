@@ -1,0 +1,10 @@
+default target: party
+- potion (crude, standard, gourmet) => heal hp, maybe cure status at higher grades
+=> some alternate name here?
+- status cure
+- slow down battle action timer
+- increase critical hit rate
+
+default target: enemy
+- 1 of each that can inflict status effects
+- hand grenade (crude: single target, wide-radius: all enemies)
