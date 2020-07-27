@@ -4,7 +4,7 @@ class Victory < GameState
   def initialize(window, loot)
     super window
     @loot = loot
-    dungeon.encounter_index += 1
+    advance_journey_progress
   end
 
   def key_pressed(id)
@@ -24,6 +24,14 @@ class Victory < GameState
 
     advancement_text = 'press [space] to continue'
     window.large_font_draw((window.width / 2) - 150, window.height - 150, 0, Color::YELLOW, advancement_text)
+  end
+
+  def advance_journey_progress
+    if dungeon.complete?
+      map.dungeon_index += 1
+    else
+      dungeon.encounter_index += 1
+    end
   end
 
   def update
