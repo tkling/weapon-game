@@ -61,11 +61,20 @@ class Battling < GameState
       end
 
       if current_enemies.map { |ene| ene.current_hp < 0 ? 0 : ene.current_hp }.reduce(:+) <= 0
-        loot = %w[potion]
-        window.globals.inventory += loot
-        set_next_and_ready Victory.new(window, loot)
+        @loot ||= LootGenerator.generate(*loot_possibilities).yield_self do |loot|
+          window.globals.inventory += Array(loot)
+          set_next_and_ready Victory.new(window, Array(loot))
+        end
       end
     end
+  end
+
+  def loot_possibilities
+    [
+      { chance: 50, item: 'potion' },
+      { chance: 35, item: 'hand grenade' },
+      { chance: 15, item: 'golden crown' }
+    ]
   end
 
   def draw
