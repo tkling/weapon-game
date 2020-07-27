@@ -8,11 +8,11 @@ class Map
   end
 
   def make_dungeons(dungeons)
-    dungeons.first.class == Dungeon ? dungeons : dungeons.map { |d| Dungeon.new **d }
+    dungeons.first.class == Dungeon ? dungeons : dungeons.map { |d| Dungeon.new(**d) }
   end
 
   def completed?
-    @dungeon_index == @dungeons.size - 1
+    dungeon_index == dungeons.size - 1
   end
 
   def dungeon
@@ -23,7 +23,7 @@ class Map
     {
       name: name,
       dungeons: dungeons.map(&:to_h),
-      dungeon_index: @dungeon_index
+      dungeon_index: dungeon_index
     }
   end
 end
