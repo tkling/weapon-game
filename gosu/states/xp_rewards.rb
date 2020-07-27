@@ -13,7 +13,7 @@ class XpRewards < GameState
 
   def draw
     window.huge_font_draw(  10, 10,  0, Color::YELLOW, 'X P')
-    window.normal_font_draw(20, 100, 0, Color::YELLOW, "XP gained: #{@xp_reward}")
+    window.large_font_draw(20, 100, 0, Color::YELLOW, "XP gained: #{@xp_reward}")
 
     @partymember_progression_strings ||= @progression_infos.map do |info|
       l1, l2 = info[:starting_level], info[:level_after_reward]
@@ -22,7 +22,7 @@ class XpRewards < GameState
       "#{info[:name]}: Level #{level_string}, XP: #{xp_string}"
     end
 
-    window.normal_font_draw(230, window.height/5, 40, Color::YELLOW, *@partymember_progression_strings)
-    window.normal_font_draw(200, window.height-50, 0, Color::YELLOW, 'Press [space] to continue.')
+    window.normal_font_draw(window.width/2-100, window.height/3, 40, Color::YELLOW, *@partymember_progression_strings)
+    window.normal_font_draw(window.width/2-100, window.height-150, 0, Color::YELLOW, 'Press [space] to continue.')
   end
 end
