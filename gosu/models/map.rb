@@ -11,8 +11,8 @@ class Map
     dungeons.first.class == Dungeon ? dungeons : dungeons.map { |d| Dungeon.new(**d) }
   end
 
-  def completed?
-    dungeon_index == dungeons.size - 1
+  def complete?
+    dungeon_index == dungeons.size - 1 && dungeon.complete?
   end
 
   def dungeon

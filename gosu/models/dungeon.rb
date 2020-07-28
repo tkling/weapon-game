@@ -12,7 +12,11 @@ class Dungeon
   end
 
   def complete?
-    encounter_index == encounters.size - 1
+    encounter_index == encounters.size - 1 && encounter.sum(&:current_hp) <= 0
+  end
+
+  def encounter
+    encounters[encounter_index]
   end
 
   def to_h

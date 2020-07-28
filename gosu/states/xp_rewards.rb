@@ -8,7 +8,9 @@ class XpRewards < GameState
   end
 
   def key_pressed(id)
-    set_next_and_ready(CaravanMenu) if id == Keys::Space
+    return unless id == Keys::Space
+    screen = map.complete? ? MapCompleted : CaravanMenu
+    set_next_and_ready screen
   end
 
   def draw
