@@ -187,6 +187,7 @@ class Battling < GameState
         @commands[current_partymember][:target] = @target_map.key key_id
         @current_partymember_idx += 1
       else
+        # increase @commands[current_partymember]'s miss/fail/backfire chance here?
         @incorrect_target_chosen = true
       end
     end
