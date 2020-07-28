@@ -145,6 +145,8 @@ class Battling < GameState
   def decision_timer_messages
     bar_count = if @decision_start.nil?
                   25
+                elsif @incorrect_target_chosen
+                  0
                 else
                   # Gives a range between 0 - 25 when difference in time is less than 1 second.
                   # 25 represents almost no time difference. Outside of 1 second the
@@ -180,9 +182,13 @@ class Battling < GameState
       return unless @skill_map[current_partymember].keys.include? key_id
       @commands[current_partymember] = { skill: @skill_map[current_partymember][key_id] }
     else
-      return unless @target_map.values.include?(key_id) && @target_map.key(key_id).current_hp > 0
-      @commands[current_partymember][:target] = @target_map.key key_id
-      @current_partymember_idx += 1
+      if @target_map.values.include?(key_id) && @target_map.key(key_id).current_hp > 0
+        @incorrect_target_chosen = false
+        @commands[current_partymember][:target] = @target_map.key key_id
+        @current_partymember_idx += 1
+      else
+        @incorrect_target_chosen = true
+      end
     end
   end
 end
