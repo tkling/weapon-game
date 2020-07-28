@@ -28,7 +28,7 @@ class Victory < GameState
 
   def advance_journey_progress
     if dungeon.complete?
-      map.dungeon_index += 1
+      map.dungeon_index += 1 unless map.complete?
     else
       dungeon.encounter_index += 1
     end
