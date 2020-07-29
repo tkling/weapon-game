@@ -1,13 +1,17 @@
 class Inventory < GameState
   def key_pressed(id)
     set_next_and_ready(CaravanMenu) if id == Keys::Space
+    sort_inventory if id == Keys::Q
   end
 
   def draw
     window.huge_font_draw(10, 10, 0, Color::YELLOW, 'I N V E N T O R Y')
     window.large_font_draw(50, 100, 0, Color::YELLOW, 'item name : count')
 
-    x_item, x_count = 50, 500
+    sort_label_x = window.width-250
+    window.normal_font_draw(sort_label_x, 110, 0, Color::YELLOW, 'press [q] to sort')
+
+    x_item, x_count = 50, sort_label_x + 100
     y_both = 150
 
     inventory.tally.each do |item, count|
@@ -18,7 +22,11 @@ class Inventory < GameState
       y_both += 30
     end
 
-    press_space = 'Press [space] to return to caravan menu.'
+    press_space = 'Press [space] to return to caravan menu'
     window.large_font_draw(window.width/2-250, window.height-100, 0, Color::YELLOW, press_space)
+  end
+
+  def sort_inventory
+    inventory.sort!
   end
 end
