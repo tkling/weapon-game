@@ -41,6 +41,10 @@ class GameState
     window.globals.party
   end
 
+  def inventory
+    window.globals.inventory
+  end
+
   def dungeon
     map.dungeon
   end
