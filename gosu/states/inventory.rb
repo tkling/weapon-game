@@ -1,7 +1,7 @@
 class Inventory < GameState
-  def key_pressed(id)
-    set_next_and_ready(CaravanMenu) if id == Keys::Space
-    sort_inventory if id == Keys::Q
+  def bind_keys
+    bind Keys::Space, -> { proceed_to CaravanMenu }
+    bind Keys::Q,     -> { sort_inventory }
   end
 
   def draw

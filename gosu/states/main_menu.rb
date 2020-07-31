@@ -1,15 +1,10 @@
 class MainMenu < GameState
-  def key_pressed(id)
-    case id
-    when Keys::Escape, Keys::D
-      window.close
-    when Keys::Q
-      set_next_and_ready NewGame
-    when Keys::W
-      set_next_and_ready Continue
-    when Keys::E
-      set_next_and_ready Options
-    end
+  def bind_keys
+    bind Keys::Escape, ->{ window.close }
+    bind Keys::D,      ->{ window.close }
+    bind Keys::Q,      ->{ proceed_to NewGame }
+    bind Keys::W,      ->{ proceed_to Continue }
+    bind Keys::E,      ->{ proceed_to Options }
   end
 
   def draw
