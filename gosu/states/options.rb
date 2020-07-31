@@ -1,6 +1,6 @@
 class Options < GameState
-  def key_pressed(id)
-    set_next_and_ready(MainMenu) if id == Keys::Space
+  def bind_keys
+    bind Keys::Space, ->{ proceed_to MainMenu }
   end
 
   def draw

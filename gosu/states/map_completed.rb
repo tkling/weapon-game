@@ -12,7 +12,7 @@ class MapCompleted < GameState
     window.normal_font_draw(window.width/5*3, window.height/7*6, 0, Color::YELLOW, 'Press [space] to journey again!')
   end
 
-  def key_pressed(id)
-    set_next_and_ready(MainMenu) if id == Keys::Space
+  def bind_keys
+    bind Keys::Space, ->{ proceed_to MainMenu }
   end
 end

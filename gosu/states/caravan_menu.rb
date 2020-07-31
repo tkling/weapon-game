@@ -20,20 +20,13 @@ class CaravanMenu < GameState
     window.large_font_draw(window.width-200, 150, 40, Color::YELLOW, start_battle, status, inventory, config, save, exit)
   end
 
-  def key_pressed(id)
-    case id
-    when Keys::Space, Keys::Enter
-      set_next_and_ready Battling
-    when Keys::Q
-      set_next_and_ready Status
-    when Keys::W
-      set_next_and_ready Inventory
-    when Keys::E
-      set_next_and_ready PartyConfig
-    when Keys::R
-      set_next_and_ready Save
-    when Keys::X
-      window.close
-    end
+  def bind_keys
+    bind Keys::Space, ->{ proceed_to Battling }
+    bind Keys::Enter, ->{ proceed_to Battling }
+    bind Keys::Q,     ->{ proceed_to Status }
+    bind Keys::W,     ->{ proceed_to Inventory }
+    bind Keys::E,     ->{ proceed_to PartyConfig }
+    bind Keys::R,     ->{ proceed_to Save }
+    bind Keys::X,     ->{ window.close }
   end
 end
