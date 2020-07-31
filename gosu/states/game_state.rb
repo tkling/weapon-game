@@ -3,11 +3,21 @@ class GameState
 
   def initialize(window)
     @window = window
+    @keybinds = {}
+    bind_keys
   end
 
   def update;          end
   def draw;            end
-  def key_pressed(id); end
+  def bind_keys;       end
+
+  def bind(key, action)
+    @keybinds[key] = action
+  end
+
+  def key_pressed(key)
+    @keybinds[key]&.call
+  end
 
   def handle_global_keypresses(id)
     set_next_and_ready(MainMenu) if id == Keys::F1
@@ -23,6 +33,7 @@ class GameState
     @next = state_class
     notify_ready
   end
+  alias_method :proceed_to, :set_next_and_ready
 
   def notify_ready
     window.ready_to_advance_state!
