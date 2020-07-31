@@ -10,14 +10,9 @@ class GameState
   def key_pressed(id); end
 
   def handle_global_keypresses(id)
-    case id
-    when Keys::F1
-      set_next_and_ready MainMenu
-    when Keys::F5
-      binding.pry
-    when Keys::Escape
-      window.close
-    end
+    set_next_and_ready(MainMenu) if id == Keys::F1
+    binding.pry                  if id == Keys::F5
+    window.close                 if id == Keys::Escape
   end
 
   def next
