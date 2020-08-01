@@ -60,10 +60,10 @@ class Battling < GameState
         @decision_start = nil
       end
 
-      if current_enemies.map { |ene| ene.current_hp < 0 ? 0 : ene.current_hp }.reduce(:+) <= 0
+      if current_enemies.none? { |ene| ene.current_hp > 0 }
         @loot ||= LootGenerator.generate(*loot_possibilities).yield_self do |loot|
           window.globals.inventory += Array(loot)
-          set_next_and_ready Victory.new(window, Array(loot))
+          proceed_to Victory.new(window, Array(loot))
         end
       end
     end
@@ -159,24 +159,20 @@ class Battling < GameState
     [timer, bonus]
   end
 
-  def key_pressed(id)
-    if @commands.size <= party.size && !@awaiting_confirmation
-      if [Keys::Q, Keys::W, Keys::E, Keys::R].include? id
-        handle_battle_command id
-      else
-        # draw "invalid input" message
-      end
-    end
+  def bind_keys
+    bind Keys::Space, -> {
+      return unless @awaiting_confirmation
+      @showing_damage_resolution = false if @showing_damage_resolution
+      @awaiting_confirmation = false
+    }
 
-    if @awaiting_confirmation
-      if id == Keys::Space
-        @showing_damage_resolution = false if @showing_damage_resolution
-        @awaiting_confirmation = false
-      end
+    [Keys::Q, Keys::W, Keys::E, Keys::R].each do |key|
+      bind key, ->{ handle_battle_command(key) }
     end
   end
 
   def handle_battle_command(key_id)
+    return unless @commands.size <= party.size && !@awaiting_confirmation
     @decision_start = Time.now
     if @commands[current_partymember] == nil
       return unless @skill_map[current_partymember].keys.include? key_id
