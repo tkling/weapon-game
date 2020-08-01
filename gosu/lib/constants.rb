@@ -18,6 +18,7 @@ module Keys
   F5 = Gosu::KbF5
   Space = Gosu::KbSpace
   Enter = Gosu::KbEnter
+  Return = Gosu::KbReturn
   Escape = Gosu::KbEscape
   Row1 = Gosu::Kb1
   Row2 = Gosu::Kb2
