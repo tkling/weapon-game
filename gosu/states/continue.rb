@@ -5,7 +5,6 @@ class Continue < GameState
     super window
     @save_map = save_map
     @draw_time = Time.now
-    @drawn = false
   end
 
   def draw
