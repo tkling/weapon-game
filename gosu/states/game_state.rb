@@ -11,8 +11,10 @@ class GameState
   def draw;            end
   def bind_keys;       end
 
-  def bind(key, action)
-    @keybinds[key] = action
+  def bind(*keys, action)
+    keys.each do |key|
+      @keybinds[key] = action
+    end
   end
 
   def key_pressed(key)
