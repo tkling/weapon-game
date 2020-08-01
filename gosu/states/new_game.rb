@@ -2,6 +2,12 @@ class NewGame < GameState
   include SpawningMethods
   include SaveMethods
 
+  def bind_keys
+    bind Keys::Q,                   ->{ file_saved? ? proceed_to(StartJourney) : make_new_game }
+    bind Keys::E,                   ->{ proceed_to MainMenu }
+    bind Keys::Escape, Keys::Space, ->{ window.close }
+  end
+
   def key_pressed(id)
     case id
     when Keys::Q

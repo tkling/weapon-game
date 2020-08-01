@@ -29,22 +29,21 @@ class Continue < GameState
     end
   end
 
-  def key_pressed id
-    @selectables ||= (1..9).map { |i| Module.const_get("Keys::Row#{i}") }
-
-    if @selectables.include? id
-      filename = @save_map[id]
-      if filename && File.exists?(filename)
-        window.globals.save_data.filename = filename.split('/').last
-        save_hash = JSON.parse(File.read(filename), symbolize_names: true)
-        set_party_from_hash save_hash
-        set_map_from_hash save_hash
-        set_inventory_from_hash save_hash
-        set_next_and_ready StartJourney
-      else
-        binding.pry
-      end
+  def bind_keys
+    (1..9).each do |i|
+      key = Module.const_get("Keys::Row#{i}")
+      bind key, ->{ load_and_continue(@save_map[key]) }
     end
+  end
+
+  def load_and_continue(filename)
+    return unless filename && File.exist?(filename)
+    window.globals.save_data.filename = filename.split('/').last
+    save_hash = JSON.parse(File.read(filename), symbolize_names: true)
+    set_party_from_hash     save_hash
+    set_map_from_hash       save_hash
+    set_inventory_from_hash save_hash
+    set_next_and_ready      StartJourney
   end
 
   def set_party_from_hash(hash)

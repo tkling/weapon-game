@@ -1,19 +1,7 @@
 class StartJourney < GameState
-  def initialize(window)
-    super window
-     if window.globals.party.size < 3
-       binding.pry # something is wrong, we should have a party
-     end
-  end
-
-  def key_pressed(id)
-    if id == Keys::Q
-      set_next_and_ready CaravanMenu
-    end
-
-    if id == Keys::E
-      set_next_and_ready MainMenu
-    end
+  def bind_keys
+    bind Keys::Q, ->{ proceed_to CaravanMenu }
+    bind Keys::E, ->{ proceed_to Mainmenu }
   end
 
   def draw

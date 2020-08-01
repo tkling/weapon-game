@@ -22,10 +22,8 @@ class WelcomeScreen < GameState
     window.huge_font_draw(182, @message_y, 0, Color::YELLOW, @message)
   end
 
-  def key_pressed(id)
-    if id == Keys::Enter || id == Keys::Escape || id == Keys::Space
-      notify_ready
-    end
+  def bind_keys
+    bind Keys::Enter, Keys::Return, Keys::Space, ->{ notify_ready }
   end
 
   def next

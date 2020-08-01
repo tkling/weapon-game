@@ -1,6 +1,6 @@
 class Status < GameState
-  def key_pressed(id)
-    set_next_and_ready(CaravanMenu) if id == Keys::Space
+  def bind_keys
+    bind Keys::Space, ->{ proceed_to CaravanMenu }
   end
 
   def draw

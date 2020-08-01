@@ -7,10 +7,8 @@ class Victory < GameState
     advance_journey_progress
   end
 
-  def key_pressed(id)
-    if id == Keys::Space
-      set_next_and_ready XpRewards.new(window, 250)
-    end
+  def bind_keys
+    bind Keys::Space, ->{ proceed_to XpRewards.new(window, 250) }
   end
 
   def draw

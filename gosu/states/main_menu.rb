@@ -1,10 +1,9 @@
 class MainMenu < GameState
   def bind_keys
-    bind Keys::Escape, ->{ window.close }
-    bind Keys::D,      ->{ window.close }
-    bind Keys::Q,      ->{ proceed_to NewGame }
-    bind Keys::W,      ->{ proceed_to Continue }
-    bind Keys::E,      ->{ proceed_to Options }
+    bind Keys::Q,               ->{ proceed_to NewGame }
+    bind Keys::W,               ->{ proceed_to Continue }
+    bind Keys::E,               ->{ proceed_to Options }
+    bind Keys::Escape, Keys::D, ->{ window.close }
   end
 
   def draw

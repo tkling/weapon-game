@@ -7,10 +7,8 @@ class XpRewards < GameState
     end
   end
 
-  def key_pressed(id)
-    return unless id == Keys::Space
-    screen = map.complete? ? MapCompleted : CaravanMenu
-    set_next_and_ready screen
+  def bind_keys
+    bind Keys::Space, ->{ proceed_to(map.complete? ? MapCompleted : CaravanMenu) }
   end
 
   def draw

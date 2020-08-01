@@ -1,12 +1,9 @@
 class Save < GameState
   include SaveMethods
 
-  def key_pressed(id)
-    save(save_name) if id == Keys::Q
-
-    if id == Keys::Space
-      set_next_and_ready(CaravanMenu) if file_saved?
-    end
+  def bind_keys
+    bind Keys::Q,    ->{ save(save_name) }
+    bind Keys::Space ->{ proceed_to(CaravanMenu) if file_saved? }
   end
 
   def draw
