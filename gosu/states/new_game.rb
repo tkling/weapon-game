@@ -8,17 +8,6 @@ class NewGame < GameState
     bind Keys::Escape, Keys::Space, ->{ window.close }
   end
 
-  def key_pressed(id)
-    case id
-    when Keys::Q
-      file_saved? ? set_next_and_ready(StartJourney) : make_new_game
-    when Keys::E
-      set_next_and_ready MainMenu
-    when Keys::Escape, Keys::Space
-      window.close
-    end
-  end
-
   def make_new_game
     if savefile_paths.size >= 9
       @save_count_reached = true
@@ -46,7 +35,7 @@ class NewGame < GameState
       if Time.now - @time_detected < 2
         @confirmation = 'Only 9 saves allowed, returning to main menu.'
       else
-        set_next_and_ready MainMenu
+        proceed_to MainMenu
       end
     end
   end

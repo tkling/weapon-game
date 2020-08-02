@@ -25,7 +25,7 @@ class Continue < GameState
 
   def update
     if @no_saves && Time.now - @draw_time > 1
-      set_next_and_ready NewGame
+      proceed_to NewGame
     end
   end
 
@@ -43,7 +43,7 @@ class Continue < GameState
     set_party_from_hash     save_hash
     set_map_from_hash       save_hash
     set_inventory_from_hash save_hash
-    set_next_and_ready      StartJourney
+    proceed_to              StartJourney
   end
 
   def set_party_from_hash(hash)
