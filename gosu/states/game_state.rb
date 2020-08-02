@@ -22,9 +22,13 @@ class GameState
   end
 
   def handle_global_keypresses(id)
-    set_next_and_ready(MainMenu) if id == Keys::F1
-    binding.pry                  if id == Keys::F5
-    window.close                 if id == Keys::Escape
+    @global_keybinds ||= {
+      Keys::F1     => ->{ proceed_to MainMenu },
+      Keys::F5     => ->{ binding.pry },
+      Keys::Escape => ->{ window.close }
+    }
+
+    @global_keybinds[id]&.call
   end
 
   def next

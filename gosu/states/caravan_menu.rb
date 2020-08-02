@@ -1,12 +1,11 @@
 class CaravanMenu < GameState
   def bind_keys
-    bind Keys::Space, ->{ proceed_to Battling }
-    bind Keys::Enter, ->{ proceed_to Battling }
-    bind Keys::Q,     ->{ proceed_to Status }
-    bind Keys::W,     ->{ proceed_to Inventory }
-    bind Keys::E,     ->{ proceed_to PartyConfig }
-    bind Keys::R,     ->{ proceed_to Save }
-    bind Keys::X,     ->{ window.close }
+    bind Keys::Space, Keys::Return, Keys::Enter, ->{ proceed_to Battling }
+    bind Keys::Q,                                ->{ proceed_to Status }
+    bind Keys::W,                                ->{ proceed_to Inventory }
+    bind Keys::E,                                ->{ proceed_to PartyConfig }
+    bind Keys::R,                                ->{ proceed_to Save }
+    bind Keys::X,                                ->{ window.close }
   end
 
   def draw
