@@ -44,15 +44,12 @@ class Battle
   end
 
   def assign_skill_target(target)
+    return @incorrect_target_chosen = true unless target && target.current_hp > 0
     raise 'not in :select_partymember_target phase!' unless phase == :select_partymember_target
-    if target && target.current_hp > 0
-      commands[current_battle_participant][:target] = target
-      commands[current_battle_participant][:time_taken] = Time.now - @decision_start
-      @incorrect_target_chosen = false
-      @battle_order_index += 1
-    else
-      @incorrect_target_chosen = true
-    end
+    commands[current_battle_participant][:target] = target
+    commands[current_battle_participant][:time_taken] = Time.now - @decision_start
+    @incorrect_target_chosen = false
+    @battle_order_index += 1
   end
 
   def start_decision
