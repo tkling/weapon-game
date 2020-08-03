@@ -78,13 +78,12 @@ class Battle
   end
 
   def assign_damages
-    if @commands.all? { |_, skill_hash| skill_hash[:target] }
-      @commands.each do |partymember, skill_info|
-        to = skill_info[:target]
-        Damage.new(from: partymember, to: to, source: skill_info[:skill]).yield_self do |d|
-          @damages << d
-          to.damage << d
-        end
+    return if @commands.any? { |_, skill_hash| skill_hash[:target].nil? }
+    @commands.each do |partymember, skill_info|
+      to = skill_info[:target]
+      Damage.new(from: partymember, to: to, source: skill_info[:skill]).yield_self do |d|
+        @damages << d
+        to.damage << d
       end
     end
   end
