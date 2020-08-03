@@ -22,7 +22,8 @@ class NewGame < GameState
   end
 
   def save_name
-    "game#{ savefile_paths.size + 1 }.save"
+    @save_time_string ||= Time.now.to_s.split(' ').first(2).join('_').tr(':', '-')
+    "game_#{ @save_time_string }.save"
   end
 
   def update
