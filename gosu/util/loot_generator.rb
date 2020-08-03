@@ -14,7 +14,7 @@ class LootGenerator
       end
 
       roll = ROLLS.sample
-      loot_table.find { |p| p[:range].include?(roll) }.fetch(:item)
+      Array(loot_table.find { |p| p[:range].include?(roll) }.fetch(:item))
     end
   end
 end
