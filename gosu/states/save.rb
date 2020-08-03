@@ -3,7 +3,7 @@ class Save < GameState
 
   def bind_keys
     bind Keys::Q,    ->{ save(save_name) }
-    bind Keys::Space ->{ proceed_to(CaravanMenu) if file_saved? }
+    bind Keys::Space, ->{ proceed_to(CaravanMenu) if file_saved? }
   end
 
   def draw
