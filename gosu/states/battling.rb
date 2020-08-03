@@ -1,11 +1,4 @@
 class Battling < GameState
-  # TODO
-  # * add battle timers (per-decision, global for battle also?)
-  # * make enemies do actions
-  # * change to after each selection resolve?
-  #     battle flow: order determined by DEX, skill->target->cool animation->resolution
-  # * think about loot/xp (model xp growth also somehow?)
-
   TARGET_KEYS = { Keys::Q => 'q', Keys::W => 'w', Keys::E => 'e', Keys::R => 'r' }.freeze
 
   def initialize(window)
@@ -15,6 +8,7 @@ class Battling < GameState
     @target_map = make_target_map
     @skill_map = make_skill_map
     @damages = []
+    @battle = Battle.new(party, current_enemies)
   end
 
   def make_target_map
@@ -32,54 +26,22 @@ class Battling < GameState
     end
   end
 
-  def current_partymember
-    party[@current_partymember_idx]
-  end
-
   def update
-    # battle round is beginning, set defaults
-    if @commands.count == 0 && !@awaiting_confirmation
-      @damages = []
-      @decision_start ||= Time.now
+    @battle.update
+
+    if @battle.phase == :victory
+      window.globals.inventory += @battle.loot
+      proceed_to Victory.new(window, @battle.loot)
     end
 
-    # all partymembers have chosen their moves, tally damange and begin next round
-    if @commands.count == party.size
-      if @commands.map { |_, skill_hash| skill_hash[:target] }.compact.size == 3
-        @commands.each do |partymember, skill_info|
-          to = skill_info[:target]
-          damage = Damage.new(from: partymember, to: to, source: skill_info[:skill])
-          @damages << damage
-          to.damage << damage
-        end
-
-        @showing_damage_resolution = true
-        @awaiting_confirmation = true
-        @current_partymember_idx = 0
-        @commands = {}
-        @decision_start = nil
-      end
-
-      if current_enemies.none? { |ene| ene.current_hp > 0 }
-        @loot ||= LootGenerator.generate(*loot_possibilities).yield_self do |loot|
-          window.globals.inventory += Array(loot)
-          proceed_to Victory.new(window, Array(loot))
-        end
-      end
+    if @battle.phase == :round_end
+      @showing_damage_resolution = true
+      @awaiting_confirmation = true
     end
-  end
-
-  def loot_possibilities
-    [
-      { chance: 50, item: 'potion' },
-      { chance: 35, item: 'hand grenade' },
-      { chance: 15, item: 'golden crown' }
-    ]
   end
 
   def draw
-    banner = 'B A T T L E'
-    window.huge_font_draw(25, 15, 0, Color::YELLOW, banner)
+    window.huge_font_draw(25, 15, 0, Color::YELLOW, 'B A T T L E')
 
     # decision timer
     window.normal_font_draw(window.width-420, 30, 20, Color::YELLOW, *decision_timer_messages)
@@ -106,28 +68,25 @@ class Battling < GameState
     # skill/target select OR damage resolution
     if @showing_damage_resolution
       window.large_font_draw(230, 175, 0, Color::YELLOW, 'Damage dealt:')
-      window.normal_font_draw(230, 225, 35, Color::YELLOW, *@damages.map(&:message))
+      window.normal_font_draw(230, 225, 35, Color::YELLOW, *@battle.damages.map(&:message))
       window.normal_font_draw(250, window.height-200, 0, Color::YELLOW, 'Press [space] to continue')
     else
-      enter_command = if skill_for_current_command?
-                        "Select target for #{ current_partymember.name }'s #{ @commands[current_partymember][:skill].name }"
-                      else
-                        "Select skill for #{ current_partymember.name }"
-                      end
-      window.large_font_draw(25, 120, 0, Color::YELLOW, enter_command)
+      window.large_font_draw(25, 120, 0, Color::YELLOW,
+        if @battle.phase == :select_partymember_target
+         "Select target for #{ @battle.current_battle_participant.name }'s #{ @battle.current_command[:skill].name }"
+        else
+         "Select skill for #{ @battle.current_battle_participant.name }"
+        end
+      )
 
       # show skill or target list
-      texts = skill_for_current_command? ? target_mapping_strings : current_hero_skill_mappings
+      texts = @battle.phase == :select_partymember_target ? target_mapping_strings : current_hero_skill_mappings
       window.huge_font_draw(230, 175, 75, Color::YELLOW, *texts)
     end
 
     # show skill choices and target
-    skill_choices = "commands: #{ @commands.map { |char, s_info| { char.name => s_info[:skill]&.name } } }"
+    skill_choices = "commands: #{ @battle.commands.map { |char, s_info| { char.name => s_info[:skill]&.name } } }"
     window.small_font_draw(window.width-500, window.height-20, 0, Color::YELLOW, skill_choices)
-  end
-
-  def skill_for_current_command?
-    !!@commands.dig(current_partymember, :skill)
   end
 
   def target_mapping_strings
@@ -137,55 +96,42 @@ class Battling < GameState
   end
 
   def current_hero_skill_mappings
-    current_partymember.skill_mappings.map do |keypress, skill|
+    @battle.current_battle_participant.skill_mappings.map do |keypress, skill|
       "#{ TARGET_KEYS[keypress] } - #{ skill.name }"
     end
   end
 
   def decision_timer_messages
-    bar_count = if @decision_start.nil?
-                  25
-                elsif @incorrect_target_chosen
-                  0
-                else
-                  # Gives a range between 0 - 25 when difference in time is less than 1 second.
-                  # 25 represents almost no time difference. Outside of 1 second the
-                  # computed value will be negative.
-                  computed = ((100-((Time.now-@decision_start)*100))/4.0).ceil
-                  computed > 0 ? computed : 0
-                end
+    bar_count = (@battle.decision_percentage_remaining / 4.0).ceil
     timer = "Decision Timer: |#{ '=' * bar_count }|"
     bonus = "Bonus: #{ bar_count/2.5 }"
     [timer, bonus]
   end
 
   def bind_keys
-    bind Keys::Space, -> {
-      return unless @awaiting_confirmation
-      @showing_damage_resolution = false if @showing_damage_resolution
-      @awaiting_confirmation = false
-    }
+    bind Keys::Space, ->{ handle_end_of_round }
 
     [Keys::Q, Keys::W, Keys::E, Keys::R].each do |key|
       bind key, ->{ handle_battle_command(key) }
     end
   end
 
-  def handle_battle_command(key_id)
-    return unless @commands.size <= party.size && !@awaiting_confirmation
-    @decision_start = Time.now
-    if @commands[current_partymember] == nil
-      return unless @skill_map[current_partymember].keys.include? key_id
-      @commands[current_partymember] = { skill: @skill_map[current_partymember][key_id] }
-    else
-      if @target_map.values.include?(key_id) && @target_map.key(key_id).current_hp > 0
-        @incorrect_target_chosen = false
-        @commands[current_partymember][:target] = @target_map.key key_id
-        @current_partymember_idx += 1
-      else
-        # increase @commands[current_partymember]'s miss/fail/backfire chance here?
-        @incorrect_target_chosen = true
-      end
-    end
+  def handle_battle_command(key)
+    return unless [:select_partymember_skill, :select_partymember_target].include?(@battle.phase)
+    @battle.start_decision
+
+    phase_actions = {
+      select_partymember_skill: ->{ @battle.assign_skill_choice(@skill_map[@battle.current_battle_participant][key]) },
+      select_partymember_target: ->{ @battle.assign_skill_target(@target_map.key(key)) }
+    }
+
+    phase_actions[@battle.phase]&.call
+  end
+
+  def handle_end_of_round
+    return unless @awaiting_confirmation
+    @battle.reset_round_state
+    @showing_damage_resolution = false if @showing_damage_resolution
+    @awaiting_confirmation = false
   end
 end
