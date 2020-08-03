@@ -11,18 +11,14 @@ module SpawningMethods
     @adjectives ||= %w(Brave Humiliating Embarassing All-Encompassing Shy Tasty Distasteful)
     @nouns ||= %w(Whipper-Snapper Slicer Maul Axe Bomba Chopsticks)
 
-    adj = @adjectives.sample
-    @adjectives.delete adj
-
-    noun = @nouns.sample
-    @nouns.delete noun
-
+    adj = @adjectives.sample.tap { |adj| @adjectives.delete(adj) }
+    noun = @nouns.sample.tap {|n| @nouns.delete(n) }
     name = "#{ adj } #{ noun }"
     low_damage = random_from_range(1..10)
     high_damage = random_from_range(8..25)
     skill = Skill.new(name: 'Strike', element: 'Neutral', base_stats: { str: 13 })
     Weapon.new(name: name, type: weapon_types.sample, skills: [skill],
-               base_stats: { damage_range: (low_damage..high_damage) })
+               base_stats: { damage_range: (random_from_range(1..10)..random_from_range(8..25)) })
   end
 
   def random_armor
@@ -68,10 +64,8 @@ module SpawningMethods
     @dungeon_nouns = %w(Tarn Steppe Tunnel Escape Path Bog Swamp Dunes Village)
     @encounter_range ||= (2..10).to_a
     amount.times.map do
-      adj = @dungeon_adjectives.sample
-      noun = @dungeon_nouns.sample
-      @dungeon_adjectives.delete adj
-      @dungeon_nouns.delete noun
+      adj = @dungeon_adjectives.sample.tap { |a| @dungeon_adjectives.delete(a) }
+      noun = @dungeon_nouns.sample.tap { |n| @dungeon_nouns.delete(n) }
       Dungeon.new(name: "#{ adj } #{ noun }", encounters: make_encounters(random_from_range(2..12)))
     end
   end

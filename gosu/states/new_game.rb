@@ -47,13 +47,11 @@ class NewGame < GameState
     @confirmation     ||= 'q to continue, e to cancel'
     @success          ||= 'S U C C E S S'
 
-    window.huge_font_draw(   10, 10,  0, Color::YELLOW, @header)
-    window.normal_font_draw(240, 240, 0, Color::YELLOW, @save_explanation)
-    window.normal_font_draw(500, 280, 0, Color::YELLOW, @question)
-    window.normal_font_draw(370, 320, 0, Color::YELLOW, @confirmation)
+    window.huge_font_draw(   10,  10,  0, Color::YELLOW, @header)
+    window.normal_font_draw(240, 240, 40, Color::YELLOW, @save_explanation, @question, @confirmation)
 
     if file_saved?
-      window.huge_font_draw(420, 520, 0, Color::YELLOW, @success)
+      window.huge_font_draw(420, 520,  0, Color::YELLOW, @success)
     end
   end
 
@@ -64,7 +62,7 @@ class NewGame < GameState
   end
 
   def starting_map
-    dungeon_counts = (3..9).to_a
-    Map.new(name: 'Journey to the Exit', dungeons: generate_dungeons(dungeon_counts.sample))
+    @dungeon_counts ||= (3..9).to_a
+    Map.new(name: 'Journey to the Exit', dungeons: generate_dungeons(@dungeon_counts.sample))
   end
 end
