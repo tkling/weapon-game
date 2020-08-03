@@ -1,7 +1,7 @@
 class StartJourney < GameState
   def bind_keys
     bind Keys::Q, ->{ proceed_to CaravanMenu }
-    bind Keys::E, ->{ proceed_to Mainmenu }
+    bind Keys::E, ->{ proceed_to MainMenu }
   end
 
   def draw
