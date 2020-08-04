@@ -58,11 +58,14 @@ class Battle
   end
 
   def determine_phase
-    if current_battle_participant.nil? && commands.count == battle_order.count && commands.all? { |char, com| char && com[:skill] && com[:target] }
+    all_commands_taken = commands.all? { |char, com| char && com[:skill] && com[:target] }
+    still_battling_participants = battle_order.select { |bp| bp.current_hp.positive? }
+
+    if current_battle_participant.nil? || commands.count == still_battling_participants.count && all_commands_taken
       :round_end
-    elsif enemies.none? { |ene| ene.current_hp > 0 }
+    elsif enemies.none? { |ene| ene.current_hp.positive? }
       :victory
-    elsif party.none? { |pm| pm.current_hp > 0 }
+    elsif party.none? { |pm| pm.current_hp.positive? }
       :defeat
     elsif party.include?(current_battle_participant) && current_command&.dig(:skill).nil?
       :select_partymember_skill
@@ -71,15 +74,16 @@ class Battle
     elsif enemies.include?(current_battle_participant)
       :assign_enemy_action
     else
-      raise 'unable to determine battle phase'
+      binding.pry
     end
   end
 
   def update
+    @battle_order_index += 1 if current_battle_participant&.current_hp&.zero?
     @phase = determine_phase
 
-    if @commands.count == 0 && phase != :round_end
-      @decision_start ||= Time.now
+    if [:select_partymember_skill, :select_partymember_target].include?(phase) && @decision_start.nil?
+      start_decision
     end
 
     assign_damages      if phase == :round_end && damages.empty?
