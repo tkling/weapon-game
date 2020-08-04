@@ -8,12 +8,12 @@ class Battling < GameState
     @target_map = make_target_map
     @skill_map = make_skill_map
     @damages = []
-    @battle = Battle.new(party, current_enemies)
+    @battle = Battle.new(party, enemies)
   end
 
   def make_target_map
     target_keys = [Keys::Q, Keys::W, Keys::E, Keys::R]
-    current_enemies.each_with_index.with_object(Hash.new) do |(enemy, idx), mapping|
+    enemies.each_with_index.with_object(Hash.new) do |(enemy, idx), mapping|
       mapping[enemy] = target_keys[idx]
     end
   end
@@ -58,7 +58,7 @@ class Battling < GameState
 
     # enemy list
     enemy_y_start = 200
-    current_enemies.select { |ene| ene.current_hp > 0 }.each do |enemy|
+    enemies.select { |ene| ene.current_hp > 0 }.each do |enemy|
       line1 = "#{ TARGET_KEYS[@target_map[enemy]] } - #{ enemy.name } - #{ enemy.job }"
       line2 = "HP: #{ enemy.current_hp}/#{ enemy.max_hp }"
       window.normal_font_draw(window.width-200, enemy_y_start, 20, Color::YELLOW, line1, line2)

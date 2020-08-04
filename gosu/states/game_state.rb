@@ -61,7 +61,7 @@ class GameState
     map.dungeon
   end
 
-  def current_enemies
+  def enemies
     dungeon.encounters[dungeon.encounter_index]
   end
 end
