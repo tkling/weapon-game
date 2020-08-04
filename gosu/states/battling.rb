@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Battling < GameState
   TARGET_KEYS = { Keys::Q => 'q', Keys::W => 'w', Keys::E => 'e', Keys::R => 'r' }.freeze
 
@@ -12,9 +14,8 @@ class Battling < GameState
   end
 
   def make_target_map
-    target_keys = [Keys::Q, Keys::W, Keys::E, Keys::R]
     enemies.each_with_index.with_object(Hash.new) do |(enemy, idx), mapping|
-      mapping[enemy] = target_keys[idx]
+      mapping[enemy] = TARGET_KEYS.keys[idx]
     end
   end
 

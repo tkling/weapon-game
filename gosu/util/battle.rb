@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Battle
   attr_reader :battle_order, :party, :enemies, :commands, :damages, :phase, :loot
 
@@ -46,8 +48,7 @@ class Battle
   def assign_skill_target(target)
     return @incorrect_target_chosen = true unless target && target.current_hp > 0
     raise 'not in :select_partymember_target phase!' unless phase == :select_partymember_target
-    commands[current_battle_participant][:target] = target
-    commands[current_battle_participant][:time_taken] = Time.now - @decision_start
+    commands[current_battle_participant].merge!(target: target, time_taken: Time.now - @decision_start)
     @incorrect_target_chosen = false
     @battle_order_index += 1
   end
@@ -103,8 +104,7 @@ class Battle
   def assign_enemy_action
     raise 'not in :assign_enemy_action phase!' unless phase == :assign_enemy_action
     skill = current_battle_participant.weapon.skills.sample
-    commands[current_battle_participant] = { skill: skill }
-    commands[current_battle_participant][:target] = party.sample
+    commands[current_battle_participant] = { skill: skill, target: party.sample }
     @battle_order_index += 1
   end
 

@@ -36,7 +36,7 @@ class Character
   end
 
   def current_hp
-    max_hp - (damage.map(&:hit_amount).reduce(:+) || 0)
+    [max_hp - damage.map(&:hit_amount).sum, 0].max
   end
 
   def level

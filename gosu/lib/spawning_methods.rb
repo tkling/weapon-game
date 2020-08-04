@@ -12,10 +12,8 @@ module SpawningMethods
     @nouns ||= %w(Whipper-Snapper Slicer Maul Axe Bomba Chopsticks)
 
     adj = @adjectives.sample.tap { |adj| @adjectives.delete(adj) }
-    noun = @nouns.sample.tap {|n| @nouns.delete(n) }
+    noun = @nouns.sample.tap { |n| @nouns.delete(n) }
     name = "#{ adj } #{ noun }"
-    low_damage = random_from_range(1..10)
-    high_damage = random_from_range(8..25)
     skill = Skill.new(name: 'Strike', element: 'Neutral', base_stats: { str: 13 })
     Weapon.new(name: name, type: weapon_types.sample, skills: [skill],
                base_stats: { damage_range: (random_from_range(1..10)..random_from_range(8..25)) })
