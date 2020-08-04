@@ -24,7 +24,7 @@ class Battle
 
   def determine_battle_order
     # in the future this should be sorted by dex/priority
-    party #+ enemies
+    party + enemies
   end
 
   def current_battle_participant
@@ -74,6 +74,21 @@ class Battle
     end
   end
 
+  def update
+    @phase = determine_phase
+
+    if @commands.count == 0 && phase != :round_end
+      @decision_start ||= Time.now
+    end
+
+    assign_damages      if phase == :round_end && damages.empty?
+    assign_enemy_action if phase == :assign_enemy_action
+
+    if phase == :victory
+      @loot ||= LootGenerator.generate(*loot_possibilities)
+    end
+  end
+
   def assign_damages
     return if @commands.any? { |_, skill_hash| skill_hash[:target].nil? }
     @commands.each do |partymember, skill_info|
@@ -85,24 +100,12 @@ class Battle
     end
   end
 
-  def update
-    @phase = determine_phase
-
-    if @commands.count == 0 && phase != :round_end
-      @decision_start ||= Time.now
-    end
-
-    if phase == :round_end && damages.empty?
-      assign_damages
-    end
-
-    if phase == :assign_enemy_action
-      # yolo~~
-    end
-
-    if phase == :victory
-      @loot ||= LootGenerator.generate(*loot_possibilities)
-    end
+  def assign_enemy_action
+    raise 'not in :assign_enemy_action phase!' unless phase == :assign_enemy_action
+    skill = current_battle_participant.weapon.skills.sample
+    commands[current_battle_participant] = { skill: skill }
+    commands[current_battle_participant][:target] = party.sample
+    @battle_order_index += 1
   end
 
   def decision_percentage_remaining
