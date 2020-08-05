@@ -17,6 +17,11 @@ class Save < GameState
                end
 
     window.normal_font_draw(window.width/2-240, 240, 0, Color::YELLOW, @message)
+
+    window.large_font_draw(window.width/2-40, window.height-300, 30, Color::YELLOW,
+      'Time played:',
+      formatted_time_played
+    )
   end
 
   def save_name

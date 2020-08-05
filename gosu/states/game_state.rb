@@ -64,4 +64,13 @@ class GameState
   def enemies
     dungeon.encounters[dungeon.encounter_index]
   end
+
+  def formatted_time_played
+    @two_digit_padded ||= ->(num) { num < 10 ? "0#{num}" : num }
+    (Time.now - window.globals.session_begin_time + window.globals.save_data.time_played).yield_self do |seconds|
+      (seconds.round/60.0).to_s.split('.').yield_self do |min, sec_p|
+        "#{@two_digit_padded.call(Integer(min))}:#{@two_digit_padded.call((Float('0.'+sec_p)*60.0).round)}"
+      end
+    end
+  end
 end

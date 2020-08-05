@@ -18,6 +18,11 @@ class CaravanMenu < GameState
       "Encounter: #{ dungeon.encounter_index+1 }/#{ dungeon.encounters.size }"
     )
 
+    window.large_font_draw(x_start, window.height-200, 30, Color::YELLOW,
+      'Time played:',
+      formatted_time_played
+    )
+
     # if we're on a boss then show some boss special stuff here
     window.large_font_draw(window.width-200, 150, 40, Color::YELLOW,
       '[space] - Battle',
