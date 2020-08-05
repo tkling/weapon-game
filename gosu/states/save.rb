@@ -1,8 +1,9 @@
+# frozen_string_literal = true
 class Save < GameState
   include SaveMethods
 
   def bind_keys
-    bind Keys::Q,    ->{ save(save_name) }
+    bind Keys::Q,     ->{ save(save_name) }
     bind Keys::Space, ->{ proceed_to(CaravanMenu) if file_saved? }
   end
 
