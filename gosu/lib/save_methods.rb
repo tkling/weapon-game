@@ -23,7 +23,7 @@ module SaveMethods
       players: window.globals.party.map(&:to_h),
       map: window.globals.map.to_h,
       inventory: window.globals.inventory,
-      time_played: 10,
+      time_played: Time.now - window.globals.session_begin_time + window.globals.save_data.time_played,
    })
   end
 

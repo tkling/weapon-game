@@ -38,11 +38,13 @@ class Continue < GameState
 
   def load_and_continue(filename)
     return unless filename && File.exist?(filename)
-    window.globals.save_data.filename = filename.split('/').last
     save_hash = JSON.parse(File.read(filename), symbolize_names: true)
     set_party_from_hash     save_hash
     set_map_from_hash       save_hash
     set_inventory_from_hash save_hash
+    window.globals.save_data.filename = filename.split('/').last
+    window.globals.save_data.time_played = save_hash[:time_played]
+    window.globals.session_begin_time = Time.now
     proceed_to              StartJourney
   end
 

@@ -18,8 +18,8 @@ require 'util/battle'
   end
 end
 
-SaveData = Struct.new(:filename, :updated_on)
-Globals = Struct.new(:party, :map, :save_data, :inventory)
+SaveData = Struct.new(:filename, :updated_on, :time_played)
+Globals = Struct.new(:party, :map, :save_data, :inventory, :session_begin_time)
 
 game = GameWindow.new
 game.show

@@ -18,6 +18,8 @@ class NewGame < GameState
     window.globals.party = starting_party
     window.globals.map = starting_map
     window.globals.inventory = []
+    window.globals.save_data.time_played = 0
+    window.globals.session_begin_time = Time.now
     save save_name
   end
 
