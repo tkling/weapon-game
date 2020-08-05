@@ -70,7 +70,7 @@ class Battling < GameState
     if @showing_damage_resolution
       window.large_font_draw(230, 175, 0, Color::YELLOW, 'Damage dealt:')
       window.normal_font_draw(230, 225, 35, Color::YELLOW, *@battle.damages.map(&:message))
-      window.normal_font_draw(250, window.height-200, 0, Color::YELLOW, 'Press [space] to continue')
+      window.normal_font_draw(250, window.height-120, 0, Color::YELLOW, 'Press [space] to continue')
     elsif %i[select_partymember_skill select_partymember_target].include?(@battle.phase)
       window.large_font_draw(25, 120, 0, Color::YELLOW,
         if @battle.phase == :select_partymember_target
