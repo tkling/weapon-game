@@ -13,7 +13,8 @@ class Continue < GameState
     if savefile_paths.size > 0
       starting_key = 0
       subbed = savefile_paths[0..8].map do |filename|
-        "#{starting_key += 1} - #{filename.split('/').last}"
+        playtime_str = formatted_time_played JSON.parse(File.read(filename))['time_played']
+        "#{starting_key += 1} - #{filename.split('/').last} - playtime: #{playtime_str}"
       end
       window.normal_font_draw(15, 100, 40, Color::YELLOW, *subbed)
     else
