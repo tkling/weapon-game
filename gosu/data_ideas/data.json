@@ -1,0 +1,80 @@
+{
+	"sheets": [
+		{
+			"name": "skills",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "type",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "element",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "str"
+				},
+				{
+					"typeStr": "3",
+					"name": "max_level"
+				},
+				{
+					"typeStr": "16",
+					"name": "xp_thresholds"
+				},
+				{
+					"typeStr": "4",
+					"name": "level_modifier"
+				}
+			],
+			"lines": [
+				{
+					"id": "skill_strike",
+					"name": "Strike",
+					"str": 13,
+					"type": "attack",
+					"level_modifier": 1.5,
+					"xp_thresholds": [
+						15,
+						45,
+						90,
+						150
+					],
+					"element": "neutral",
+					"max_level": 5
+				},
+				{
+					"id": "skill_heal",
+					"name": "Heal",
+					"str": 10,
+					"type": "heal",
+					"level_modifier": 1.5,
+					"xp_thresholds": [
+						15,
+						45,
+						90,
+						150
+					],
+					"element": "light",
+					"max_level": 5
+				}
+			],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

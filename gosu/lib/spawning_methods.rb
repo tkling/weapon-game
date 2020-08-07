@@ -14,7 +14,7 @@ module SpawningMethods
     adj = @adjectives.sample.tap { |adj| @adjectives.delete(adj) }
     noun = @nouns.sample.tap { |n| @nouns.delete(n) }
     name = "#{ adj } #{ noun }"
-    skill = Skill.new(name: 'Strike', element: 'Neutral', base_stats: { str: 13 })
+    skill = Skill.from_castle_id('skill_strike')
     Weapon.new(name: name, type: weapon_types.sample, skills: [skill],
                base_stats: { damage_range: (random_from_range(1..10)..random_from_range(8..25)) })
   end
