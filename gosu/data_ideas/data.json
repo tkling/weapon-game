@@ -45,7 +45,7 @@
 					"name": "Strike",
 					"str": 13,
 					"type": "attack",
-					"level_modifier": 1.5,
+					"level_modifier": 1.15,
 					"xp_thresholds": [
 						15,
 						45,
@@ -57,7 +57,7 @@
 				},
 				{
 					"id": "skill_heal",
-					"name": "Heal",
+					"name": "Glimpse of Light",
 					"str": 10,
 					"type": "heal",
 					"level_modifier": 1.5,
@@ -69,6 +69,66 @@
 					],
 					"element": "light",
 					"max_level": 5
+				},
+				{
+					"id": "skill_fire1",
+					"name": "Sputtering Flame",
+					"type": "attack",
+					"element": "fire",
+					"str": 13,
+					"max_level": 5,
+					"level_modifier": 1.3,
+					"xp_thresholds": [
+						15,
+						45,
+						90,
+						150
+					]
+				},
+				{
+					"id": "skill_ice1",
+					"name": "Thawing Frost",
+					"type": "attack",
+					"element": "ice",
+					"str": 13,
+					"max_level": 5,
+					"level_modifier": 1.3,
+					"xp_thresholds": [
+						15,
+						45,
+						90,
+						150
+					]
+				},
+				{
+					"id": "skill_thunder1",
+					"name": "Weak Spark",
+					"type": "attack",
+					"element": "thunder",
+					"str": 13,
+					"max_level": 5,
+					"level_modifier": 1.3,
+					"xp_thresholds": [
+						15,
+						45,
+						90,
+						150
+					]
+				},
+				{
+					"id": "skill_water1",
+					"name": "Morning Dew",
+					"type": "attack",
+					"element": "water",
+					"str": 13,
+					"max_level": 5,
+					"level_modifier": 1.3,
+					"xp_thresholds": [
+						15,
+						45,
+						90,
+						150
+					]
 				}
 			],
 			"separators": [],

@@ -9,7 +9,7 @@ class Skill
       game_data[:sheets].select { |sheet| sheet[:name] == 'skills' }.first[:lines]
     end
 
-    @@skills.select { |s| s[:id] == id }.first.yield_self do |skill|
+    @@skills.find { |s| s[:id] == id }.yield_self do |skill|
       new(**skill.merge(xp: xp))
     end
   end
