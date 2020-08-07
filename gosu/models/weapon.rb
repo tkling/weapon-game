@@ -6,17 +6,15 @@ class Weapon
   def initialize(name:, type:, skills:, base_stats: Hash.new(1))
     @name = name
     @type = type
-    @skills = set_skills(skills)
+    @skills = determine_skills(skills)
     @base_stats = base_stats
   end
 
-  def set_skills(skills)
-    if skills.first.is_a?(Skill)
-      skills
-    elsif skills.first.is_a?(Hash)
-      skills.map { |s| Skill.new(**s) }
-    else
-      raise CannotSetWeaponSkills, "skill type is #{skills.first.class}, expected Skill or Hash"
+  def determine_skills(skills)
+    case skills.first
+    when Skill then skills
+    when Hash  then skills.map { |s| Skill.from_castle_id(s[:id], s[:xp]) }
+    else raise CannotSetWeaponSkills, "skill type is #{skills.first.class}, expected Skill or Hash"
     end
   end
 

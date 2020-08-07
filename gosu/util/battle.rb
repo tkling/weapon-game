@@ -98,7 +98,9 @@ class Battle
     return if @commands.any? { |_, skill_hash| skill_hash[:target].nil? }
     @commands.each do |partymember, skill_info|
       to = skill_info[:target]
-      Damage.new(from: partymember, to: to, source: skill_info[:skill]).yield_self do |d|
+      skill = skill_info[:skill]
+      skill.add_xp(1)
+      Damage.new(from: partymember, to: to, source: skill).yield_self do |d|
         @damages << d
         to.damage << d
       end
