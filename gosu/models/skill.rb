@@ -5,11 +5,11 @@ class Skill
   GAMEDATA_PATH = File.expand_path(File.join(__FILE__, '../../data_ideas/data.json')).freeze
 
   def self.from_castle_id(id, xp=0)
-    @@skills ||= JSON.parse(File.read(GAMEDATA_PATH), symbolize_names: true).yield_self do |game_data|
+    @skills ||= JSON.parse(File.read(GAMEDATA_PATH), symbolize_names: true).yield_self do |game_data|
       game_data[:sheets].select { |sheet| sheet[:name] == 'skills' }.first[:lines]
     end
 
-    @@skills.find { |s| s[:id] == id }.yield_self do |skill|
+    @skills.find { |s| s[:id] == id }.yield_self do |skill|
       new(**skill.merge(xp: xp))
     end
   end
