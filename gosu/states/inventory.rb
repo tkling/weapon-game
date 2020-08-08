@@ -14,7 +14,7 @@ class Inventory < GameState
     x_item, x_count = 50, sort_label_x + 100
     y_both = 150
 
-    inventory.tally.each do |item, count|
+    inventory.map(&:name).tally.each do |item, count|
       count = count < 10 ? ":0#{count}" : ":#{count}"
 
       window.normal_font_draw(x_item,  y_both, 0, Color::YELLOW, item)

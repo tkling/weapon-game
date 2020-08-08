@@ -69,7 +69,7 @@ class Continue < GameState
   end
 
   def set_inventory_from_hash(hash)
-    window.globals.inventory = hash[:inventory] || []
+    window.globals.inventory = hash[:inventory]&.map { |item_hash| Item.from_castle_id(item_hash[:id]) } || []
   end
 
   def save_map

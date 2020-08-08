@@ -127,9 +127,9 @@ class Battle
 
   def loot_possibilities
     [
-      { chance: 50, item: 'potion' },
-      { chance: 35, item: 'hand grenade' },
-      { chance: 15, item: 'golden crown' }
+      { chance: 50, item: Item.from_castle_id('item_potion1') },
+      { chance: 35, item: Item.from_castle_id('item_attack1') },
+      { chance: 15, item: Item.from_castle_id('item_profit1') }
     ]
   end
 end

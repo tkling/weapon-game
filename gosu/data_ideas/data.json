@@ -133,6 +133,83 @@
 			],
 			"separators": [],
 			"props": {}
+		},
+		{
+			"name": "items",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "description",
+					"display": null
+				},
+				{
+					"typeStr": "3",
+					"name": "value",
+					"opt": true
+				},
+				{
+					"typeStr": "1",
+					"name": "effect",
+					"opt": true
+				},
+				{
+					"typeStr": "3",
+					"name": "target_count",
+					"opt": true
+				},
+				{
+					"typeStr": "1",
+					"name": "default_target",
+					"opt": true,
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "targetting_type",
+					"opt": true,
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "item_potion1",
+					"name": "Sip of Life",
+					"description": "A teasingly tiny taste of a tantalizing tincture; restores 12 hp.",
+					"default_target": "party",
+					"target_count": 1,
+					"effect": "hp +12",
+					"targetting_type": "single",
+					"value": 5
+				},
+				{
+					"id": "item_attack1",
+					"name": "Hand Grenade",
+					"description": "More like a firecracker playing soldier; deals 8 damage to 2 random enemies.",
+					"effect": "hp -8",
+					"target_count": 2,
+					"default_target": "enemy",
+					"targetting_type": "multiple",
+					"value": 8
+				},
+				{
+					"id": "item_profit1",
+					"name": "Golden Crown",
+					"description": "A glimpse of elegance at first glance; upon closer inspection the finish is marred, lessening it's trade value.",
+					"value": 25
+				}
+			],
+			"separators": [],
+			"props": {}
 		}
 	],
 	"customTypes": [],
