@@ -40,16 +40,15 @@ module SpawningMethods
   def spawn_enemies(count)
     count.times.map do |idx|
       Character.new(name: "Enemy#{ idx }", job: job_types[idx],
-                    weapon: random_weapon, armor: random_armor, type: :enemy, items: [],
+                    weapon: random_weapon, armor: random_armor, type: :enemy,
                     base_stats: { hp: random_from_range(10..27) })
     end
   end
 
   def spawn_starting_hero(job)
     @names ||= %w(Sherryl Marle Taylor Rihanna Kevin Eric Seb Devon Einstein Bastion Clarence Hannah Mertle Xena)
-    items = [:potion, :potion, :grenade, :cheese_wheel]
     Character.new(name: @names.sample, job: job, weapon: random_weapon, armor: random_armor,
-                  type: :partymember, items: items, base_stats: { hp: random_from_range(14..30) })
+                  type: :partymember, base_stats: { hp: random_from_range(14..30) })
   end
 
   def random_from_range(range)
