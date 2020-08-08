@@ -13,7 +13,7 @@ class Weapon
   def determine_skills(skills)
     case skills.first
     when Skill then skills
-    when Hash  then skills.map { |s| Skill.from_castle_id(s[:id], s[:xp]) }
+    when Hash  then skills.map { |s| Skill.from_castle_id(s[:id], xp: s[:xp]) }
     else raise CannotSetWeaponSkills, "skill type is #{skills.first.class}, expected Skill or Hash"
     end
   end
