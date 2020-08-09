@@ -8,11 +8,15 @@ class Damage
     @hit_amount = compute_hit_amount
   end
 
+  def resolve
+    to.add_hp(hit_amount)
+  end
+
   def compute_hit_amount
     #   base weapon damage
     # + skill base damage*skill damage multiplier
     # - to.armor.damage_resist
-    10
+    -10
   end
 
   def message

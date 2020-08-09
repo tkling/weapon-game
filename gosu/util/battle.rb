@@ -6,7 +6,8 @@ class Battle
   PHASES = %i[
     select_partymember_skill
     select_partymember_target
-    assign_enemy_action,
+    assign_enemy_action
+    round_resolution
     round_end
     victory
     defeat
@@ -61,8 +62,10 @@ class Battle
     all_commands_taken = commands.all? { |char, com| char && com[:skill] && com[:target] }
     still_battling_participants = battle_order.select { |bp| bp.current_hp.positive? }
 
-    if current_battle_participant.nil? || commands.count == still_battling_participants.count && all_commands_taken
+    if phase == :round_resolution && commands.empty? && damages.any?
       :round_end
+    elsif current_battle_participant.nil? || commands.count == still_battling_participants.count && all_commands_taken
+      :round_resolution
     elsif enemies.none? { |ene| ene.current_hp.positive? }
       :victory
     elsif party.none? { |pm| pm.current_hp.positive? }
@@ -86,8 +89,8 @@ class Battle
       start_decision
     end
 
-    assign_damages      if phase == :round_end && damages.empty?
     assign_enemy_action if phase == :assign_enemy_action
+    resolve_commands    if phase == :round_resolution
 
     if phase == :victory
       @loot ||= LootGenerator.generate(*loot_possibilities)
@@ -105,6 +108,7 @@ class Battle
         to.damage << d
       end
     end
+    @commands.clear
   end
 
   def assign_enemy_action
@@ -112,6 +116,11 @@ class Battle
     skill = current_battle_participant.weapon.skills.sample
     commands[current_battle_participant] = { skill: skill, target: party.sample }
     @battle_order_index += 1
+  end
+
+  def resolve_commands
+    assign_damages
+    damages.each(&:resolve)
   end
 
   def decision_percentage_remaining

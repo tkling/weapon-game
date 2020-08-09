@@ -1,15 +1,17 @@
 class Character
   attr_accessor :name, :job, :weapon, :armor, :type, :damage, :base_stats, :skill_mappings, :xp
+  attr_reader :current_hp
 
   POSSIBLE_KEY_MAPPINGS = [Keys::Q, Keys::W, Keys::E, Keys::R]
 
-  def initialize(name:, job:, weapon:, armor:, type:, base_stats: Hash.new(1), xp: 0)
+  def initialize(name:, job:, weapon:, armor:, type:, current_hp:, base_stats: Hash.new(1), xp: 0)
     @name = name
     @job = job
     @armor = armor
     @type = type
     @base_stats = base_stats
     @xp = xp
+    @current_hp = current_hp
     @damage = []
     @weapon = make_weapon weapon
     @armor = make_armor armor
@@ -34,8 +36,15 @@ class Character
     base_stats[:hp] # + armor.hp_bonus ??
   end
 
-  def current_hp
-    [max_hp - damage.map(&:hit_amount).sum, 0].max
+  def add_hp(amount)
+    result = current_hp + amount
+    @current_hp = if result >= max_hp
+                    max_hp
+                  elsif result <= 0
+                    0
+                  else
+                    result
+                  end
   end
 
   def level
@@ -65,6 +74,7 @@ class Character
       weapon: weapon.to_h,
       armor: armor.to_h,
       type: type,
+      current_hp: current_hp,
       base_stats: base_stats,
       xp: xp
     }

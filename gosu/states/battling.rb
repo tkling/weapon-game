@@ -28,7 +28,7 @@ class Battling < GameState
   end
 
   def update
-    @battle.update
+    @battle.update unless @awaiting_confirmation
 
     if @battle.phase == :victory
       window.globals.inventory += @battle.loot
