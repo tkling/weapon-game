@@ -175,9 +175,8 @@
 				},
 				{
 					"typeStr": "1",
-					"name": "targetting_type",
-					"opt": true,
-					"display": null
+					"name": "targeting_type",
+					"opt": true
 				}
 			],
 			"lines": [
@@ -187,25 +186,67 @@
 					"description": "A teasingly tiny taste of a tantalizing tincture; restores 12 hp.",
 					"default_target": "party",
 					"target_count": 1,
-					"effect": "hp +12",
-					"targetting_type": "single",
-					"value": 5
+					"effect": "hp + 12",
+					"value": 5,
+					"targeting_type": "single"
 				},
 				{
 					"id": "item_attack1",
 					"name": "Hand Grenade",
 					"description": "More like a firecracker playing soldier; deals 8 damage to 2 random enemies.",
-					"effect": "hp -8",
+					"effect": "hp - 8",
 					"target_count": 2,
 					"default_target": "enemy",
-					"targetting_type": "multiple",
-					"value": 8
+					"value": 8,
+					"targeting_type": "multiple"
 				},
 				{
 					"id": "item_profit1",
 					"name": "Golden Crown",
 					"description": "A glimpse of elegance at first glance; upon closer inspection the finish is marred, lessening it's trade value.",
 					"value": 25
+				},
+				{
+					"id": "item_weaken",
+					"name": "Bottled Lethargy",
+					"description": "A single swig and you're stumbling; *weakened* status is applied.",
+					"value": 10,
+					"effect": "status + weakened"
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "status_effects",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "description",
+					"display": null
+				},
+				{
+					"typeStr": "1",
+					"name": "effect",
+					"display": null
+				}
+			],
+			"lines": [
+				{
+					"id": "status_weakened",
+					"name": "Weakened",
+					"description": "Battle damage is decreased.",
+					"effect": ""
 				}
 			],
 			"separators": [],

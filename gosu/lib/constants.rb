@@ -14,6 +14,9 @@ module Keys
   T = Gosu::KbT
   D = Gosu::KbD
   X = Gosu::KbX
+  J = Gosu::KbJ
+  K = Gosu::KbK
+  L = Gosu::KbL
   F1 = Gosu::KbF1
   F5 = Gosu::KbF5
   Space = Gosu::KbSpace
@@ -30,6 +33,10 @@ module Keys
   Row8 = Gosu::Kb8
   Row9 = Gosu::Kb9
   Row0 = Gosu::Kb0
+  Up   = Gosu::KbUp
+  Down = Gosu::KbDown
+  Left = Gosu::KbLeft
+  Right = Gosu::KbRight
 end
 
 module Experience
