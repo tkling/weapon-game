@@ -23,14 +23,6 @@ module SpawningMethods
     Armor.new(name: 'Basic Armor', damage_resist: 5)
   end
 
-  def spawn_characters(count)
-    count.times.map do |idx|
-      Character.new(name: "Hero#{ idx }", job: job_types[idx],
-                    weapon: random_weapon, armor: random_armor, type: :partymember, items: [],
-                    base_stats: { hp: random_from_range(14..30) })
-    end
-  end
-
   def make_encounters(count)
     count.times.map do |_|
       spawn_enemies random_from_range(1..3)
@@ -39,16 +31,18 @@ module SpawningMethods
 
   def spawn_enemies(count)
     count.times.map do |idx|
+      hp = random_from_range(10..27)
       Character.new(name: "Enemy#{ idx }", job: job_types[idx],
                     weapon: random_weapon, armor: random_armor, type: :enemy,
-                    base_stats: { hp: random_from_range(10..27) })
+                    current_hp: hp, base_stats: { hp: hp })
     end
   end
 
   def spawn_starting_hero(job)
     @names ||= %w(Sherryl Marle Taylor Rihanna Kevin Eric Seb Devon Einstein Bastion Clarence Hannah Mertle Xena)
+    hp = random_from_range(14..30)
     Character.new(name: @names.sample, job: job, weapon: random_weapon, armor: random_armor,
-                  type: :partymember, base_stats: { hp: random_from_range(14..30) })
+                  type: :partymember, current_hp: hp, base_stats: { hp: hp })
   end
 
   def random_from_range(range)
