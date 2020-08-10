@@ -8,6 +8,7 @@ class Inventory < GameState
   def initialize(window)
     super
     @item, @target, @highlight_index = nil, nil, 0
+    select_item
   end
 
   def bind_keys
@@ -84,6 +85,7 @@ class Inventory < GameState
   end
 
   def select_item
+    return if tallied_inventory_names.none?
     name_pair = tallied_inventory_names.to_a[@highlight_index]
     return bump_highlight_index(-1) && select_item if name_pair.nil? || name_pair.size != 2
     @item = inventory.find { |i| i.name == name_pair.first }
@@ -93,7 +95,7 @@ class Inventory < GameState
     if @item && @target
       @item.apply(@target)
       inventory.delete(@item)
-      @target = nil
+      @target = @item = nil
       select_item
     end
   end
