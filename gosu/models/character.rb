@@ -1,10 +1,10 @@
 class Character
-  attr_accessor :name, :job, :weapon, :armor, :type, :damage, :base_stats, :skill_mappings, :xp
-  attr_reader :current_hp
+  attr_accessor :name, :job, :weapon, :armor, :type, :damage, :base_stats, :skill_mappings
+  attr_reader :current_hp, :status_effects, :xp
 
   POSSIBLE_KEY_MAPPINGS = [Keys::Q, Keys::W, Keys::E, Keys::R]
 
-  def initialize(name:, job:, weapon:, armor:, type:, current_hp:, base_stats: Hash.new(1), xp: 0)
+  def initialize(name:, job:, weapon:, armor:, type:, current_hp:, base_stats: Hash.new(1), xp: 0, status_effects: [])
     @name = name
     @job = job
     @armor = armor
@@ -12,7 +12,7 @@ class Character
     @base_stats = base_stats
     @xp = xp
     @current_hp = current_hp
-    @damage = []
+    @damage, @status_effects = [], status_effects
     @weapon = make_weapon weapon
     @armor = make_armor armor
     @skill_mappings = make_skill_mappings
