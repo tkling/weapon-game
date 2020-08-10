@@ -1,8 +1,8 @@
 class Inventory < GameState
   TARGET_KEYS = {
-    Keys::J => '[j]',
-    Keys::K => '[k]',
-    Keys::L => '[l]'
+    Keys::J => 'j',
+    Keys::K => 'k',
+    Keys::L => 'l'
   }.freeze
 
   def initialize(window)
@@ -71,13 +71,6 @@ class Inventory < GameState
 
   def tallied_inventory_names
     inventory.map(&:name).tally
-  end
-
-  def update
-    if @item && @target
-      @item.apply(@target)
-      @item = @target = nil
-    end
   end
 
   def bump_highlight_index(amount)
