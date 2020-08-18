@@ -24,16 +24,16 @@ class GameWindow < Gosu::Window
   def update
     @state.update
     advance_state
-  rescue StandardError => err
-    bt = err.backtrace
+  rescue StandardError => e
+    bt = e.backtrace
     binding.pry
   end
 
   def draw
     draw_state_info
     @state.draw
-  rescue StandardError => err
-    bt = err.backtrace
+  rescue StandardError => e
+    bt = e.backtrace
     binding.pry
   end
 
@@ -47,8 +47,8 @@ class GameWindow < Gosu::Window
     @last_keypress = id
     @state.handle_global_keypresses id
     @state.key_pressed id
-  rescue StandardError => err
-    bt = err.backtrace
+  rescue StandardError => e
+    bt = e.backtrace
     binding.pry
   end
 
