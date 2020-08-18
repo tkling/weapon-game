@@ -11,6 +11,7 @@ require 'models/castle_model'
 require 'states/game_state'
 require 'util/game_window'
 require 'util/loot_generator'
+require 'util/experience_tracker'
 require 'util/battle'
 
 %w(states models).each do |dir|
