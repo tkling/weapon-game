@@ -58,6 +58,10 @@ class Character
     10
   end
 
+  def skills
+    weapon.skills
+  end
+
   def xp_progression_info(xp_amount)
     {
       starting_xp: xp.dup,
