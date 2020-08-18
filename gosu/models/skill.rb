@@ -2,8 +2,9 @@ class Skill < CastleModel
   attr_accessor :name, :str
   attr_reader :id, :type, :element, :max_level, :xp, :xp_thresholds, :level_modifier
 
-  def level
-    xp_thresholds.index(xp_thresholds.select { |amount| amount <= xp }.last) + 1
+  def level(additional=0)
+    amount_to_consider = xp + additional
+    xp_thresholds.index(xp_thresholds.select { |amount| amount <= amount_to_consider }.last) + 1
   end
 
   def add_xp(xp)

@@ -32,7 +32,8 @@ class Battling < GameState
 
     if @battle.phase == :victory
       window.globals.inventory += @battle.loot
-      proceed_to Victory.new(window, @battle.loot)
+      @battle.add_awarded_character_experience!
+      proceed_to Victory.new(window, @battle)
     end
 
     if @battle.phase == :round_end

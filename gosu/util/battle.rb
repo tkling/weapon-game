@@ -1,7 +1,6 @@
 # frozen_string_literal: true
-
 class Battle
-  attr_reader :battle_order, :party, :enemies, :commands, :damages, :phase, :loot
+  attr_reader :battle_order, :party, :enemies, :commands, :damages, :phase, :loot, :xp_tracker
 
   PHASES = %i[
     select_partymember_skill
@@ -15,6 +14,7 @@ class Battle
 
   def initialize(party, enemies)
     @party, @enemies = party, enemies
+    @xp_tracker = ExperienceTracker.new(party + party.map(&:skills).flatten)
     reset_round_state
   end
 
@@ -99,14 +99,10 @@ class Battle
 
   def assign_damages
     return if @commands.any? { |_, skill_hash| skill_hash[:target].nil? }
-    @commands.each do |partymember, skill_info|
-      to = skill_info[:target]
-      skill = skill_info[:skill]
-      skill.add_xp(1)
-      Damage.new(from: partymember, to: to, source: skill).yield_self do |d|
-        @damages << d
-        to.damage << d
-      end
+    @commands.each do |char, skill_info|
+      to, skill = skill_info.values_at(:target, :skill)
+      xp_tracker.add_experience(skill) if party.include?(char)
+      damages << Damage.new(from: char, to: to, source: skill)
     end
     @commands.clear
   end
@@ -140,5 +136,15 @@ class Battle
       { chance: 35, item: Item.from_castle_id('item_attack1') },
       { chance: 15, item: Item.from_castle_id('item_profit1') }
     ]
+  end
+
+  def add_awarded_character_experience!
+    party.each do |pm|
+      xp_tracker.add_experience(pm, character_experience)
+    end
+  end
+
+  def character_experience
+    250
   end
 end

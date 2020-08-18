@@ -1,19 +1,23 @@
 class XpRewards < GameState
-  def initialize(window, xp_reward)
+  def initialize(window, xp_tracker)
     super window
-    @xp_reward = xp_reward
-    @progression_infos = window.globals.party.map do |p|
-      p.xp_progression_info(@xp_reward).merge(name: p.name)
+    @xp_tracker = xp_tracker
+    @progression_infos = window.globals.party.map do |pm|
+      xp_tracker.xp_progression_info_for(pm).merge(name: pm.name)
     end
   end
 
   def bind_keys
-    bind Keys::Space, ->{ proceed_to(map.complete? ? MapCompleted : CaravanMenu) }
+    bind Keys::Space, ->{
+      @xp_tracker.award!
+      next_screen = map.complete? ? MapCompleted : CaravanMenu
+      proceed_to(next_screen)
+    }
   end
 
   def draw
-    window.huge_font_draw(  10, 10,  0, Color::YELLOW, 'X P')
-    window.large_font_draw(20, 100, 0, Color::YELLOW, "XP gained: #{@xp_reward}")
+    window.huge_font_draw( 10, 10,  0, Color::YELLOW, 'X P')
+    window.large_font_draw(20, 100, 0, Color::YELLOW, "XP gained: #{@xp_tracker.character_xp_reward}")
 
     @partymember_progression_strings ||= @progression_infos.map do |info|
       l1, l2 = info[:starting_level], info[:level_after_reward]

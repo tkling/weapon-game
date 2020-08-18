@@ -12,7 +12,7 @@ class Character
     @base_stats = base_stats
     @xp = xp
     @current_hp = current_hp
-    @damage, @status_effects = [], status_effects
+    @status_effects = status_effects
     @weapon = make_weapon weapon
     @armor = make_armor armor
     @skill_mappings = make_skill_mappings
@@ -47,9 +47,14 @@ class Character
                   end
   end
 
-  def level
+  def add_xp(amount)
+    @xp += amount
+  end
+
+  def level(additional_xp=0)
+    amount_to_consider = xp + additional_xp
     Experience::LevelMap.each_cons(2) do |(lvl, xp_amount), (_, next_xp_amount)|
-      return lvl if xp_amount <= xp  && xp < next_xp_amount
+      return lvl if xp_amount <= amount_to_consider && amount_to_consider < next_xp_amount
     end
   end
 

@@ -1,14 +1,14 @@
 class Victory < GameState
   attr_reader :loot
 
-  def initialize(window, loot)
+  def initialize(window, battle)
     super window
-    @loot = loot
+    @loot, @xp_tracker = battle.loot, battle.xp_tracker
     advance_journey_progress
   end
 
   def bind_keys
-    bind Keys::Space, ->{ proceed_to XpRewards.new(window, 250) }
+    bind Keys::Space, ->{ proceed_to XpRewards.new(window, @xp_tracker) }
   end
 
   def draw
