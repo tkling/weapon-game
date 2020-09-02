@@ -33,7 +33,7 @@ module SpawningMethods
     count.times.map do |idx|
       hp = random_from_range(10..27)
       Character.new(name: "Enemy#{ idx }", job: job_types[idx],
-                    weapon: random_weapon, armor: random_armor, type: :enemy,
+                    weapon: random_weapon, armor: random_armor, type: 'enemy',
                     current_hp: hp, base_stats: { hp: hp })
     end
   end
@@ -42,7 +42,7 @@ module SpawningMethods
     @names ||= %w(Sherryl Marle Taylor Rihanna Kevin Eric Seb Devon Einstein Bastion Clarence Hannah Mertle Xena)
     hp = random_from_range(14..30)
     Character.new(name: @names.sample, job: job, weapon: random_weapon, armor: random_armor,
-                  type: :partymember, current_hp: hp, base_stats: { hp: hp })
+                  type: 'partymember', current_hp: hp, base_stats: { hp: hp })
   end
 
   def random_from_range(range)
