@@ -16,7 +16,7 @@ class Damage
     #   base weapon damage
     # + skill base damage*skill damage multiplier
     # - to.armor.damage_resist
-    -10
+    from.type == 'partymember' ? -10 : (-5..-1).to_a.sample
   end
 
   def message
