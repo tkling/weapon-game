@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module ZOrder
   UI = 1
 end
@@ -47,4 +48,20 @@ module Experience
       map[level.to_i] = required_xp.tr(',', '').to_i
     end.freeze
   end
+end
+
+module Elements
+  Fire = 'fire'
+  Water = 'water'
+  Ice = 'ice'
+  Thunder = 'thunder'
+  Neutral = 'neutral'
+
+  AffinityMap ||= {
+    Fire    => { Fire => 1.0, Water => 0.5, Ice => 1.5, Thunder => 1.0, Neutral => 1.0 },
+    Water   => { Fire => 1.5, Water => 1.0, Ice => 1.0, Thunder => 0.5, Neutral => 1.0 },
+    Ice     => { Fire => 1.0, Water => 0.5, Ice => 1.0, Thunder => 1.5, Neutral => 1.0 },
+    Thunder => { Fire => 1.0, Water => 1.5, Ice => 0.5, Thunder => 1.0, Neutral => 1.0 },
+    Neutral => { Fire => 1.0, Water => 1.0, Ice => 1.0, Thunder => 1.0, Neutral => 1.0 }
+  }
 end

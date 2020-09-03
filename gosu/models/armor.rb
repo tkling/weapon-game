@@ -1,15 +1,15 @@
-class Armor
-  attr_accessor :name, :damage_resist
-
-  def initialize(name:, damage_resist:)
-    @name = name
-    @damage_resist = damage_resist
-  end
+class Armor < CastleModel
+  attr_reader :id, :name, :damage_resist, :element
 
   def to_h
-    {
-      name: name,
-      damage_resist: damage_resist
-    }
+    { id: id }
+  end
+
+  protected
+  def initialize(id:, name:, damage_resist:, element: Elements::Neutral)
+    @id = id
+    @name = name
+    @damage_resist = damage_resist
+    @element = element
   end
 end

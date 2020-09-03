@@ -67,7 +67,7 @@
 						90,
 						150
 					],
-					"element": "light",
+					"element": "neutral",
 					"max_level": 5
 				},
 				{
@@ -247,6 +247,62 @@
 					"name": "Weakened",
 					"description": "Battle damage is decreased.",
 					"effect": ""
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "armors",
+			"columns": [
+				{
+					"typeStr": "0",
+					"name": "id"
+				},
+				{
+					"typeStr": "1",
+					"name": "name",
+					"display": null
+				},
+				{
+					"typeStr": "4",
+					"name": "damage_resist"
+				},
+				{
+					"typeStr": "1",
+					"name": "element"
+				}
+			],
+			"lines": [
+				{
+					"id": "armor_cloth",
+					"name": "Everyday Clothing",
+					"damage_resist": 1,
+					"element": "neutral"
+				},
+				{
+					"id": "armor_fire1",
+					"name": "Oven Mitts",
+					"damage_resist": 2,
+					"element": "fire"
+				},
+				{
+					"id": "armor_ice1",
+					"name": "Hiking Socks",
+					"damage_resist": 2,
+					"element": "ice"
+				},
+				{
+					"id": "armor_thunder1",
+					"name": "Rubber Gloves",
+					"damage_resist": 2,
+					"element": "thunder"
+				},
+				{
+					"id": "armor_water1",
+					"name": "Bug-eye Goggles",
+					"damage_resist": 2,
+					"element": "water"
 				}
 			],
 			"separators": [],

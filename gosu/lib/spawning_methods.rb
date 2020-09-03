@@ -20,7 +20,7 @@ module SpawningMethods
   end
 
   def random_armor
-    Armor.new(name: 'Basic Armor', damage_resist: 5)
+    Armor.from_castle_id(Armor.all_castle_ids.sample)
   end
 
   def make_encounters(count)

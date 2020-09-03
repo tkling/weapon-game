@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Character
   attr_accessor :name, :job, :weapon, :armor, :type, :damage, :base_stats, :skill_mappings
   attr_reader :current_hp, :status_effects, :xp
@@ -19,7 +20,7 @@ class Character
   end
 
   def make_armor(armor)
-    armor.class == Armor ? armor : Armor.new(**armor)
+    armor.class == Armor ? armor : Armor.from_castle_id(armor[:id])
   end
 
   def make_weapon(weapon)
