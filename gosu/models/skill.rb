@@ -4,7 +4,14 @@ class Skill < CastleModel
 
   def level(additional=0)
     amount_to_consider = xp + additional
+    return 1 if amount_to_consider < xp_thresholds.min
     xp_thresholds.index(xp_thresholds.select { |amount| amount <= amount_to_consider }.last) + 1
+  end
+
+  def level_damage_multiplier
+    raise 'level cannot be less than 1!' if level < 1
+    return 1.0 if level == 1
+    level_modifier ** (level - 1)
   end
 
   def add_xp(xp)

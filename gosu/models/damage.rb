@@ -16,7 +16,9 @@ class Damage
     #   base weapon damage
     # + skill base damage*skill damage multiplier
     # - to.armor.damage_resist
-    from.type == 'partymember' ? -10 : (-5..-1).to_a.sample
+    damage = from.type == 'partymember' ? -10 : (-5..-1).to_a.sample
+    damage = damage * Elements::AffinityMap[source.element][to.armor.element]
+    (damage * source.level_damage_multiplier).to_i
   end
 
   def message
