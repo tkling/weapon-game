@@ -8,3 +8,8 @@ STATUS EFFECTS
 - distracted - skip a turn
 - scared
 - hungry/thirsty => would involve adding food/drink to consumable items
+
+LINGERING STATUS EFFECTS - remain after battle
+- poison
+- grim
+
