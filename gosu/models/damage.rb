@@ -21,7 +21,8 @@ class Damage
     damage = damage * Elements::AffinityMap[source.element][to.armor.element]
     damage = damage * source.level_damage_multiplier
     damage = damage * (100 - to.armor.damage_resist) / 100
-    damage.round(half: :up).to_i
+    damage = damage.round(half: :up).to_i
+    damage == 0 ? 1 : damage
   end
 
   def message
