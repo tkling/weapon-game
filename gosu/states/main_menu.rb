@@ -1,19 +1,23 @@
+# frozen_string_literal: true
 class MainMenu < GameState
-  def bind_keys
-    bind Keys::Q,               ->{ proceed_to NewGame }
-    bind Keys::W,               ->{ proceed_to Continue }
-    bind Keys::E,               ->{ proceed_to Options }
-    bind Keys::Escape, Keys::D, ->{ window.close }
+  include SaveMethods
+
+  def initialize(game_window)
+    super
+    @choice_list = SelectableChoiceList.new(
+      parent_screen: self,
+      starting_index: savefile_paths.any? ? 1 : 0,
+      choice_mappings: [
+        { text: 'new game', action: ->{ proceed_to NewGame } },
+        { text: 'continue', action: ->{ proceed_to Continue } },
+        { text: 'options',  action: ->{ proceed_to Options } },
+        { text: 'quit',     action: ->{ window.close } }
+      ]
+    )
   end
 
   def draw
-    header = 'WEAPON GAME MAIN MENU'
-    window.huge_font_draw(45, 20, 0, Color::YELLOW, header)
-
-    new_game = 'q - new game'
-    continue = 'w - continue'
-    options = 'e - options'
-    close = 'd - exit'
-    window.large_font_draw(320, 200, 40, Color::YELLOW, new_game, continue, options, close)
+    window.huge_font_draw(45, 20, 0, Color::YELLOW, 'WEAPON GAME MAIN MENU')
+    @choice_list.draw(x: 320, y_start: 200, y_spacing: 40)
   end
 end

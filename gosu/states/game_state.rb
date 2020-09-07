@@ -1,5 +1,5 @@
 class GameState
-  attr_reader :window
+  attr_reader :window, :keybinds
 
   def initialize(window)
     @window = window
