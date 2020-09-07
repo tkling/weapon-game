@@ -15,9 +15,11 @@ module Keys
   T = Gosu::KbT
   D = Gosu::KbD
   X = Gosu::KbX
+  H = Gosu::KbH
   J = Gosu::KbJ
   K = Gosu::KbK
   L = Gosu::KbL
+  U = Gosu::KbU
   F1 = Gosu::KbF1
   F5 = Gosu::KbF5
   Space = Gosu::KbSpace
@@ -38,6 +40,16 @@ module Keys
   Down = Gosu::KbDown
   Left = Gosu::KbLeft
   Right = Gosu::KbRight
+end
+
+module Controls
+  Confirm = Keys::E
+  Cancel  = Keys::U
+
+  Right = Keys::H
+  Left  = Keys::L
+  Up    = Keys::K
+  Down  = Keys::J
 end
 
 module Experience
