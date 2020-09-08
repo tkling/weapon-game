@@ -13,7 +13,10 @@ module Keys
   E = Gosu::KbE
   R = Gosu::KbR
   T = Gosu::KbT
+  A = Gosu::KbA
+  S = Gosu::KbS
   D = Gosu::KbD
+  F = Gosu::KbF
   X = Gosu::KbX
   H = Gosu::KbH
   J = Gosu::KbJ
