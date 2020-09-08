@@ -1,36 +1,35 @@
 class CaravanMenu < GameState
-  def bind_keys
-    bind Keys::Space, Keys::Return, Keys::Enter, ->{ proceed_to Battling }
-    bind Keys::Q,                                ->{ proceed_to Status }
-    bind Keys::W,                                ->{ proceed_to Inventory }
-    bind Keys::E,                                ->{ proceed_to PartyConfig }
-    bind Keys::R,                                ->{ proceed_to Save }
-    bind Keys::X,                                ->{ window.close }
+  def initialize(game_window)
+    super
+    @choice_list = SelectableChoiceList.new(
+      parent_screen: self,
+      choice_mappings: [
+        { text: 'Battle',    action: ->{ proceed_to Battling } },
+        { text: 'Status',    action: ->{ proceed_to Status } },
+        { text: 'Inventory', action: ->{ proceed_to Inventory } },
+        { text: 'Config',    action: ->{ proceed_to PartyConfig } },
+        { text: 'Save',      action: ->{ proceed_to Save } },
+        { text: 'Quit',      action: ->{ window.close } }
+      ]
+    )
   end
 
   def draw
-    x_start = 25
-    window.huge_font_draw(x_start, 15, 0, Color::YELLOW, 'C A R A V A N_M E N U')
+    x_left = 25
+    window.huge_font_draw(x_left, 15, 0, Color::YELLOW, 'C A R A V A N_M E N U')
 
-    window.large_font_draw(x_start, 200, 30, Color::YELLOW,
+    window.large_font_draw(x_left, 200, 30, Color::YELLOW,
       "Map: #{ map.name }",
       "Dungeon: #{ dungeon.name }",
       "Encounter: #{ dungeon.encounter_index+1 }/#{ dungeon.encounters.size }"
     )
 
-    window.large_font_draw(x_start, window.height-200, 30, Color::YELLOW,
+    window.large_font_draw(x_left, window.height-200, 30, Color::YELLOW,
       'Time played:',
       formatted_time_played
     )
 
-    # if we're on a boss then show some boss special stuff here
-    window.large_font_draw(window.width-200, 150, 40, Color::YELLOW,
-      '[space] - Battle',
-      'q - Status',
-      'w - Inventory',
-      'e - Config',
-      'r - Save',
-      'x - Exit'
-    )
+    @choice_list.draw(x: window.width-200, y_start: 150, y_spacing: 40)
   end
 end
+
