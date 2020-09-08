@@ -48,7 +48,7 @@ class Inventory < GameState
   end
 
   def sort_inventory
-    inventory.sort_by! { |item| item.name }
+    inventory.sort_by!(&:name)
     reset_and_rebind_choices
   end
 
