@@ -1,38 +1,29 @@
+# frozen_string_literal: true
 class Inventory < GameState
-  TARGET_KEYS = {
-    Keys::J => 'j',
-    Keys::K => 'k',
-    Keys::L => 'l'
-  }.freeze
-
   def initialize(window)
     super
     @item, @target, @highlight_index = nil, nil, 0
-    select_item
+    reset_item_choices
+    reset_target_choices
+    bind_keys
   end
 
   def bind_keys
-    bind Keys::Space, -> { proceed_to CaravanMenu }
-    bind Keys::Q,     -> { sort_inventory }
-    bind Keys::E,     -> { select_target }
-    bind Keys::Up,    -> { bump_highlight_index(-1); select_item }
-    bind Keys::Down,  -> { bump_highlight_index(1);  select_item }
-
-    @target_mapping = TARGET_KEYS.keys.zip(party).to_h.freeze
-    @target_mapping.keys.each do |key|
-      bind key, -> { handle_target(key) }
-    end
+    bind Keys::Space, Controls::Cancel, -> { proceed_to CaravanMenu }
+    bind Controls::Confirm,             -> { appropriate_choice_list.handle_choice }
+    bind Controls::Up,                  -> { appropriate_choice_list.increment_choice_index(-1) }
+    bind Controls::Down,                -> { appropriate_choice_list.increment_choice_index(1) }
+    bind Keys::Q,                       -> { sort_inventory }
   end
 
-  def select_target
-    return if @item.nil?
-    @selecting_target = true
+  def appropriate_choice_list
+    @selecting_target ? @target_choices : @item_choices
   end
 
-  def handle_target(keypress)
-    return unless @selecting_target && @target_mapping.key?(keypress) && @target_mapping[keypress]
+  def use_item_on_character(target_character)
+    return unless @selecting_target
     @selecting_target = false
-    @target = @target_mapping[keypress]
+    @target = target_character
     use_item
   end
 
@@ -46,27 +37,15 @@ class Inventory < GameState
 
     # item name : count
     x_item, x_count, y_both = 50, party_label_x - 100, 150
-    tallied_inventory_names.each.with_index do |(item, count), idx|
-      count = count < 10 ? ":0#{count}" : ":#{count}"
-      item = "* #{item}" if @highlight_index == idx
-
-      window.normal_font_draw(x_item,  y_both, 0, Color::YELLOW, item)
-      window.normal_font_draw(x_count, y_both, 0, Color::YELLOW, count)
-      y_both += 30
-    end
-
-    # keypress - partymember - hp
-    window.normal_font_draw(party_label_x, 150, 45, Color::YELLOW, *@target_mapping.map do |keypress, partymember|
-      name_label = "#{TARGET_KEYS[keypress] + ' - ' if @selecting_target}#{partymember.name}"
-      "#{name_label} - #{partymember.current_hp}/#{partymember.max_hp}"
-    end)
+    @item_choices.draw(x: x_item, y_start: y_both, y_spacing: 30, draw_method: :normal_font_draw, show_cursor: !@selecting_target)
+    @target_choices.draw(x: party_label_x, y_start: 150, y_spacing: 45, show_cursor: @selecting_target)
 
     if @selecting_target
       window.large_font_draw(window.width/2-200, window.height-200, 0, Color::YELLOW, "Select target for #{@item.name}")
     end
 
     window.normal_font_draw(window.width/2-100, window.height-160, 30, Color::YELLOW,
-      '[e] select item', '[q] sort alphabetically', '[space] return to caravan menu'
+      '[e] select item/target', '[q] sort alphabetically', '[space]/[u] return to caravan menu'
     )
   end
 
@@ -82,13 +61,33 @@ class Inventory < GameState
 
   def sort_inventory
     inventory.sort!
+    reset_item_choices
   end
 
-  def select_item
-    return if tallied_inventory_names.none?
-    name_pair = tallied_inventory_names.to_a[@highlight_index]
-    return bump_highlight_index(-1) && select_item if name_pair.nil? || name_pair.size != 2
-    @item = inventory.find { |i| i.name == name_pair.first }
+  def select_item(item_name)
+    found = inventory.find { |i| i.name == item_name }
+    raise "failed to find item with name #{item_name} in inventory :(" if found.nil?
+    @selecting_target = true
+    @item = found
+  end
+
+  def reset_item_choices(starting_index = 0)
+    @item_choices = SelectableChoiceList.new(
+      parent_screen: self,
+      starting_index: starting_index,
+      raise_on_unsafe_bind: false,
+      choice_mappings: tallied_inventory_names.to_a.map do |item_name, count|
+        { text: "#{item_name} : #{count < 10 ? "0#{count}" : count}", action: ->{ select_item(item_name) } }
+      end)
+  end
+
+  def reset_target_choices
+    @target_choices = SelectableChoiceList.new(
+      parent_screen: self,
+      raise_on_unsafe_bind: false,
+      choice_mappings: party.map do |pm|
+        { text: "#{pm.name} - #{pm.current_hp}/#{pm.max_hp}", action: ->{ use_item_on_character(pm) } }
+      end)
   end
 
   def use_item
@@ -96,7 +95,9 @@ class Inventory < GameState
       @item.apply(@target)
       inventory.delete(@item)
       @target = @item = nil
-      select_item
+      reset_item_choices(@item_choices.choice_index)
+      reset_target_choices
+      bind_keys
     end
   end
 end
