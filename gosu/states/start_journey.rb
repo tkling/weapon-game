@@ -1,7 +1,7 @@
 class StartJourney < GameState
   def bind_keys
-    bind Keys::Q, ->{ proceed_to CaravanMenu }
-    bind Keys::E, ->{ proceed_to MainMenu }
+    bind Controls::Confirm, ->{ proceed_to CaravanMenu }
+    bind Controls::Cancel,  ->{ proceed_to MainMenu }
   end
 
   def draw
@@ -51,8 +51,8 @@ class StartJourney < GameState
     window.normal_font_draw(@from_left + 185, @dungeon_list_y, 25, Color::YELLOW, *@dungeon_list_2)
 
     # show confirmation
-    @continue_msg ||= 'q to continue with this party'
-    @main_menu_msg ||= 'e to return to main menu'
+    @continue_msg ||= 'e to continue with this party'
+    @main_menu_msg ||= 'u to return to main menu'
     window.large_font_draw(window.width/2-175, window.height - 145, 35, Color::YELLOW, @continue_msg, @main_menu_msg)
   end
 end
