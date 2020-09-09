@@ -39,7 +39,8 @@ module SpawningMethods
   end
 
   def spawn_starting_hero(job)
-    @names ||= %w(Sherryl Marle Taylor Rihanna Kevin Eric Seb Devon Einstein Bastion Clarence Hannah Mertle Xena)
+    @names ||= %w(Sherryl Marle Taylor Rihanna Kevin Eric Seb Devon Einstein Bastion Clarence Hannah Mertle Xena Dante
+                  Derek Delilah Devin Darcy Gwen Cerise Eleanor Heidi Tyler Quan Marr Tan Kanav Jackie Jack James Alec)
     hp = random_from_range(14..30)
     Character.new(name: @names.sample, job: job, weapon: random_weapon, armor: random_armor,
                   type: 'partymember', current_hp: hp, base_stats: { hp: hp })
@@ -50,9 +51,9 @@ module SpawningMethods
   end
 
   def generate_dungeons(amount)
-    @dungeon_adjectives = %w(Forbidden Forboding Foggy Froggy Questionable Sketchy Nefarious
-                               Disgusting Dank Soggy Unstable)
-    @dungeon_nouns = %w(Tarn Steppe Tunnel Escape Path Bog Swamp Dunes Village)
+    @dungeon_adjectives = %w(Forbidden Forboding Foggy Froggy Questionable Sketchy Nefarious Disgusting Dank Soggy
+                             Unstable Bright Fetid Humid Windswept Abandoned Mossy Moist Parched Manicured)
+    @dungeon_nouns = %w(Tarn Steppe Tunnel Escape Path Bog Swamp Dunes Village Beach Desert Path Alley Nook Palace)
     @encounter_range ||= (2..10).to_a
     amount.times.map do
       adj = @dungeon_adjectives.sample.tap { |a| @dungeon_adjectives.delete(a) }
