@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Battling < GameState
-  TARGET_KEYS = { Keys::Q => 'q', Keys::W => 'w', Keys::E => 'e', Keys::R => 'r' }.freeze
+  TARGET_KEYS = { Keys::J => 'j', Keys::K => 'k', Keys::L => 'l' }.freeze
+  SKILL_KEYS =  { Keys::F => 'f', Keys::D => 'd', Keys::S => 's', Keys::A => 'a' }.freeze
 
   def initialize(window)
     super window
@@ -99,7 +100,7 @@ class Battling < GameState
 
   def current_hero_skill_mappings
     @battle.current_battle_participant.skill_mappings.map do |keypress, skill|
-      "#{ TARGET_KEYS[keypress] } - #{ skill.name }"
+      "#{ SKILL_KEYS[keypress] } - #{ skill.name }"
     end
   end
 
@@ -113,7 +114,7 @@ class Battling < GameState
   def bind_keys
     bind Keys::Space, ->{ handle_end_of_round }
 
-    [Keys::Q, Keys::W, Keys::E, Keys::R].each do |key|
+    (SKILL_KEYS.keys + TARGET_KEYS.keys).each do |key|
       bind key, ->{ handle_battle_command(key) }
     end
   end

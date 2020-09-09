@@ -3,7 +3,7 @@ class Character
   attr_accessor :name, :job, :weapon, :armor, :type, :damage, :base_stats, :skill_mappings
   attr_reader :current_hp, :status_effects, :xp
 
-  POSSIBLE_KEY_MAPPINGS = [Keys::Q, Keys::W, Keys::E, Keys::R]
+  SKILL_KEYBINDS = [Keys::F, Keys::D, Keys::S, Keys::A].freeze
 
   def initialize(name:, job:, weapon:, armor:, type:, current_hp:, base_stats: Hash.new(1), xp: 0, status_effects: [])
     @name = name
@@ -29,7 +29,7 @@ class Character
 
   def make_skill_mappings
     weapon.skills.each_with_index.with_object(Hash.new) do |(skill, idx), mappings|
-      mappings[POSSIBLE_KEY_MAPPINGS[idx]] = skill
+      mappings[SKILL_KEYBINDS[idx]] = skill
     end
   end
 
