@@ -16,6 +16,7 @@ class Inventory < GameState
       parent_screen: self,
       starting_index: starting_index,
       raise_on_unsafe_bind: false,
+      draw_method: :normal_font_draw,
       choice_mappings: tallied_inventory_names.to_a.map do |item_name, _|
         { text: item_name, action: ->{ select_item(item_name) } }
       end)
@@ -25,6 +26,7 @@ class Inventory < GameState
     @target_choices = SelectableChoiceList.new(
       parent_screen: self,
       raise_on_unsafe_bind: false,
+      draw_method: :normal_font_draw,
       choice_mappings: party.map do |pm|
         { text: "#{pm.name} - #{pm.current_hp}/#{pm.max_hp}", action: ->{ use_item_on_character(pm) } }
       end)
@@ -49,7 +51,7 @@ class Inventory < GameState
 
   def sort_inventory
     inventory.sort_by!(&:name)
-    reset_and_rebind_choices
+    reset_and_rebind_choices(item_choices_index: @item_choices.choice_index)
   end
 
   def select_item(item_name)
@@ -69,26 +71,28 @@ class Inventory < GameState
   end
 
   def draw
+    @item_count_spacing ||= 30
+    @party_label_x      ||= window.width-250
+    @x_item             ||= 50
+    @x_count            ||= @party_label_x - 90
+    @y_both             ||= 150
+    @heading_y          ||= 100
+
     window.huge_font_draw(10, 10, 0, Color::YELLOW, 'I N V E N T O R Y')
-    window.large_font_draw(50, 100, 0, Color::YELLOW, 'item name')
+    window.large_font_draw(@x_item,            @heading_y, 0, Color::YELLOW, 'item name')
+    window.large_font_draw(@party_label_x,     @heading_y, 0, Color::YELLOW, 'party')
+    window.large_font_draw(@party_label_x-120, @heading_y, 0, Color::YELLOW, 'count')
+    window.normal_font_draw(@x_count, @y_both, @item_count_spacing, Color::YELLOW,
+                            *tallied_inventory_names.to_a.map { |_, count| count })
 
-    party_label_x = window.width-250
-    window.large_font_draw(party_label_x,     100, 0, Color::YELLOW, 'party')
-    window.large_font_draw(party_label_x-120, 100, 0, Color::YELLOW, 'count')
-
-    x_item, x_count, y_both, item_count_spacing = 50, party_label_x - 90, 150, 30
-    @item_choices.draw(x: x_item, y_start: y_both, y_spacing: item_count_spacing, draw_method: :normal_font_draw, show_cursor: !@selecting_target)
-    @target_choices.draw(x: party_label_x, y_start: y_both, y_spacing: 45, draw_method: :normal_font_draw, show_cursor: @selecting_target)
-    window.normal_font_draw(x_count, y_both, item_count_spacing, Color::YELLOW,
-      *tallied_inventory_names.to_a.map { |_, count| count }
-    )
+    @item_choices.draw(x: @x_item, y_start: @y_both, y_spacing: @item_count_spacing, show_cursor: !@selecting_target)
+    @target_choices.draw(x: @party_label_x, y_start: @y_both, y_spacing: 45, show_cursor: @selecting_target)
 
     if @selecting_target
       window.large_font_draw(window.width/2-200, window.height-200, 0, Color::YELLOW, "Select target for #{@item.name}")
     end
 
     window.normal_font_draw(window.width/2-100, window.height-160, 30, Color::YELLOW,
-      '[e] select item/target', '[u] cancel item usage', '[s] sort alphabetically', '[space] return to caravan menu'
-    )
+      '[e] select item/target', '[u] cancel item usage', '[s] sort alphabetically', '[space] return to caravan menu')
   end
 end

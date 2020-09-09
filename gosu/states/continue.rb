@@ -7,6 +7,7 @@ class Continue < GameState
     @savefile_count = savefile_paths.size
     @choice_list = SelectableChoiceList.new(
       parent_screen: self,
+      draw_method: :normal_font_draw,
       choice_mappings: savefile_paths.map.with_index do |filename, idx|
         { text: savefile_display_string(filename, idx+1), action: ->{ load_and_continue(filename) } }
       end
@@ -22,7 +23,7 @@ class Continue < GameState
     window.huge_font_draw(25, 10, 0, Color::YELLOW, 'CHOOSE A SAVE')
 
     if @savefile_count.positive?
-      @choice_list.draw(x: 50, y_start: 100, y_spacing: 40, draw_method: :normal_font_draw)
+      @choice_list.draw(x: 50, y_start: 100, y_spacing: 40)
     else
       window.large_font_draw(15, 100, 0, Color::YELLOW, 'NO SAVES YET')
       window.normal_font_draw(15, 140, 0, Color::YELLOW, 'Continuing to new game now...')

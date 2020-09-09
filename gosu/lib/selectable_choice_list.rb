@@ -2,11 +2,12 @@
 class SelectableChoiceList
   attr_reader :choice_index
 
-  def initialize(parent_screen:, choice_mappings:, starting_index: 0, raise_on_unsafe_bind: true)
+  def initialize(parent_screen:, choice_mappings:, starting_index: 0, raise_on_unsafe_bind: true, draw_method: :large_font_draw)
     @screen = parent_screen
     @choices = choice_mappings
     @choice_index = starting_index
     @raise_on_unsafe_bind = raise_on_unsafe_bind
+    @draw_method = draw_method
     ensure_index_within_bounds
     add_keybinds
   end
@@ -39,13 +40,13 @@ class SelectableChoiceList
     increment_choice_index(-1) if @choice_index >= @choices.size
   end
 
-  def draw(x:, y_start:, y_spacing:, draw_method: :large_font_draw, show_cursor: true)
+  def draw(x:, y_start:, y_spacing:, show_cursor: true)
     return unless @choices.size.positive?
-    @screen.window.send(draw_method, x, y_start, y_spacing, Color::YELLOW, *@choices.map { |c| c[:text] })
+    @screen.window.send(@draw_method, x, y_start, y_spacing, Color::YELLOW, *@choices.map { |c| c[:text] })
 
     if show_cursor
       selector_y = y_start + y_spacing * @choice_index
-      @screen.window.send(draw_method, x-20, selector_y+5, 0, Color::YELLOW, '*')
+      @screen.window.send(@draw_method, x-20, selector_y+5, 0, Color::YELLOW, '*')
     end
   end
 end
