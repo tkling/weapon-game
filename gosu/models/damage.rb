@@ -26,6 +26,6 @@ class Damage
   end
 
   def message
-    "#{from.name} (#{from.level}) -> #{to.name}: #{hit_amount} (#{source.name}[#{source.level}])"
+    "#{from.name} -> #{to.name}: #{hit_amount} (#{source.name} [#{source.level}])"
   end
 end
