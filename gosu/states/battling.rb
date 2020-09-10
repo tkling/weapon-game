@@ -105,7 +105,7 @@ class Battling < GameState
   end
 
   def decision_timer_messages
-    bar_count = (@battle.decision_percentage_remaining / 4.0).ceil
+    bar_count = (@battle.decision_percentage_remaining * 100 / 4.0).ceil
     timer = "Decision Timer: |#{ '=' * bar_count }|"
     bonus = "Bonus: #{ bar_count/2.5 }"
     [timer, bonus]
@@ -121,7 +121,6 @@ class Battling < GameState
 
   def handle_battle_command(key)
     return unless [:select_partymember_skill, :select_partymember_target].include?(@battle.phase)
-    @battle.start_decision
 
     phase_actions = {
       select_partymember_skill: ->{ @battle.assign_skill_choice(@skill_map[@battle.current_battle_participant][key]) },

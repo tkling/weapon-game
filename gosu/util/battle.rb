@@ -12,8 +12,8 @@ class Battle
     defeat
   ].freeze
 
-  def initialize(party, enemies)
-    @party, @enemies = party, enemies
+  def initialize(party, enemies, timer_amount: 3.0)
+    @party, @enemies, @timer_amount = party, enemies, timer_amount
     @xp_tracker = ExperienceTracker.new(party + party.map(&:skills).flatten)
     reset_round_state
   end
@@ -49,8 +49,10 @@ class Battle
   def assign_skill_target(target)
     return @incorrect_target_chosen = true unless target && target.current_hp > 0
     raise 'not in :select_partymember_target phase!' unless phase == :select_partymember_target
-    commands[current_battle_participant].merge!(target: target, time_taken: Time.now - @decision_start)
+    command_data = { target: target, decision_percentage_remaining: decision_percentage_remaining }
+    commands[current_battle_participant].merge!(command_data)
     @incorrect_target_chosen = false
+    @decision_start = nil
     @battle_order_index += 1
   end
 
@@ -85,7 +87,7 @@ class Battle
     @battle_order_index += 1 if current_battle_participant&.current_hp&.zero?
     @phase = determine_phase
 
-    if [:select_partymember_skill, :select_partymember_target].include?(phase) && @decision_start.nil?
+    if [:select_partymember_skill].include?(phase) && @decision_start.nil?
       start_decision
     end
 
@@ -99,9 +101,14 @@ class Battle
 
   def assign_damages
     return if @commands.any? { |_, skill_hash| skill_hash[:target].nil? }
-    @commands.each do |char, skill_info|
-      to, skill = skill_info.values_at(:target, :skill)
-      xp_tracker.add_experience(skill) if party.include?(char)
+    @commands.each do |char, skill_hash|
+      to, skill = skill_hash.values_at(:target, :skill)
+
+      if party.include?(char)
+        xp_tracker.add_experience(skill)
+        xp_tracker.xp_hash_for(char)[:bonuses] << skill_hash[:decision_percentage_remaining]
+      end
+
       damages << Damage.new(from: char, to: to, source: skill)
     end
     @commands.clear
@@ -122,7 +129,8 @@ class Battle
   def decision_percentage_remaining
     return 100.0 if @decision_start.nil? || phase == :round_end
     return 0.0   if @incorrect_target_chosen || @incorrect_skill_chosen
-    computed = 100 - (Time.now - @decision_start) * 100
+    time_taken = Time.now - @decision_start
+    computed = (@timer_amount - time_taken)/@timer_amount
     computed > 0 ? computed : 0.0
   end
 
