@@ -95,7 +95,7 @@ class Battle
     resolve_commands    if phase == :round_resolution
 
     if phase == :victory
-      @loot ||= LootGenerator.generate(*loot_possibilities)
+      @loot ||= determine_loot
     end
   end
 
@@ -144,6 +144,13 @@ class Battle
       { chance: 35, item: Item.from_castle_id('item_attack1') },
       { chance: 15, item: Item.from_castle_id('item_profit1') }
     ]
+  end
+
+  def determine_loot
+    loot = LootGenerator.generate(*loot_possibilities)
+    xp_bonuses = party.map { |pm| @xp_tracker.xp_hash_for(pm)[:bonuses] }.flatten
+    should_award_extra = (1..enemies.size*3).to_a.sample < xp_bonuses.sum
+    should_award_extra ? loot + LootGenerator.generate(*loot_possibilities) : loot
   end
 
   def add_awarded_character_experience!
