@@ -21,11 +21,12 @@ class ExperienceTracker
 
   def xp_progression_info_for(entity)
     @entity_map[entity].yield_self do |entry|
+      awarded = determine_awarded_amount(entry)
       {
         starting_xp: entry[:starting],
         starting_level: entity.level,
-        xp_after_reward: entry[:starting] + determine_awarded_amount(entry),
-        level_after_reward: entity.level(entry[:awarded])
+        xp_after_reward: entry[:starting] + awarded,
+        level_after_reward: entity.level(awarded)
       }
     end
   end
