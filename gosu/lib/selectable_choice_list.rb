@@ -28,7 +28,8 @@ class SelectableChoiceList
 
   def increment_choice_index(by_amount)
     @choice_index += by_amount
-    ensure_index_within_bounds
+    @choice_index = 0 if @choice_index >= @choices.size
+    @choice_index = @choices.size - 1 if @choice_index < 0
   end
 
   def ensure_index_within_bounds
