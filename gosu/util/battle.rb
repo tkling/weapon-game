@@ -103,13 +103,14 @@ class Battle
     return if @commands.any? { |_, skill_hash| skill_hash[:target].nil? }
     @commands.each do |char, skill_hash|
       to, skill = skill_hash.values_at(:target, :skill)
+      decision_percentage = skill_hash.fetch(:decision_percentage_remaining, 0.0)
 
       if party.include?(char)
         xp_tracker.add_experience(skill)
-        xp_tracker.xp_hash_for(char)[:bonuses] << skill_hash[:decision_percentage_remaining]
+        xp_tracker.xp_hash_for(char)[:bonuses] << decision_percentage
       end
 
-      damages << Damage.new(from: char, to: to, source: skill)
+      damages << Damage.new(from: char, to: to, source: skill, crit_chance_modifier: decision_percentage)
     end
     @commands.clear
   end
