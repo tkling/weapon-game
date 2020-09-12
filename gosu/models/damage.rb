@@ -20,7 +20,7 @@ class Damage
     # characters. It could potentially simplify things to have element/resist/damage directly on enemies rather than
     # coming from their equipables. Then again there's a nice simplicity to players and enemies sharing the same code.
     return 0 if @attributes[:miss]
-    damage = from.type == 'partymember' ? -10 : (-5..-1).to_a.sample
+    damage = from.type == 'partymember' ? -10 : rand(-5..-1)
     damage = damage * Elements::AffinityMap[source.element][to.armor.element]
     damage = damage * source.level_damage_multiplier
     damage = damage * (100 - to.armor.damage_resist) / 100

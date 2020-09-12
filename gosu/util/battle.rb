@@ -150,7 +150,7 @@ class Battle
   def determine_loot
     loot = LootGenerator.generate(*loot_possibilities)
     xp_bonuses = party.map { |pm| @xp_tracker.xp_hash_for(pm)[:bonuses] }.flatten
-    should_award_extra = (1..enemies.size*3).to_a.sample < xp_bonuses.sum
+    should_award_extra = rand(1..enemies.size*3) < xp_bonuses.sum
     should_award_extra ? loot + LootGenerator.generate(*loot_possibilities) : loot
   end
 
