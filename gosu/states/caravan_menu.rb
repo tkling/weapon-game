@@ -4,7 +4,7 @@ class CaravanMenu < GameState
     @choice_list = SelectableChoiceList.new(
       parent_screen: self,
       choice_mappings: [
-        { text: 'Battle',    action: ->{ proceed_to Battling } },
+        { text: 'Battle',    action: ->{ proceed_to BattleIntro } },
         { text: 'Status',    action: ->{ proceed_to Status } },
         { text: 'Inventory', action: ->{ proceed_to Inventory } },
         { text: 'Config',    action: ->{ proceed_to PartyConfig } },
