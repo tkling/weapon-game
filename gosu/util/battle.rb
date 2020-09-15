@@ -12,7 +12,7 @@ class Battle
     defeat
   ].freeze
 
-  def initialize(party, enemies, timer_amount: 3.0)
+  def initialize(party, enemies, timer_amount: 2.5)
     @party, @enemies, @timer_amount = party, enemies, timer_amount
     @xp_tracker = ExperienceTracker.new(party + party.map(&:skills).flatten)
     reset_round_state

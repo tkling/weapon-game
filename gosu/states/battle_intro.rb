@@ -2,9 +2,10 @@
 class BattleIntro < GameState
   TITLE_PHRASES = [
     'Steel thyself!',
-    "Hope you're ready!",
+    "Hope you're ready...",
     "Aren't these monsters annoying?",
-    'Get ready to battle!'
+    'Get ready to battle!',
+    "Jeez they just don't stop :o"
   ].freeze
 
   def initialize(window)
@@ -15,10 +16,10 @@ class BattleIntro < GameState
   end
 
   def update
-    @time_diff = Time.now - @time_opened
-    proceed_to(Battling) if @time_diff > 3.99
+    time_diff = Time.now - @time_opened
+    proceed_to(Battling) if time_diff >= 4
 
-    @display_time = (@time_diff.truncate - 3).abs
+    @display_time = (time_diff.truncate - 3).abs
     @display_time = 'GO!' if @display_time < 1.0
   end
 
