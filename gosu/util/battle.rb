@@ -128,7 +128,7 @@ class Battle
   end
 
   def decision_percentage_remaining
-    return 100.0 if @decision_start.nil? || phase == :round_end
+    return 1.0 if @decision_start.nil? || phase == :round_end
     return 0.0   if @incorrect_target_chosen || @incorrect_skill_chosen
     time_taken = Time.now - @decision_start
     computed = (@timer_amount - time_taken)/@timer_amount
