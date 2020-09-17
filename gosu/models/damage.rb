@@ -5,8 +5,7 @@ class Damage
     @from = from
     @to = to
     @source = source
-    @crit_chance_modifier = crit_chance_modifier
-    @attributes = { miss: should_miss?, crit: should_crit? }
+    @attributes = { miss: should_miss?, crit: should_crit?(crit_chance_modifier) }
     @hit_amount = compute_hit_amount
   end
 
@@ -20,13 +19,13 @@ class Damage
     # characters. It could potentially simplify things to have element/resist/damage directly on enemies rather than
     # coming from their equipables. Then again there's a nice simplicity to players and enemies sharing the same code.
     return 0 if @attributes[:miss]
-    damage = from.type == 'partymember' ? -10 : rand(-5..-1)
+    damage = from.type == 'partymember' ? from.total_atk * -2 : rand(-5..-1)
     damage = damage * Elements::AffinityMap[source.element][to.armor.element]
     damage = damage * source.level_damage_multiplier
     damage = damage * (100 - to.armor.damage_resist) / 100
-    damage = @attributes[:crit] ? damage * 1.25 : damage
+    damage = damage * (@attributes[:crit] ? 1.25 : 1)
     damage = damage.round(half: :up).to_i
-    damage == 0 ? 1 : damage
+    [damage, -1].min
   end
 
   def should_miss?
@@ -34,12 +33,11 @@ class Damage
     false
   end
 
-  def should_crit?
-    # add character's (from) crit chance stat here at some point
-    @crit_chance_modifier * 25 + 1.0 > rand(1..100)
+  def should_crit?(chance_modifier)
+    from.dex / 10 * 2 + chance_modifier * 25 + 1.0 > rand(1..100)
   end
 
   def message
-    "#{from.name} -> #{to.name}: #{hit_amount} (#{source.name} [#{source.level}])"
+    "#{from.name} -> #{to.name}: #{@attributes[:miss] ? 'missed!' : hit_amount} (#{source.name} [#{source.level}])"
   end
 end

@@ -68,17 +68,28 @@ class Character
   end
 
   def handle_level_up
+    # always award hp and heal awarded amount
     rand(7..19).yield_self do |new_hp|
       base_stats[:hp] += new_hp
       add_hp(new_hp)
     end
 
-    # award 1-3 random stats with +1-3 points, maybe influence based off of character class?
+    # guarantee job stat increase
+    job_stat_affinity = { knight: :str, rogue: :dex, priest: :int }
+    base_stats[job_stat_affinity[job]] += rand(1..3)
+
+    # award 1-2 random stats with +1-3 points
+    %i[str dex int].shuffle.take(2).each do |stat|
+      base_stats[stat] += rand(1..3)
+    end
   end
 
   def total_atk
-    # ugh
-    10
+    Integer(rand(weapon.base_stats[:damage_range]) * stat_modifier(:str) * 0.6)
+  end
+
+  def stat_modifier(stat)
+    base_stats[stat] / 100.0 + 1.0
   end
 
   def skills

@@ -10,20 +10,20 @@ class StartJourney < GameState
     @x_starts ||= [0, window.width/3-20, window.width*0.6667-10].map { |i| i + @x_padding }
     @x_starts.each_with_index do |x, idx|
       partymember = window.globals.party[idx]
-      weapon_name = "Weapon: #{ partymember.weapon.name }"
-      armor_name = "Armor: #{ partymember.armor.name }"
-      total_atk = "ATK: #{ partymember.total_atk }"
-      hp = "HP: #{ partymember.current_hp }/#{ partymember.max_hp }"
+      weapon_name = "Weapon: #{partymember.weapon.name}"
+      armor_name = "Armor: #{partymember.armor.name}"
+      stats = "str: #{partymember.str}, dex: #{partymember.dex}, int: #{partymember.int}"
+      hp = "HP: #{partymember.current_hp}/#{partymember.max_hp}"
 
       window.large_font_draw(x, 25, 0, Color::YELLOW, partymember.name)
-      window.small_font_draw(x, 65, 25, Color::YELLOW, weapon_name, armor_name, total_atk, hp)
+      window.small_font_draw(x, 65, 25, Color::YELLOW, weapon_name, armor_name, stats, hp)
     end
 
     # current map + dungeon
-    @map_name ||= "Map: #{ map.name }"
-    @total_dungeons ||= "Dungeon count: #{ map.dungeons.size }"
-    @current_dungeon ||= "Current dungeon: #{ dungeon.name }"
-    @encounters_completed ||= "Dungeon encounters completed: #{ dungeon.encounter_index }/#{ dungeon.encounters.size }"
+    @map_name ||= "Map: #{map.name}"
+    @total_dungeons ||= "Dungeon count: #{map.dungeons.size}"
+    @current_dungeon ||= "Current dungeon: #{dungeon.name}"
+    @encounters_completed ||= "Dungeon encounters completed: #{dungeon.encounter_index}/#{dungeon.encounters.size}"
     @dungeon_names ||= map.dungeons.map(&:name)
     @middle_y_start ||= window.height - 350
 
