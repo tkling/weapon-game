@@ -39,13 +39,7 @@ class Character
 
   def add_hp(amount)
     result = current_hp + amount
-    @current_hp = if result >= max_hp
-                    max_hp
-                  elsif result <= 0
-                    0
-                  else
-                    result
-                  end
+    @current_hp = [0, [result, max_hp].min].max
   end
 
   def add_xp(amount)
@@ -66,15 +60,6 @@ class Character
 
   def skills
     weapon.skills
-  end
-
-  def xp_progression_info(xp_amount)
-    {
-      starting_xp: xp.dup,
-      starting_level: level.dup,
-      xp_after_reward: @xp += xp_amount,
-      level_after_reward: level
-    }
   end
 
   def to_h
