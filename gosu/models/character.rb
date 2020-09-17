@@ -43,9 +43,9 @@ class Character
   end
 
   def add_xp(amount)
-    starting_level, new_level = level, level(amount)
+    starting_level = level
     @xp += amount
-    handle_level_up if starting_level < new_level
+    handle_level_up if starting_level < level
   end
 
   def level(additional_xp=0)
