@@ -7,7 +7,7 @@ class Character
 
   def initialize(name:, job:, weapon:, armor:, type:, current_hp:, base_stats: Hash.new(1), xp: 0, status_effects: [])
     @name = name
-    @job = job
+    @job = job.to_sym
     @armor = armor
     @type = type
     @base_stats = base_stats
@@ -35,6 +35,18 @@ class Character
 
   def max_hp
     base_stats[:hp] # + armor.hp_bonus ??
+  end
+
+  def dex
+    base_stats[:dex]
+  end
+
+  def str
+    base_stats[:str]
+  end
+
+  def int
+    base_stats[:int]
   end
 
   def add_hp(amount)

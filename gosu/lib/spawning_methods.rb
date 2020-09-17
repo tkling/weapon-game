@@ -1,6 +1,6 @@
 module SpawningMethods
   def job_types
-    @job_types ||= %i(fencer rogue mage cleric)
+    @job_types ||= %i(knight rogue priest)
   end
 
   def weapon_types
@@ -34,7 +34,7 @@ module SpawningMethods
       hp = rand(10..27)
       Character.new(name: "Enemy#{ idx }", job: job_types[idx],
                     weapon: random_weapon, armor: random_armor, type: 'enemy',
-                    current_hp: hp, base_stats: { hp: hp })
+                    current_hp: hp, base_stats: { hp: hp, dex: rand(2..9) })
     end
   end
 
@@ -43,7 +43,16 @@ module SpawningMethods
                   Derek Delilah Devin Darcy Gwen Cerise Eleanor Heidi Tyler Quan Marr Tan Kanav Jackie Jack James Alec)
     hp = rand(14..30)
     Character.new(name: @names.sample, job: job, weapon: random_weapon, armor: random_armor,
-                  type: 'partymember', current_hp: hp, base_stats: { hp: hp })
+                  type: 'partymember', current_hp: hp, base_stats: job_base_stats(job).merge({hp: hp}))
+  end
+
+  def job_base_stats(job)
+    case job
+    when :knight then { str: 13, dex: 3, int: 4 }
+    when :rogue  then { str: 7,  dex: 8, int: 5 }
+    when :priest then { str: 3,  dex: 4, int: 13 }
+    else raise 'unknown job type!'
+    end
   end
 
   def generate_dungeons(amount)

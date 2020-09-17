@@ -59,7 +59,7 @@ class NewGame < GameState
   end
 
   def starting_party
-    %i(fencer rogue mage).map do |job|
+    %i(knight rogue priest).map do |job|
       spawn_starting_hero job
     end
   end
