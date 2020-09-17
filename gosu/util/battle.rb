@@ -26,8 +26,7 @@ class Battle
   end
 
   def determine_battle_order
-    # in the future this should be sorted by dex/priority
-    party + enemies
+    (party + enemies).sort_by(&:dex)
   end
 
   def current_battle_participant
