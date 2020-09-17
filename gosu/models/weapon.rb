@@ -8,6 +8,7 @@ class Weapon
     @type = type
     @skills = determine_skills(skills)
     @base_stats = base_stats
+    @base_stats[:damage_range] = hydrate_damage_range(@base_stats[:damage_range])
   end
 
   def determine_skills(skills)
@@ -15,6 +16,14 @@ class Weapon
     when Skill then skills
     when Hash  then skills.map { |s| Skill.from_castle_id(s[:id], xp: s[:xp]) }
     else raise CannotSetWeaponSkills, "skill type is #{skills.first.class}, expected Skill or Hash"
+    end
+  end
+
+  def hydrate_damage_range(dr)
+    case dr
+    when String then Range.new(*dr.split('..').map(&:to_i))
+    when Range then dr
+    else raise "damage_range isn't a string or a range, it's a #{dr.class}!"
     end
   end
 
