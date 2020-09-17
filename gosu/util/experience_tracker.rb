@@ -10,7 +10,7 @@ class ExperienceTracker
   end
 
   def add_experience(target_entity, amount=1)
-    @entity_map[target_entity][:awarded] += amount
+    xp_hash_for(target_entity)[:awarded] += amount
   end
 
   def award!
@@ -20,12 +20,12 @@ class ExperienceTracker
   end
 
   def xp_progression_info_for(entity)
-    @entity_map[entity].yield_self do |entry|
-      awarded = determine_awarded_amount(entry)
+    xp_hash_for(entity).yield_self do |xp_hash|
+      awarded = determine_awarded_amount(xp_hash)
       {
-        starting_xp: entry[:starting],
+        starting_xp: xp_hash[:starting],
         starting_level: entity.level,
-        xp_after_reward: entry[:starting] + awarded,
+        xp_after_reward: xp_hash[:starting] + awarded,
         level_after_reward: entity.level(awarded)
       }
     end

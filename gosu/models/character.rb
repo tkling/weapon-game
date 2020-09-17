@@ -43,7 +43,9 @@ class Character
   end
 
   def add_xp(amount)
+    starting_level, new_level = level, level(amount)
     @xp += amount
+    handle_level_up if starting_level < new_level
   end
 
   def level(additional_xp=0)
@@ -51,6 +53,15 @@ class Character
     Experience::LevelMap.each_cons(2) do |(lvl, xp_amount), (_, next_xp_amount)|
       return lvl if xp_amount <= amount_to_consider && amount_to_consider < next_xp_amount
     end
+  end
+
+  def handle_level_up
+    rand(7..19).yield_self do |new_hp|
+      base_stats[:hp] += new_hp
+      add_hp(new_hp)
+    end
+
+    # award 1-3 random stats with +1-3 points, maybe influence based off of character class?
   end
 
   def total_atk
