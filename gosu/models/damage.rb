@@ -29,8 +29,8 @@ class Damage
   end
 
   def should_miss?
-    # placeholder for now, later base this on comparing from vs to dex, maybe also status effects
-    false
+    base = from.dex < to.dex ? 30 : 45
+    from.stat_modifier(:dex) * 2 * base < rand(1..100)
   end
 
   def should_crit?(chance_modifier)
