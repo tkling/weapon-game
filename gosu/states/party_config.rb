@@ -20,7 +20,7 @@ class PartyConfig < GameState
 
   def change_selected_character(direction)
     @panel_index = 0
-    @character_index += { left: -1, right: 1}[direction]
+    @character_index += { left: -1, right: 1 }[direction]
     @character_index = wrapping_character_index(@character_index)
   end
 
@@ -49,13 +49,13 @@ class PartyConfig < GameState
     window.normal_font_draw(window.width/2-100, window.height-140, 30, Color::YELLOW,
       '[h/l] previous/next character', '[e] next info panel', '[space] return to caravan menu')
 
-    panel_bindings = {
+    @panel_bindings ||= {
       overview: ->{ draw_overview_panel },
       weapon:   ->{ draw_weapon_panel },
       skills:   ->{ draw_skills_panel }
     }
 
-    panel_bindings[INFO_PANELS[@panel_index]].call
+    @panel_bindings[INFO_PANELS[@panel_index]].call
   end
 
   def draw_overview_panel
