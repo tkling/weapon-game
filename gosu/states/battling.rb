@@ -29,7 +29,7 @@ class Battling < GameState
   end
 
   def update
-    @battle.update unless @awaiting_confirmation
+    @battle.update unless @showing_damage_resolution
 
     if @battle.phase == :victory
       window.globals.inventory += @battle.loot
@@ -37,9 +37,8 @@ class Battling < GameState
       proceed_to Victory.new(window, @battle)
     end
 
-    if @battle.phase == :round_end
+    if @battle.phase == :round_end && @battle.damages.all?(&:resolved?)
       @showing_damage_resolution = true
-      @awaiting_confirmation = true
     end
   end
 
@@ -131,9 +130,8 @@ class Battling < GameState
   end
 
   def handle_end_of_round
-    return unless @awaiting_confirmation
+    return unless @battle.phase == :round_end
     @battle.reset_round_state
     @showing_damage_resolution = false if @showing_damage_resolution
-    @awaiting_confirmation = false
   end
 end

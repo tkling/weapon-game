@@ -61,11 +61,11 @@ class Battle
 
   def determine_phase
     all_commands_taken = commands.all? { |char, com| char && com[:skill] && com[:target] }
-    still_battling_participants = battle_order.select { |bp| bp.current_hp.positive? }
+    active_battlers = battle_order.select { |bp| bp.current_hp.positive? }
 
     if phase == :round_resolution && commands.empty? && damages.any?
       :round_end
-    elsif current_battle_participant.nil? || commands.count == still_battling_participants.count && all_commands_taken
+    elsif current_battle_participant.nil? || commands.count == active_battlers.count && all_commands_taken
       :round_resolution
     elsif enemies.none? { |ene| ene.current_hp.positive? }
       :victory
