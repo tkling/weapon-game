@@ -66,9 +66,9 @@ module Experience
 end
 
 module Elements
-  Fire = 'fire'
-  Water = 'water'
-  Ice = 'ice'
+  Fire    = 'fire'
+  Water   = 'water'
+  Ice     = 'ice'
   Thunder = 'thunder'
   Neutral = 'neutral'
 
