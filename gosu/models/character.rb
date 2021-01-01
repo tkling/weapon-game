@@ -69,7 +69,7 @@ class Character
 
   def handle_level_up
     # always award hp and heal awarded amount
-    rand(7..19).yield_self do |new_hp|
+    rand(7..19).tap do |new_hp|
       base_stats[:hp] += new_hp
       add_hp(new_hp)
     end
@@ -98,14 +98,14 @@ class Character
 
   def to_h
     {
-      name: name,
-      job: job,
-      weapon: weapon.to_h,
-      armor: armor.to_h,
-      type: type,
+      name:       name,
+      job:        job,
+      weapon:     weapon.to_h,
+      armor:      armor.to_h,
+      type:       type,
       current_hp: current_hp,
       base_stats: base_stats,
-      xp: xp
+      xp:         xp
     }
   end
 end

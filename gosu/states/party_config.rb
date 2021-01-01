@@ -7,9 +7,9 @@ class PartyConfig < GameState
   end
 
   def bind_keys
-    bind Keys::E, ->{ show_next_panel }
-    bind Keys::H, ->{ change_selected_character(:left) }
-    bind Keys::L, ->{ change_selected_character(:right) }
+    bind Keys::E,     ->{ show_next_panel }
+    bind Keys::H,     ->{ change_selected_character(:left) }
+    bind Keys::L,     ->{ change_selected_character(:right) }
     bind Keys::Space, ->{ proceed_to CaravanMenu }
   end
 
