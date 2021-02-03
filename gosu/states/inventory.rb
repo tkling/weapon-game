@@ -33,12 +33,12 @@ class Inventory < GameState
   end
 
   def bind_keys
-    bind Keys::Space,                   -> { proceed_to CaravanMenu }
-    bind Controls::Confirm,             -> { appropriate_choice_list.handle_choice }
-    bind Controls::Cancel,              -> { @item = @selecting_target = nil }
-    bind Controls::Up,                  -> { appropriate_choice_list.increment_choice_index(-1) }
-    bind Controls::Down,                -> { appropriate_choice_list.increment_choice_index(1) }
-    bind Keys::S,                       -> { sort_inventory }
+    bind Keys::Space,       -> { proceed_to CaravanMenu }
+    bind Controls::Confirm, -> { appropriate_choice_list.handle_choice }
+    bind Controls::Cancel,  -> { @item = @selecting_target = nil }
+    bind Controls::Up,      -> { appropriate_choice_list.increment_choice_index(-1) }
+    bind Controls::Down,    -> { appropriate_choice_list.increment_choice_index(1) }
+    bind Keys::S,           -> { sort_inventory }
   end
 
   def appropriate_choice_list
