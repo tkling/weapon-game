@@ -37,14 +37,11 @@ class PartyConfig < GameState
     @panel_y_start ||= 150
     @top_bar_y     ||= 90
 
-    previous_char_name = party[wrapping_character_index(@character_index-1)].name
-    window.large_font_draw(10, @top_bar_y, 0, Color::YELLOW, "[H] #{previous_char_name}")
+    name = ->(index_modifier) { party[wrapping_character_index(@character_index + index_modifier)].name }
 
-    current_char_name = party[@character_index].name
-    window.huge_font_draw(window.width/2-100, @top_bar_y-10, 0, Color::YELLOW, current_char_name)
-
-    next_char_name = party[wrapping_character_index(@character_index+1)].name
-    window.large_font_draw(window.width-200, @top_bar_y, 0, Color::YELLOW, "[L] #{next_char_name}")
+    window.large_font_draw(10, @top_bar_y, 0, Color::YELLOW, "[H] #{name.call(-1)}")
+    window.huge_font_draw(window.width/2-100, @top_bar_y-10, 0, Color::YELLOW, name.call(0))
+    window.large_font_draw(window.width-200, @top_bar_y, 0, Color::YELLOW, "[L] #{name.call(1)}")
 
     window.normal_font_draw(window.width/2-100, window.height-140, 30, Color::YELLOW,
       '[h/l] previous/next character', '[e] next info panel', '[space] return to caravan menu')
