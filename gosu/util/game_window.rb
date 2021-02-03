@@ -1,25 +1,10 @@
+# frozen_string_literal: true
+require 'singleton'
+
 class GameWindow < Gosu::Window
-  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font,
-              :project_root, :globals
+  include Singleton
 
-  def initialize
-    set_instance_vars
-    super 800, 600
-    self.caption = 'Xtreme Weapon Grindfest'
-  end
-
-  def set_instance_vars
-    @state = WelcomeScreen.new self
-    @start_time = Time.now
-    @ready_to_advance = false
-    @huge_font = Gosu::Font.new(60)
-    @large_font = Gosu::Font.new(30)
-    @normal_font = Gosu::Font.new(20)
-    @small_font = Gosu::Font.new(15)
-    @project_root = Dir.pwd
-    @globals = Globals.new
-    @globals.save_data = SaveData.new
-  end
+  attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font, :project_root, :globals, :state
 
   def update
     @state.update
@@ -71,5 +56,26 @@ class GameWindow < Gosu::Window
         y_start += padding
       end
     end
+  end
+
+  private
+
+  def initialize
+    set_instance_vars
+    super 800, 600
+    self.caption = 'Xtreme Weapon Grindfest'
+  end
+
+  def set_instance_vars
+    @state = WelcomeScreen.new self
+    @start_time = Time.now
+    @ready_to_advance = false
+    @huge_font = Gosu::Font.new(60)
+    @large_font = Gosu::Font.new(30)
+    @normal_font = Gosu::Font.new(20)
+    @small_font = Gosu::Font.new(15)
+    @project_root = Dir.pwd
+    @globals = Globals.new
+    @globals.save_data = SaveData.new
   end
 end

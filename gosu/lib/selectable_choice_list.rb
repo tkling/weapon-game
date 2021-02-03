@@ -2,7 +2,8 @@
 class SelectableChoiceList
   attr_reader :choice_index
 
-  def initialize(parent_screen:, choice_mappings:, starting_index: 0, raise_on_unsafe_bind: true, draw_method: :large_font_draw)
+  def initialize(parent_screen: GameWindow.instance.state, choice_mappings:, starting_index: 0,
+                 raise_on_unsafe_bind: true, draw_method: :normal_font_draw)
     @screen = parent_screen
     @choices = choice_mappings
     @choice_index = starting_index

@@ -13,10 +13,8 @@ class Inventory < GameState
 
   def reset_item_choices(starting_index)
     @item_choices = SelectableChoiceList.new(
-      parent_screen: self,
       starting_index: starting_index,
       raise_on_unsafe_bind: false,
-      draw_method: :normal_font_draw,
       choice_mappings: tallied_inventory_names.to_a.map do |item_name, _|
         { text: item_name, action: ->{ select_item(item_name) } }
       end)
@@ -24,9 +22,7 @@ class Inventory < GameState
 
   def reset_target_choices
     @target_choices = SelectableChoiceList.new(
-      parent_screen: self,
       raise_on_unsafe_bind: false,
-      draw_method: :normal_font_draw,
       choice_mappings: party.map do |pm|
         { text: "#{pm.name} - #{pm.current_hp}/#{pm.max_hp}", action: ->{ use_item_on_character(pm) } }
       end)

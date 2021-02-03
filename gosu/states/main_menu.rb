@@ -5,7 +5,7 @@ class MainMenu < GameState
   def initialize(game_window)
     super
     @choice_list = SelectableChoiceList.new(
-      parent_screen: self,
+      draw_method: :large_font_draw,
       starting_index: savefile_paths.any? ? 1 : 0,
       choice_mappings: [
         { text: 'new game', action: ->{ proceed_to NewGame } },

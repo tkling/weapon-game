@@ -6,8 +6,6 @@ class Continue < GameState
     @draw_time = Time.now
     @savefile_count = savefile_paths.size
     @choice_list = SelectableChoiceList.new(
-      parent_screen: self,
-      draw_method: :normal_font_draw,
       choice_mappings: savefile_paths.map.with_index do |filename, idx|
         { text: savefile_display_string(filename, idx+1), action: ->{ load_and_continue(filename) } }
       end

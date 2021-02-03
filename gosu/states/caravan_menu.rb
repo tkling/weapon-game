@@ -2,7 +2,7 @@ class CaravanMenu < GameState
   def initialize(game_window)
     super
     @choice_list = SelectableChoiceList.new(
-      parent_screen: self,
+      draw_method: :large_font_draw,
       choice_mappings: [
         { text: 'Battle',    action: ->{ proceed_to BattleIntro } },
         { text: 'Status',    action: ->{ proceed_to Status } },
