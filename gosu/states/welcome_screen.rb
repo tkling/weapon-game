@@ -8,9 +8,7 @@ class WelcomeScreen < GameState
   end
 
   def update
-    if Time.now - window.start_time > 3.5
-      notify_ready
-    end
+    proceed if Time.now - window.start_time > 3.5
   end
 
   def draw
@@ -23,10 +21,8 @@ class WelcomeScreen < GameState
   end
 
   def bind_keys
-    bind Keys::Enter, Keys::Return, Keys::Space, ->{ notify_ready }
+    bind Keys::Enter, Keys::Return, Keys::Space, ->{ proceed }
   end
 
-  def next
-    MainMenu
-  end
+  def proceed = proceed_to MainMenu
 end

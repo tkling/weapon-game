@@ -34,7 +34,7 @@ class SelectableChoiceList
   end
 
   def ensure_index_within_bounds
-    @choice_index = [0, [@choice_index, @choices.size-1].min].max
+    @choice_index = @choice_index.clamp(0, @choices.size-1)
   end
 
   def handle_choice
@@ -44,7 +44,7 @@ class SelectableChoiceList
 
   def draw(x:, y_start:, y_spacing:, show_cursor: true)
     return unless @choices.size.positive?
-    @screen.window.send(@draw_method, x, y_start, y_spacing, Color::YELLOW, *@choices.map { |c| c[:text] })
+    @screen.window.send(@draw_method, x, y_start, y_spacing, Color::YELLOW, *@choices.map {|c| c[:text] })
 
     if show_cursor
       selector_y = y_start + y_spacing * @choice_index
