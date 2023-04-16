@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class SelectableChoiceList
-  attr_reader :choice_index
+  attr_reader :choice_index, :choices, :draw_method
 
   def initialize(parent_screen: GameWindow.instance.state, choice_mappings:, starting_index: 0,
                  raise_on_unsafe_bind: true, draw_method: :normal_font_draw)
@@ -29,26 +29,27 @@ class SelectableChoiceList
 
   def increment_choice_index(by_amount)
     @choice_index += by_amount
-    @choice_index = 0 if @choice_index >= @choices.size
-    @choice_index = @choices.size - 1 if @choice_index < 0
+    @choice_index = 0 if choice_index >= choices.size
+    @choice_index = choices.size - 1 if choice_index < 0
   end
 
   def ensure_index_within_bounds
-    @choice_index = @choice_index.clamp(0, @choices.size-1)
+    @choice_index = choice_index.clamp(0, choices.size-1)
   end
 
   def handle_choice
-    @choices[@choice_index][:action].call
-    increment_choice_index(-1) if @choice_index >= @choices.size
+    choices[choice_index][:action].call
+    increment_choice_index(-1) if choice_index >= choices.size
   end
 
-  def draw(x:, y_start:, y_spacing:, show_cursor: true)
-    return unless @choices.size.positive?
-    @screen.window.send(@draw_method, x, y_start, y_spacing, Color::YELLOW, *@choices.map {|c| c[:text] })
+  def draw(x:, y:, y_space:, show_cursor: true)
+    return unless choices.size.positive?
+    lables = choices.map {|c| c[:text] }
+    @screen.window.send(draw_method, x, y, y_space, *lables)
 
     if show_cursor
-      selector_y = y_start + y_spacing * @choice_index
-      @screen.window.send(@draw_method, x-20, selector_y+5, 0, Color::YELLOW, '*')
+      selector_y = y + y_space * choice_index
+      @screen.window.send(draw_method, x-20, selector_y+5, 0, '*')
     end
   end
 end

@@ -7,7 +7,7 @@ class GameWindow < Gosu::Window
   attr_reader :start_time, :small_font, :normal_font, :large_font, :huge_font, :project_root, :globals, :state
 
   def update
-    @state.update
+    state.update
     advance_state
   rescue StandardError => e
     bt = e.backtrace
@@ -16,7 +16,7 @@ class GameWindow < Gosu::Window
 
   def draw
     draw_state_info
-    @state.draw
+    state.draw
   rescue StandardError => e
     bt = e.backtrace
     binding.pry
@@ -41,7 +41,7 @@ class GameWindow < Gosu::Window
     if @ready_to_advance
       @last_state = @state
       @ready_to_advance = false
-      @state = @state.next.class == Class ? @state.next.new(self) : @state.next
+      @state = state.next.class == Class ? state.next.new(self) : state.next
       @state.setup
     end
   end
