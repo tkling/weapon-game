@@ -2,8 +2,7 @@
 class MainMenu < GameState
   include SaveMethods
 
-  def initialize(game_window)
-    super
+  def bind_keys
     @choice_list = SelectableChoiceList.new(
       draw_method: :large_font_draw,
       starting_index: savefile_paths.any? ? 1 : 0,

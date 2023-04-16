@@ -1,6 +1,5 @@
 class CaravanMenu < GameState
-  def initialize(game_window)
-    super
+  def bind_keys
     @choice_list = SelectableChoiceList.new(
       draw_method: :large_font_draw,
       choice_mappings: [

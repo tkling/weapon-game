@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 class Inventory < GameState
-  def initialize(window)
-    super
-    reset_and_rebind_choices
-  end
-
   def reset_and_rebind_choices(item_choices_index: 0)
     reset_item_choices(item_choices_index)
     reset_target_choices
@@ -35,6 +30,7 @@ class Inventory < GameState
     bind Controls::Up,      -> { appropriate_choice_list.increment_choice_index(-1) }
     bind Controls::Down,    -> { appropriate_choice_list.increment_choice_index(1) }
     bind Keys::S,           -> { sort_inventory }
+    reset_and_rebind_choices
   end
 
   def appropriate_choice_list

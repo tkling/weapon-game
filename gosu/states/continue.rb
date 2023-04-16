@@ -5,6 +5,9 @@ class Continue < GameState
     super window
     @draw_time = Time.now
     @savefile_count = savefile_paths.size
+  end
+
+  def bind_keys
     @choice_list = SelectableChoiceList.new(
       choice_mappings: savefile_paths.map.with_index do |filename, idx|
         { text: savefile_display_string(filename, idx+1), action: ->{ load_and_continue(filename) } }

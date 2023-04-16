@@ -1,15 +1,15 @@
 class GameState
   attr_reader :window, :keybinds
 
-  def initialize(window)
+  def initialize(window) # use GameWindow.instance here
     @window = window
     @keybinds = {}
-    bind_keys
   end
 
-  def update;          end
-  def draw;            end
-  def bind_keys;       end
+  def update;    end
+  def draw;      end
+  def bind_keys; end
+  def setup = bind_keys
 
   def bind(*keys, action)
     keys.each do |key|
@@ -31,9 +31,7 @@ class GameState
     @global_keybinds[id]&.call
   end
 
-  def next
-    @next
-  end
+  def next = @next
 
   def set_next_and_ready(state_class)
     @next = state_class
@@ -41,29 +39,12 @@ class GameState
   end
   alias_method :proceed_to, :set_next_and_ready
 
-  def notify_ready
-    window.ready_to_advance_state!
-  end
-
-  def map
-    window.globals.map
-  end
-
-  def party
-    window.globals.party
-  end
-
-  def inventory
-    window.globals.inventory
-  end
-
-  def dungeon
-    map.dungeon
-  end
-
-  def enemies
-    dungeon.encounters[dungeon.encounter_index]
-  end
+  def notify_ready = window.ready_to_advance_state!
+  def map       = window.globals.map
+  def party     = window.globals.party
+  def inventory = window.globals.inventory
+  def dungeon   = map.dungeon
+  def enemies   = dungeon.encounters[dungeon.encounter_index]
 
   def formatted_time_played(seconds=Time.now - window.globals.session_begin_time + window.globals.save_data.time_played)
     @two_digit_padded ||= ->(num) { num < 10 ? "0#{num}" : num }

@@ -42,6 +42,7 @@ class GameWindow < Gosu::Window
       @last_state = @state
       @ready_to_advance = false
       @state = @state.next.class == Class ? @state.next.new(self) : @state.next
+      @state.setup
     end
   end
 
