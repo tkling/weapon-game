@@ -92,10 +92,7 @@ class Battle
 
     assign_enemy_action if phase == :assign_enemy_action
     resolve_commands    if phase == :round_resolution
-
-    if phase == :victory
-      @loot ||= determine_loot
-    end
+    determine_loot      if phase == :victory
   end
 
   def assign_damages
@@ -147,10 +144,12 @@ class Battle
   end
 
   def determine_loot
-    loot = LootGenerator.generate(*loot_possibilities)
-    xp_bonuses = party.map { |pm| @xp_tracker.xp_hash_for(pm)[:bonuses] }.flatten
-    should_award_extra = rand(1..enemies.size*3) < xp_bonuses.sum
-    should_award_extra ? loot + LootGenerator.generate(*loot_possibilities) : loot
+    @loot ||= begin
+      loot = LootGenerator.generate(*loot_possibilities)
+      xp_bonuses = party.map { |pm| @xp_tracker.xp_hash_for(pm)[:bonuses] }.flatten
+      should_award_extra = rand(1..enemies.size*3) < xp_bonuses.sum
+      should_award_extra ? loot + LootGenerator.generate(*loot_possibilities) : loot
+    end
   end
 
   def add_awarded_character_experience!

@@ -79,16 +79,21 @@ class Battling < GameState
          "Select target for #{ @battle.current_battle_participant.name }'s #{ @battle.current_command[:skill].name }"
         else
          "Select skill for #{ @battle.current_battle_participant.name }"
-        end
-      )
+        end)
 
       # show skill or target list
-      texts = @battle.phase == :select_partymember_target ? target_mapping_strings : current_hero_skill_mappings
-      window.huge_font_draw(230, 175, 75, *texts)
+      window.huge_font_draw(230, 175, 75, *(
+        if @battle.phase == :select_partymember_target
+          target_mapping_strings
+        else
+          current_hero_skill_mappings
+        end))
     end
 
     # show skill choices and target
-    skill_choices = "commands: #{ @battle.commands.map { |char, s_info| { char.name => s_info[:skill]&.name } } }"
+    skill_choices = "commands: #{ @battle.commands.map do |char, s_info|
+      "#{char.name}:#{s_info[:skill]&.name}"
+    end.join(', ')}"
     window.small_font_draw(window.width-500, window.height-20, 0, skill_choices)
   end
 

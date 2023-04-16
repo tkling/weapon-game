@@ -28,7 +28,7 @@ class Character
   end
 
   def make_skill_mappings
-    weapon.skills.each_with_index.with_object(Hash.new) do |(skill, idx), mappings|
+    weapon.skills.each_with_index.with_object({}) do |(skill, idx), mappings|
       mappings[SKILL_KEYBINDS[idx]] = skill
     end
   end
@@ -63,7 +63,7 @@ class Character
   def level(additional_xp=0)
     amount_to_consider = xp + additional_xp
     Experience::LevelMap.each_cons(2) do |(lvl, xp_amount), (_, next_xp_amount)|
-      return lvl if xp_amount <= amount_to_consider && amount_to_consider < next_xp_amount
+      return lvl if amount_to_consider.between?(xp_amount, next_xp_amount)
     end
   end
 
