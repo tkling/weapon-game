@@ -70,21 +70,21 @@ class Inventory < GameState
     @y_both             ||= 150
     @heading_y          ||= 100
 
-    window.huge_font_draw(10, 10, 0, Color::YELLOW, 'I N V E N T O R Y')
-    window.large_font_draw(@x_item,            @heading_y, 0, Color::YELLOW, 'item name')
-    window.large_font_draw(@party_label_x,     @heading_y, 0, Color::YELLOW, 'party')
-    window.large_font_draw(@party_label_x-120, @heading_y, 0, Color::YELLOW, 'count')
-    window.normal_font_draw(@x_count, @y_both, @item_count_spacing, Color::YELLOW,
+    window.huge_font_draw(10, 10, 0, 'I N V E N T O R Y')
+    window.large_font_draw(@x_item,            @heading_y, 0, 'item name')
+    window.large_font_draw(@party_label_x,     @heading_y, 0, 'party')
+    window.large_font_draw(@party_label_x-120, @heading_y, 0, 'count')
+    window.normal_font_draw(@x_count, @y_both, @item_count_spacing,
                             *tallied_inventory_names.to_a.map { |_, count| count })
 
-    @item_choices.draw(x: @x_item, y_start: @y_both, y_spacing: @item_count_spacing, show_cursor: !@selecting_target)
-    @target_choices.draw(x: @party_label_x, y_start: @y_both, y_spacing: 45, show_cursor: @selecting_target)
+    @item_choices.draw(x: @x_item, y: @y_both, y_space: @item_count_spacing, show_cursor: !@selecting_target)
+    @target_choices.draw(x: @party_label_x, y: @y_both, y_space: 45, show_cursor: @selecting_target)
 
     if @selecting_target
-      window.large_font_draw(window.width/2-200, window.height-200, 0, Color::YELLOW, "Select target for #{@item.name}")
+      window.large_font_draw(window.width/2-200, window.height-200, 0, "Select target for #{@item.name}")
     end
 
-    window.normal_font_draw(window.width/2-100, window.height-160, 30, Color::YELLOW,
+    window.normal_font_draw(window.width/2-100, window.height-160, 30,
       '[e] select item/target', '[u] cancel item usage', '[s] sort alphabetically', '[space] return to caravan menu')
   end
 end

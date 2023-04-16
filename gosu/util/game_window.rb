@@ -25,7 +25,7 @@ class GameWindow < Gosu::Window
   def draw_state_info
     state_info = "current state: #{ @state.class }"
     transition_info = "from #{ @last_state.class } to #{ @state.class } (last key: #{ @last_keypress })"
-    small_font_draw(5, 565, 15, Color::YELLOW, state_info, transition_info)
+    small_font_draw(5, 565, 15, state_info, transition_info)
   end
 
   def button_down(id)
@@ -51,10 +51,10 @@ class GameWindow < Gosu::Window
   end
 
   %i(small_font normal_font large_font huge_font).each do |font|
-    define_method "#{ font }_draw" do |x, y_start, padding, color, *messages|
+    define_method "#{ font }_draw" do |x, y, y_space, *messages, color: Color::YELLOW|
       messages.each do |msg|
-        send(font).draw_text(msg, x, y_start, ZOrder::UI, 1.0, 1.0, color)
-        y_start += padding
+        send(font).draw_text(msg, x, y, ZOrder::UI, 1.0, 1.0, color)
+        y += y_space
       end
     end
   end

@@ -15,8 +15,8 @@ class StartJourney < GameState
       stats = "str: #{partymember.str}, dex: #{partymember.dex}, int: #{partymember.int}"
       hp = "HP: #{partymember.current_hp}/#{partymember.max_hp}"
 
-      window.large_font_draw(x, 25, 0, Color::YELLOW, partymember.name)
-      window.small_font_draw(x, 65, 25, Color::YELLOW, weapon_name, armor_name, stats, hp)
+      window.large_font_draw(x, 25, 0, partymember.name)
+      window.small_font_draw(x, 65, 25, weapon_name, armor_name, stats, hp)
     end
 
     # current map + dungeon
@@ -27,8 +27,8 @@ class StartJourney < GameState
     @dungeon_names ||= map.dungeons.map(&:name)
     @middle_y_start ||= window.height - 350
 
-    window.large_font_draw(@x_padding, @middle_y_start, 0, Color::YELLOW, @map_name)
-    window.normal_font_draw(@x_padding, @middle_y_start + 40, 25, Color::YELLOW,
+    window.large_font_draw(@x_padding, @middle_y_start, 0, @map_name)
+    window.normal_font_draw(@x_padding, @middle_y_start + 40, 25,
                              @total_dungeons, @current_dungeon, @encounters_completed)
 
     # dungeons
@@ -46,13 +46,13 @@ class StartJourney < GameState
          map.dungeons[map.dungeons.size/2+1..map.dungeons.size-1].map(&:name)]
       end
 
-    window.large_font_draw(@from_left, @middle_y_start, 0 , Color::YELLOW, 'Dungeons:')
-    window.normal_font_draw(@from_left, @dungeon_list_y, 25, Color::YELLOW, *@dungeon_list_1)
-    window.normal_font_draw(@from_left + 185, @dungeon_list_y, 25, Color::YELLOW, *@dungeon_list_2)
+    window.large_font_draw(@from_left, @middle_y_start, 0 , 'Dungeons:')
+    window.normal_font_draw(@from_left, @dungeon_list_y, 25, *@dungeon_list_1)
+    window.normal_font_draw(@from_left + 185, @dungeon_list_y, 25, *@dungeon_list_2)
 
     # show confirmation
     @continue_msg ||= 'e to continue with this party'
     @main_menu_msg ||= 'u to return to main menu'
-    window.large_font_draw(window.width/2-175, window.height - 145, 35, Color::YELLOW, @continue_msg, @main_menu_msg)
+    window.large_font_draw(window.width/2-175, window.height - 145, 35, @continue_msg, @main_menu_msg)
   end
 end

@@ -22,9 +22,10 @@ class Battling < GameState
 
   def make_skill_map
     party.each_with_object({}) do |partymember, mapping|
-      mapping[partymember] = partymember.skill_mappings.each_with_object({}) do |(keypress, skill), char_skill_map|
-        char_skill_map[keypress] = skill
-      end
+      mapping[partymember] = partymember.
+        skill_mappings.each_with_object({}) do |(keypress, skill), char_skill_map|
+          char_skill_map[keypress] = skill
+        end
     end
   end
 
@@ -43,10 +44,10 @@ class Battling < GameState
   end
 
   def draw
-    window.huge_font_draw(25, 15, 0, Color::YELLOW, 'B A T T L E')
+    window.huge_font_draw(25, 15, 0, 'B A T T L E')
 
     # decision timer
-    window.normal_font_draw(window.width-420, 30, 20, Color::YELLOW, *decision_timer_messages)
+    window.normal_font_draw(window.width-420, 30, 20, *decision_timer_messages)
 
     # player list
     x_left = 25
@@ -54,7 +55,7 @@ class Battling < GameState
     party.each do |partymember|
       line1 = "#{ partymember.name } - #{ partymember.job }"
       line2 = "HP: #{ partymember.current_hp }/#{ partymember.max_hp }"
-      window.normal_font_draw(x_left, party_y_start, 20, Color::YELLOW, line1, line2)
+      window.normal_font_draw(x_left, party_y_start, 20, line1, line2)
       party_y_start += 80
     end
 
@@ -63,17 +64,17 @@ class Battling < GameState
     enemies.select { |ene| ene.current_hp > 0 }.each do |enemy|
       line1 = "#{ TARGET_KEYS[@target_map[enemy]] } - #{ enemy.name } - #{ enemy.job }"
       line2 = "HP: #{ enemy.current_hp}/#{ enemy.max_hp }"
-      window.normal_font_draw(window.width-200, enemy_y_start, 20, Color::YELLOW, line1, line2)
+      window.normal_font_draw(window.width-200, enemy_y_start, 20, line1, line2)
       enemy_y_start += 80
     end
 
     # skill/target select OR damage resolution
     if @showing_damage_resolution
-      window.large_font_draw(230, 175, 0, Color::YELLOW, 'Damage dealt:')
-      window.normal_font_draw(230, 225, 35, Color::YELLOW, *@battle.damages.map(&:message))
-      window.normal_font_draw(250, window.height-120, 0, Color::YELLOW, 'Press [space] to continue')
+      window.large_font_draw(230, 175, 0, 'Damage dealt:')
+      window.normal_font_draw(230, 225, 35, *@battle.damages.map(&:message))
+      window.normal_font_draw(250, window.height-120, 0, 'Press [space] to continue')
     elsif %i[select_partymember_skill select_partymember_target].include?(@battle.phase)
-      window.large_font_draw(25, 120, 0, Color::YELLOW,
+      window.large_font_draw(25, 120, 0,
         if @battle.phase == :select_partymember_target
          "Select target for #{ @battle.current_battle_participant.name }'s #{ @battle.current_command[:skill].name }"
         else
@@ -83,12 +84,12 @@ class Battling < GameState
 
       # show skill or target list
       texts = @battle.phase == :select_partymember_target ? target_mapping_strings : current_hero_skill_mappings
-      window.huge_font_draw(230, 175, 75, Color::YELLOW, *texts)
+      window.huge_font_draw(230, 175, 75, *texts)
     end
 
     # show skill choices and target
     skill_choices = "commands: #{ @battle.commands.map { |char, s_info| { char.name => s_info[:skill]&.name } } }"
-    window.small_font_draw(window.width-500, window.height-20, 0, Color::YELLOW, skill_choices)
+    window.small_font_draw(window.width-500, window.height-20, 0, skill_choices)
   end
 
   def target_mapping_strings

@@ -21,13 +21,13 @@ class Continue < GameState
   end
 
   def draw
-    window.huge_font_draw(25, 10, 0, Color::YELLOW, 'CHOOSE A SAVE')
+    window.huge_font_draw(25, 10, 0, 'CHOOSE A SAVE')
 
     if @savefile_count.positive?
-      @choice_list.draw(x: 50, y_start: 100, y_spacing: 40)
+      @choice_list.draw(x: 50, y: 100, y_space: 40)
     else
-      window.large_font_draw(15, 100, 0, Color::YELLOW, 'NO SAVES YET')
-      window.normal_font_draw(15, 140, 0, Color::YELLOW, 'Continuing to new game now...')
+      window.large_font_draw(15, 100, 0, 'NO SAVES YET')
+      window.normal_font_draw(15, 140, 0, 'Continuing to new game now...')
     end
   end
 

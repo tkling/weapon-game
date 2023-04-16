@@ -17,7 +17,7 @@ class WelcomeScreen < GameState
       @y_set = Time.now
     end
 
-    window.huge_font_draw(182, @message_y, 0, Color::YELLOW, @message)
+    window.huge_font_draw(182, @message_y, 0, @message)
   end
 
   def bind_keys

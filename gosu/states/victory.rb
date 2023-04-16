@@ -13,15 +13,15 @@ class Victory < GameState
 
   def draw
     banner = 'V I C T O R Y'
-    window.huge_font_draw(25, 15, 0, Color::YELLOW, banner)
+    window.huge_font_draw(25, 15, 0, banner)
 
     loot_banner = 'loot'
     loot_box_y_start = 125
-    window.large_font_draw(55, loot_box_y_start, 0, Color::YELLOW, loot_banner)
-    window.normal_font_draw(60, loot_box_y_start + 50, 30, Color::YELLOW, *loot.map(&:name))
+    window.large_font_draw(55, loot_box_y_start, 0, loot_banner)
+    window.normal_font_draw(60, loot_box_y_start + 50, 30, *loot.map(&:name))
 
     advancement_text = 'press [space] to continue'
-    window.large_font_draw((window.width / 2) - 150, window.height - 150, 0, Color::YELLOW, advancement_text)
+    window.large_font_draw((window.width/2)-150, window.height-150, 0, advancement_text)
   end
 
   def advance_journey_progress

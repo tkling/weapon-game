@@ -16,7 +16,7 @@ class MainMenu < GameState
   end
 
   def draw
-    window.huge_font_draw(45, 20, 0, Color::YELLOW, 'WEAPON GAME MAIN MENU')
-    @choice_list.draw(x: 320, y_start: 200, y_spacing: 40)
+    window.huge_font_draw(45, 20, 0, 'WEAPON GAME MAIN MENU')
+    @choice_list.draw(x: 320, y: 200, y_space: 40)
   end
 end

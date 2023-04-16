@@ -50,11 +50,11 @@ class NewGame < GameState
     @confirmation     ||= 'q to continue, e to cancel'
     @success          ||= 'S U C C E S S'
 
-    window.huge_font_draw(   10,  10,  0, Color::YELLOW, @header)
-    window.normal_font_draw(240, 240, 40, Color::YELLOW, @save_explanation, @question, @confirmation)
+    window.huge_font_draw(   10,  10,  0, @header)
+    window.normal_font_draw(240, 240, 40, @save_explanation, @question, @confirmation)
 
     if file_saved?
-      window.huge_font_draw(420, 520,  0, Color::YELLOW, @success)
+      window.huge_font_draw(420, 520,  0, @success)
     end
   end
 

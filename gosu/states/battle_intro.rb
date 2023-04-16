@@ -24,8 +24,8 @@ class BattleIntro < GameState
   end
 
   def draw
-    window.huge_font_draw(10, 10, 0, Color::YELLOW, @dungeon_info_display)
-    window.large_font_draw(40, 85, 0, Color::YELLOW, @random_phrase)
-    window.huge_font_draw(window.width/2, window.height/2, 0, Color::YELLOW, @display_time)
+    window.huge_font_draw(10, 10, 0, @dungeon_info_display)
+    window.large_font_draw(40, 85, 0, @random_phrase)
+    window.huge_font_draw(window.width/2, window.height/2, 0, @display_time)
   end
 end

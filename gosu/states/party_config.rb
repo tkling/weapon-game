@@ -31,7 +31,7 @@ class PartyConfig < GameState
   end
 
   def draw
-    window.huge_font_draw(10, 10, 0, Color::YELLOW, 'P A R T Y')
+    window.huge_font_draw(10, 10, 0, 'P A R T Y')
 
     @panel_x_start ||= 25
     @panel_y_start ||= 150
@@ -39,11 +39,11 @@ class PartyConfig < GameState
 
     name = ->(index_modifier) { party[wrapping_character_index(@character_index + index_modifier)].name }
 
-    window.large_font_draw(10, @top_bar_y, 0, Color::YELLOW, "[H] #{name.call(-1)}")
-    window.huge_font_draw(window.width/2-100, @top_bar_y-10, 0, Color::YELLOW, name.call(0))
-    window.large_font_draw(window.width-200, @top_bar_y, 0, Color::YELLOW, "[L] #{name.call(1)}")
+    window.large_font_draw(10, @top_bar_y, 0, "[H] #{name.call(-1)}")
+    window.huge_font_draw(window.width/2-100, @top_bar_y-10, 0, name.call(0))
+    window.large_font_draw(window.width-200, @top_bar_y, 0, "[L] #{name.call(1)}")
 
-    window.normal_font_draw(window.width/2-100, window.height-140, 30, Color::YELLOW,
+    window.normal_font_draw(window.width/2-100, window.height-140, 30,
       '[h/l] previous/next character', '[e] next info panel', '[space] return to caravan menu')
 
     @panel_bindings ||= {
@@ -56,14 +56,14 @@ class PartyConfig < GameState
   end
 
   def draw_overview_panel
-    window.large_font_draw(@panel_x_start, @panel_y_start, 0, Color::YELLOW, 'overview')
+    window.large_font_draw(@panel_x_start, @panel_y_start, 0, 'overview')
   end
 
   def draw_weapon_panel
-    window.large_font_draw(@panel_x_start, @panel_y_start, 0, Color::YELLOW, 'weapon')
+    window.large_font_draw(@panel_x_start, @panel_y_start, 0, 'weapon')
   end
 
   def draw_skills_panel
-    window.large_font_draw(@panel_x_start, @panel_y_start, 0, Color::YELLOW, 'skills')
+    window.large_font_draw(@panel_x_start, @panel_y_start, 0, 'skills')
   end
 end

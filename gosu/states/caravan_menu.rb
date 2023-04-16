@@ -15,20 +15,20 @@ class CaravanMenu < GameState
 
   def draw
     x_left = 25
-    window.huge_font_draw(x_left, 15, 0, Color::YELLOW, 'C A R A V A N_M E N U')
+    window.huge_font_draw(x_left, 15, 0, 'C A R A V A N_M E N U')
 
-    window.large_font_draw(x_left, 200, 30, Color::YELLOW,
+    window.large_font_draw(x_left, 200, 30,
       "Map: #{ map.name }",
       "Dungeon: #{ dungeon.name }",
       "Encounter: #{ dungeon.encounter_index+1 }/#{ dungeon.encounters.size }"
     )
 
-    window.large_font_draw(x_left, window.height-200, 30, Color::YELLOW,
+    window.large_font_draw(x_left, window.height-200, 30,
       'Time played:',
       formatted_time_played
     )
 
-    @choice_list.draw(x: window.width-200, y_start: 150, y_spacing: 40)
+    @choice_list.draw(x: window.width-200, y: 150, y_space: 40)
   end
 end
 
