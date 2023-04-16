@@ -15,8 +15,9 @@ module SpawningMethods
     noun = @nouns.delete(@nouns.sample)
     name = "#{ adj } #{ noun }"
     skill = Skill.from_castle_id(Skill.all_castle_ids.sample)
+    dmg_min = rand(1..10)
     Weapon.new(name: name, type: weapon_types.sample, skills: [skill],
-               base_stats: { damage_range: (rand(1..10)..rand(8..25)) })
+               base_stats: { damage_range: (dmg_min..rand(dmg_min+1..25)) })
   end
 
   def random_armor
